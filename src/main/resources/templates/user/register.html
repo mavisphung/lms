@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="fragments/layouts :: head">
+  <title>Register - Spring LMS</title>
+</head>
+
+<body>
+  <!-- Header-->
+  <header th:replace="fragments/layouts :: header">
+  </header>
+  <!-- main-->
+  <main class="container my-3">
+    <!-- register form-->
+    <div class="d-flex justify-content-center">
+      <!-- login form-->
+      <div class="login-form-content">
+        <form th:action="@{/register}" method="POST">
+          <h3 class="text-center mb-2">Sign up to our LMS</h3>
+          <!-- username -->
+          <div class="form-floating mb-1">
+            <input type="email" class="form-control" placeholder="." th:>
+            <label for="">Username</label>
+          </div>
+          <!-- password -->
+          <div class="form-floating mb-1">
+            <input type="password" class="form-control" placeholder=".">
+            <label for="">Password</label>
+          </div>
+          <!-- confirm password -->
+          <div class="form-floating mb-1">
+            <input type="password" class="form-control" placeholder=".">
+            <label for="">Confirm password</label>
+          </div>
+          <!-- confirm password -->
+          <div class="form-floating mb-1">
+            <input type="email" class="form-control" placeholder=".">
+            <label for="">Email address</label>
+          </div>
+          <!-- full name -->
+          <div class="d-flex">
+            <div class="form-floating mb-1 pe-1">
+              <input type="text" class="form-control" placeholder=".">
+              <label for="">First name</label>
+            </div>
+            <div class="form-floating mb-1">
+              <input type="text" class="form-control" placeholder=".">
+              <label for="">Last name</label>
+            </div>
+          </div>
+          <!-- Phone number -->
+          <div class="form-floating mb-1">
+            <input type="tel" class="form-control" placeholder=".">
+            <label for="">Phone number</label>
+          </div>
+          <!-- Address -->
+          <div class="form-floating mb-1">
+            <input type="text" class="form-control" placeholder=".">
+            <label for="">Address</label>
+          </div>
+          <p class="small mb-2">
+            By clicking sign up button, you accept our policy and term of uses
+          </p>
+          <button type="submit" class="btn btn-primary w-100">Sign up</button>
+        </form>
+        <legend class="text-center my-3">or</legend>
+        <a href="http://google.com.vn" class="btn btn-danger w-100">
+          <i class="fa fa-google"></i>
+          &nbsp;
+          Sign up with your gmail
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- footer-->
+  <footer th:replace="fragments/layouts :: footer" class="container-fluid bg-light">
+  </footer>
+</body>
+
+</html>

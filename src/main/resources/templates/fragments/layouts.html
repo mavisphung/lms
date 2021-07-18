@@ -46,7 +46,7 @@
 					<div class="d-flex">
 						<div sec:authorize="!isAuthenticated()">
 							<a id="btnLogin" th:href="@{/login-page}" class="btn btn-primary me-1">Login</a>
-							<a id="btnRegister" href="register.html" class="btn btn-info">Register</a>
+							<a id="btnRegister" th:href="@{/register}" class="btn btn-info">Register</a>
 						</div>
 						<!-- logout button -->
 						</div>
