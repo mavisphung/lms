@@ -16,47 +16,42 @@
     <div class="d-flex justify-content-center">
       <!-- login form-->
       <div class="login-form-content">
-        <form th:action="@{/register}" method="POST">
+        <form th:action="@{/register}" method="POST" th:object="${registration}">
           <h3 class="text-center mb-2">Sign up to our LMS</h3>
           <!-- username -->
           <div class="form-floating mb-1">
-            <input type="email" class="form-control" placeholder="." th:>
+            <input type="text" class="form-control" placeholder="." th:field="*{user.username}" required>
             <label for="">Username</label>
           </div>
           <!-- password -->
           <div class="form-floating mb-1">
-            <input type="password" class="form-control" placeholder=".">
+            <input type="password" class="form-control" placeholder="." th:field="*{user.password}" required>
             <label for="">Password</label>
           </div>
           <!-- confirm password -->
           <div class="form-floating mb-1">
-            <input type="password" class="form-control" placeholder=".">
+            <input type="password" class="form-control" placeholder="." th:field="*{confirmPassword}" required>
             <label for="">Confirm password</label>
           </div>
-          <!-- confirm password -->
+          <!-- email address -->
           <div class="form-floating mb-1">
-            <input type="email" class="form-control" placeholder=".">
+            <input type="email" class="form-control" placeholder="." th:field="*{user.email}" required>
             <label for="">Email address</label>
           </div>
           <!-- full name -->
           <div class="d-flex">
             <div class="form-floating mb-1 pe-1">
-              <input type="text" class="form-control" placeholder=".">
+              <input type="text" class="form-control" placeholder="." th:field="*{user.firstName}" required>
               <label for="">First name</label>
             </div>
             <div class="form-floating mb-1">
-              <input type="text" class="form-control" placeholder=".">
+              <input type="text" class="form-control" placeholder="." th:field="*{user.lastName}" required>
               <label for="">Last name</label>
             </div>
           </div>
-          <!-- Phone number -->
-          <div class="form-floating mb-1">
-            <input type="tel" class="form-control" placeholder=".">
-            <label for="">Phone number</label>
-          </div>
           <!-- Address -->
           <div class="form-floating mb-1">
-            <input type="text" class="form-control" placeholder=".">
+            <input type="text" class="form-control" placeholder="." th:field="*{user.address}" required>
             <label for="">Address</label>
           </div>
           <p class="small mb-2">

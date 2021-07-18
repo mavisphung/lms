@@ -13,20 +13,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "authorities")
+@Table(name = "roles")
 @NoArgsConstructor
 @Data
-public class Authority {
+public class Role {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "name")
-    private AuthorityType name;
+    private ERole name;
 
-    public Authority(AuthorityType name) {
+    public Role(ERole name) {
         this.name = name;
     }
 }

@@ -1,13 +1,27 @@
 package com.lmsapp.project.user;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.lmsapp.project.exception.UserAlreadyExistException;
+import com.lmsapp.project.model.UserRegistration;
 
 @Controller
 public class UserController {
 
-	
+	//@Autowired
+	private final UserService userService;
+
+	@Autowired
+	public UserController(UserService userService) {
+		this.userService = userService;
+	}
+
 	@GetMapping("/")
 	public String showIndex() {
 		return "index";
@@ -20,12 +34,24 @@ public class UserController {
 	
 	@GetMapping("/register")
 	public String showRegister(Model model) {
-		model.addAttribute("user", new User());
+		model.addAttribute("registration", new UserRegistration());
 		return "user/register";
 	}
 	
 	@GetMapping("/template")
 	public String showTemplate() {
 		return "template";
+	}
+	
+	@PostMapping("/register")
+	public ModelAndView processRegistration(@ModelAttribute("registration") UserRegistration registration, Model model) {
+		try {
+			User registed = userService.registerNewUser(registration);
+		} catch (UserAlreadyExistException ex) {
+			ModelAndView mav = new ModelAndView("user/register", "registration", registration);
+			mav.addObject("messageError", "Wrong format input");
+			return mav;
+		}
+		return new ModelAndView("login");
 	}
 }

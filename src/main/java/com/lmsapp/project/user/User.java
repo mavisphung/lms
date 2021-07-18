@@ -16,6 +16,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -52,13 +53,18 @@ public class User implements Serializable {
 	private String lastName;
 	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "users_authorities",
+    @JoinTable(name = "users_roles",
             joinColumns = { @JoinColumn(name = "user_id") },
-            inverseJoinColumns = { @JoinColumn(name = "authority_id") })
-    private Set<Authority> authorities = new HashSet<>();
-	
-	public User(String username, String password, String email, String address, boolean enabled, String firstName,
-			String lastName, Set<Authority> authorities) {
+            inverseJoinColumns = { @JoinColumn(name = "role_id") })
+    private Set<Role> roles = new HashSet<Role>();
+
+	public User(String username,
+				String password,
+				String email,
+				String address,
+				boolean enabled,
+				String firstName,
+				String lastName) {
 		this.username = username;
 		this.password = password;
 		this.email = email;
@@ -66,7 +72,7 @@ public class User implements Serializable {
 		this.enabled = enabled;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.authorities = authorities;
 	}
-	
+
+
 }
