@@ -7,8 +7,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lmsapp.project.exception.UserAlreadyExistException;
 import com.lmsapp.project.model.UserRegistration;
+import com.lmsapp.project.role.ERole;
+import com.lmsapp.project.role.Role;
+import com.lmsapp.project.role.RoleRepository;
 
-@Service
+@Service()
 @Transactional
 public class UserServiceImpl implements UserService {
 
@@ -51,5 +54,11 @@ public class UserServiceImpl implements UserService {
 	private boolean usernameExists(String username) {
 		return repo.findByUsername(username) != null;
 	}
+
+	@Override
+	public User findByUsername(String username) {
+		return repo.findByUsername(username);
+	}
+	
 	
 }

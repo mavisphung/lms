@@ -1,4 +1,4 @@
-package com.lmsapp.project.user;
+package com.lmsapp.project.role;
 
 public enum ERole {
 	ROLE_ADMIN,

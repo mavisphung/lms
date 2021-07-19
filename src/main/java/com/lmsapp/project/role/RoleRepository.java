@@ -1,4 +1,4 @@
-package com.lmsapp.project.user;
+package com.lmsapp.project.role;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

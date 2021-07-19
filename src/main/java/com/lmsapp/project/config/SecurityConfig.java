@@ -4,11 +4,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+import com.lmsapp.project.handler.CustomAuthSuccessHandler;
 import com.lmsapp.project.user.CustomUserDetailsServiceImpl;
 
 @Configuration
@@ -36,7 +39,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		authProvider.setPasswordEncoder(passwordEncoder());
 		return authProvider;
 	}
-
+	
+	@Bean
+	public AuthenticationSuccessHandler authenticationSuccessHandler() {
+		return new CustomAuthSuccessHandler();
+	}
+	
 	// -------------------------------------------------------------
 	// Config cho trang
 	@Override
@@ -45,13 +53,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.csrf().disable()
 				.authorizeRequests()
 					.antMatchers("/css/**", "/js/**", "/fonts/**", "/images/**", "/register/**").permitAll()
+					//.antMatchers("/resources/**", "/register/**").permitAll()
+					.antMatchers("/admin/**").hasRole("ADMIN")
 					.anyRequest().authenticated()
 				.and()
 				.formLogin()
 				// Nếu có lỗi thì xoá những dòng dưới
 					.loginPage("/login")
 					.loginProcessingUrl("/process-login")
-					.defaultSuccessUrl("/")
+//					.defaultSuccessUrl("/")
+					.successHandler(authenticationSuccessHandler())
 					.failureUrl("/login?error")
 					.usernameParameter("username")
 					.passwordParameter("password").permitAll()
@@ -62,4 +73,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 					.permitAll();
 	}
 
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers("/resources/**");
+	}
+	
+	
+	
+	
 }

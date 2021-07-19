@@ -1,5 +1,8 @@
 package com.lmsapp.project.user;
 
+import java.security.Principal;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +26,11 @@ public class UserController {
 	}
 
 	@GetMapping("/")
-	public String showIndex() {
+	public String showIndex(Principal principal) {
+		String username = principal.getName();
+		User user = userService.findByUsername(username);
+		System.out.println("UserController >> Loaded logged in user: " + user.toString());
+		System.out.println("UserController >> Load user roles: " + user.getRoles());		
 		return "index";
 	}
 	

@@ -1,4 +1,4 @@
-package com.lmsapp.project.user;
+package com.lmsapp.project.role;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

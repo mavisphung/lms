@@ -16,6 +16,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.lmsapp.project.role.Role;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -74,5 +76,5 @@ public class User implements Serializable {
 		this.lastName = lastName;
 	}
 
-
+	
 }
