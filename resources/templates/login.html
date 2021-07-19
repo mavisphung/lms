@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/layouts :: head">
+<title>Login - Spring LMS</title>
+</head>
+
+<body>
+	<!-- Header-->
+	<header th:replace="fragments/layouts :: header"> </header>
+	<!-- main-->
+	<main class="container my-3">
+		<!-- login form 2-->
+		<div class="d-flex justify-content-center">
+			<div class="login-form-content">
+				<form th:action="@{/process-login}" th:method="POST">
+					<h3 class="text-center mb-2">Log in to our LMS</h3>
+					<div class="form-floating mb-1">
+						<input type="text" class="form-control" placeholder=" "
+							name="username"> <label for="">Username</label>
+					</div>
+					<div class="form-floating mb-1">
+						<input type="password" class="form-control" placeholder=" "
+							name="password"> <label for="">Password</label>
+					</div>
+					<div class="text-center" th:if="${param.error}">
+						<legend class="text-danger">Invalid username or password!</legend>
+					</div>
+					<div class="text-center" th:if="${param.logout}">
+						<legend class="text-success">You have been logged out!</legend>
+					</div>
+					<button type="submit" class="btn btn-primary w-100">Log in</button>
+				</form>
+				<p>
+					You don't have an account? Click <a href="register.html">here</a>
+				</p>
+				<legend class="text-center my-3">or</legend>
+				<a href="http://google.com.vn" class="btn btn-danger w-100"> <i
+					class="fa fa-google"></i> &nbsp; Log in with your gmail
+				</a>
+			</div>
+
+		</div>
+	</main>
+
+	<!-- footer-->
+	<footer th:replace="fragments/layouts :: footer"> </footer>
+</body>
+
+</html>

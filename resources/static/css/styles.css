@@ -1,0 +1,199 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+@media screen and (max-width: 768px) {
+  #btnLogin {
+    width: 50%;
+  }
+
+  #btnRegister {
+    width: 50%;
+  }
+}
+
+/* thanh search */
+@media screen and (min-width: 768px) {
+  .round-end {
+    border-top-right-radius: 19px;
+    border-bottom-right-radius: 19px;
+  }
+
+  .round-start {
+    border-top-left-radius: 19px;
+    border-bottom-left-radius: 19px;
+  }
+}
+
+.ul-footer li {
+  padding: 5px 0;
+}
+
+.ul-footer li a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.ul-footer li a:hover {
+  color: #0d6efd;
+}
+
+/* dưới màn hình điện thoại */
+@media screen and (max-width: 768px) {
+  .mobile-col-content {
+    width: 100%;
+  }
+  .mobile-col {
+    width: 100%;
+  }
+}
+
+/* trên màn hình ipad, ipad pro, desktop */
+@media screen and (min-width: 768px) {
+  .mobile-col-content {
+    width: 50%;
+  }
+  .mobile-col {
+    width: 25%;
+  }
+}
+
+.course {
+  padding: 1rem 0;
+}
+
+/* điều chỉnh chiều ngang cho login form */
+
+/* iphone 6 đến iphone x 320px ~ 414px */
+@media (min-width: 312px) and (max-width: 414px) {
+  .login-form-content {
+    /* width: 391px; */
+    /* width: 391px; */
+  }
+
+  .profile-form-content {
+    /* width: 100%; */
+  }
+}
+
+/* ipad */
+@media screen and (min-width: 768px) {
+  .login-form-content {
+    /* width: 391px; */
+    width: 391px;
+  }
+
+  
+}
+
+/* ipad pro */
+@media screen and (min-width: 1024px) {
+  .profile-form-content {
+    width: 391px;
+  }
+}
+/* ---------------------------------------------- */
+
+/* module */
+.course-module {
+  padding: 0 0 4rem 0;
+}
+/* ----------------------------------------------- */
+
+/* Style The Dropdown Button */
+.dropbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}
+/* -------------------------------------------------- */
+
+#content-col {
+  order: 2;
+}
+
+#left-col {
+  order: 1;
+}
+
+#right-col {
+  order: 3;
+}
+
+#btn-cancel:hover {
+  background-color: #c4c4c4;
+}
+
+
+
+ul li {
+  list-style: none;
+  padding: 0;
+}
+
+ul li a {
+  text-decoration: none;
+}
+
+
+ul {
+  padding: 0;
+}
