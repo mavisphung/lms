@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns:th="http://thymeleaf.org">
+
+<head th:include="fragments/admin-layout :: head">
+</head>
+
+<body>
+  <header th:replace="fragments/layouts :: header">
+  </header>
+  <main class="container my-3">
+    <h3 class="pb-3">Create new user</h3>
+    <form th:action="@{/admin/create}" method="post" th:object="${registration}">
+      <!-- Username -->
+      <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label text-md-end">Username</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" required th:field="*{user.username}">
+        </div>
+      </div>
+      <!-- Password -->
+      <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label text-md-end">Password</label>
+        <div class="col-sm-6">
+          <input type="password" class="form-control" required th:field="*{user.password}">
+        </div>
+      </div>
+      <!-- confirm password -->
+      <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label text-md-end">Confirm password</label>
+        <div class="col-sm-6">
+          <input type="password" class="form-control" required th:field="*{confirmPassword}">
+        </div>
+      </div>
+      <!-- email -->
+      <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label text-md-end">Email</label>
+        <div class="col-sm-6">
+          <input type="email" class="form-control" required th:field="*{user.email}">
+        </div>
+      </div>
+      <!-- first name -->
+      <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label text-md-end">First name</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" required th:field="*{user.firstName}">
+        </div>
+      </div>
+      <!-- last name -->
+      <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label text-md-end">Last name</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" required th:field="*{user.lastName}">
+        </div>
+      </div>
+      <!-- address -->
+      <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label text-md-end">Address</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" required th:field="*{user.address}">
+        </div>
+      </div>
+      <!-- address -->
+      <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label text-md-end">Role</label>
+        <div class="col-sm-6">
+          <select class="form-select" required th:field="*{role}">
+            <!-- <option selected th:value="1">Student</option>
+            <option value="2">Admin</option>
+            <option value="3">Instructor</option> -->
+            <option th:value="'ROLE_STUDENT'" th:text="Student"></option>
+            <option th:value="'ROLE_INSTRUCTOR'" th:text="Instructor"></option>
+            <option th:value="'ROLE_ADMIN'" th:text="Admin"></option>
+          </select>
+        </div>
+      </div>
+      <!-- Save change button -->
+      <div class="mb-3 row">
+        <div class="offset-sm-2 col-sm-6">
+          <button type="submit" class="btn btn-success">Save changes</button>
+          <a href="admin-index.html" class="btn btn-dark">Cancel</a>
+        </div>
+      </div>
+    </form>
+  </main>
+
+  <footer th:replace="fragments/layouts :: footer">
+  </footer>
+</body>
+
+</html>

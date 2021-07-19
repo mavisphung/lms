@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class UserRegistration {
 	private User user;
 	private String confirmPassword;
+	private String role;
 }

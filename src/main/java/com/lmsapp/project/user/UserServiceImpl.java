@@ -1,5 +1,7 @@
 package com.lmsapp.project.user;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,11 +40,7 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		User clientUser = registration.getUser();
-
-
 		String encodedPassword = encoder.encode(clientUser.getPassword());
-
-
 		clientUser.setPassword(encodedPassword);
 		clientUser.setEnabled(true);
 		Role roleStudent = roleRepo.findByName(ERole.ROLE_STUDENT);
@@ -58,6 +56,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User findByUsername(String username) {
 		return repo.findByUsername(username);
+	}
+
+	
+	@Override
+	public List<User> findAll() {
+		return repo.findAll();
 	}
 	
 	

@@ -1,7 +1,9 @@
 package com.lmsapp.project.user;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -15,10 +17,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.lmsapp.project.role.Role;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -60,6 +62,9 @@ public class User implements Serializable {
             inverseJoinColumns = { @JoinColumn(name = "role_id") })
     private Set<Role> roles = new HashSet<Role>();
 
+	@Transient
+	private List<String> strRoles = new ArrayList<String>();
+	
 	public User(String username,
 				String password,
 				String email,
@@ -76,5 +81,4 @@ public class User implements Serializable {
 		this.lastName = lastName;
 	}
 
-	
 }

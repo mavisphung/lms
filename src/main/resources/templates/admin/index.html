@@ -8,7 +8,61 @@
 <body>
 	<header th:replace="fragments/layouts :: header"></header>
 	<main class="container my-3">
-		<h1>This is admin page</h1>
+		<div class="row pb-3">
+			<div class="col-6">
+				<h3>Admin page</h3>
+			</div>
+			<div class="col-6 text-end">
+				<a th:href="@{/admin/create}" class="btn btn-primary"> Create
+					new user </a>
+			</div>
+		</div>
+		<form action="#">
+			<div class="mb-3 row">
+				<label for="staticEmail" class="col-sm-1 col-form-label">Search
+					user</label>
+				<div class="col-sm-8 col-md-5 mb-1">
+					<input type="text" class="form-control" id="staticEmail"
+						placeholder="Enter an username">
+				</div>
+				<div class="col-sm-2 col-md-1">
+					<button type="submit" class="btn btn-success w-100">Search</button>
+				</div>
+			</div>
+		</form>
+		<table class="table table-striped table-hover table-bordered">
+			<thead>
+				<tr>
+					<th scope="col">User id</th>
+					<th scope="col">Username</th>
+					<th scope="col">First name</th>
+					<th scope="col">Last name</th>
+					<th scope="col">Email</th>
+					<th scope="col">Address</th>
+					<th scope="col">Role</th>	
+					<th scope="col">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- 1 user-->
+				<tr th:each="user : ${users}">
+					<td th:text="${user.id}"></td>
+					<td th:text="${user.username}"></td>
+					<td th:text="${user.firstName}"></td>
+					<td th:text="${user.lastName}"></td>
+					<td th:text="${user.email}"></td>
+					<td th:text="${user.address}"></td>
+					<td th:text="${user.strRoles}"></td>
+					<td>
+						<a th:href="@{/admin/edit?id={id}(id=${user.id})}" class="btn btn-warning"> <i
+								class="fa fa-user"></i>
+						</a>
+						<a th:href="@{/admin/delete?id={id}(id=${user.id})}" class="btn btn-danger"> <i class="fa fa-trash"></i>
+						</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</main>
 	<footer th:replace="fragments/layouts :: footer"></footer>
 </body>
