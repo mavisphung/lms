@@ -2,12 +2,19 @@ package com.lmsapp.project;
 
 import com.lmsapp.project.model.UserRegistration;
 import com.lmsapp.project.user.*;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 import java.util.Arrays;
+@EntityScan(
+		basePackageClasses = { MockLmsApplication.class, Jsr310JpaConverters.class }
+	)
 
 @SpringBootApplication
 public class MockLmsApplication implements CommandLineRunner {
