@@ -1,30 +1,39 @@
 package com.lmsapp.project.activities;
 
-import java.io.Serializable;
+
 import java.time.LocalDateTime;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+
 import javax.persistence.Id;
+
+
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 @Entity
 @Table(name="users_activities")
-public class UserActivities implements Serializable {
+public class UserActivities {
 
 	
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="activity_id")
 	int id;
 	
+	
+	@Column(name="username")
 	String username;
+	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@Column(name="start_date")
 	LocalDateTime start;
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@Column(name="end_date")
 	LocalDateTime end;
 	
@@ -69,6 +78,7 @@ public class UserActivities implements Serializable {
 	public void setEnd(LocalDateTime end) {
 		this.end = end;
 	}
+	
 
 	public String getText() {
 		return text;
