@@ -9,8 +9,8 @@
   <header th:replace="fragments/layouts :: header">
   </header>
   <main class="container my-3">
-    <h3 class="pb-3">Create new user</h3>
-    <form th:action="@{/admin/create}" method="post" th:object="${registration}">
+    <h3 class="pb-3">Edit user</h3>
+    <form th:action="@{/admin/edit}" method="post" th:object="${registration}">
     	<div th:if="${param.error}">
     		<p class="text-danger" th:text="${param.error}"></p>
     	</div>

@@ -13,7 +13,7 @@ import com.lmsapp.project.role.ERole;
 import com.lmsapp.project.role.Role;
 import com.lmsapp.project.role.RoleRepository;
 
-@Service()
+@Service
 @Transactional
 public class UserServiceImpl implements UserService {
 
@@ -28,25 +28,46 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public User registerNewUser(UserRegistration registration) throws UserAlreadyExistException {
+		User clientUser = registration.getUser();
+		//check xem có chứa dấu cách không
+		if (clientUser.getUsername().contains(" ")) {
+			throw new UserAlreadyExistException("Username can not have space character: " + clientUser.getUsername());
+		}
 		
 		//check trùng username
-		if (usernameExists(registration.getUser().getUsername())) {
-			throw new UserAlreadyExistException("There is an account with that username: " + registration.getUser().getUsername());
+		if (usernameExists(clientUser.getUsername())) {
+			throw new UserAlreadyExistException("There is an account with that username: " + clientUser.getUsername());
 		}
 		
 		//check 2 pass giống nhau
-		if (!registration.getUser().getPassword().equals(registration.getConfirmPassword())) {
+		if (!clientUser.getPassword().equals(registration.getConfirmPassword())) {
 			throw new UserAlreadyExistException("The password is not matched.");
 		}
 		
-		User clientUser = registration.getUser();
+		
 		String encodedPassword = encoder.encode(clientUser.getPassword());
 		clientUser.setPassword(encodedPassword);
 		clientUser.setEnabled(true);
-		Role roleStudent = roleRepo.findByName(ERole.ROLE_STUDENT);
-		clientUser.getRoles().add(roleStudent);
+		Role userRole = roleRepo.findByName(convertToERole(registration.getRole()));
+		clientUser.getRoles().add(userRole);
 		
 		return repo.save(clientUser);
+	}
+	
+	private ERole convertToERole(String rolename) {
+		ERole eRole = null;
+		switch (rolename) {
+			case "ROLE_ADMIN":
+				eRole = ERole.ROLE_ADMIN;
+				break;
+			case "ROLE_INSTRUCTOR":
+				eRole = ERole.ROLE_INSTRUCTOR;
+				break;
+			default:
+				eRole = ERole.ROLE_STUDENT;
+				break;
+		}
+		return eRole;
 	}
 	
 	private boolean usernameExists(String username) {
@@ -63,6 +84,26 @@ public class UserServiceImpl implements UserService {
 	public List<User> findAll() {
 		return repo.findAll();
 	}
+
+	@Override
+	public User save(User user) {
+		return repo.save(user);
+	}
+
+	@Override
+	public void remove(Long id) {
+		repo.deleteById(id);
+	}
+
+	@Override
+	public void remove(String username) throws RuntimeException {
+		User delete = repo.findByUsername(username);
+		if (delete == null) {
+			throw new RuntimeException("Invalid username");
+		}
+		repo.delete(delete);
+	}
+	
 	
 	
 }

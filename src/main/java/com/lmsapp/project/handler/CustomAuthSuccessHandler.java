@@ -81,7 +81,7 @@ public class CustomAuthSuccessHandler implements AuthenticationSuccessHandler {
 		//------------------------------------------------------------
 		for (GrantedAuthority grantedAuthority : authorities) {
 			String authorityName = grantedAuthority.getAuthority();
-			System.out.println("CustomAuthSuccessHandler >> Add " + authorityName + " to role list");
+			//System.out.println("CustomAuthSuccessHandler >> Add " + authorityName + " to role list");
 			roles.add(authorityName);
 		}
 		

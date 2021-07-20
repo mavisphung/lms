@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"
-	  xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:include="fragments/admin-layout :: head">
 <meta charset="UTF-8">
 <title>Admin page</title>
@@ -11,6 +10,9 @@
 		<div class="row pb-3">
 			<div class="col-6">
 				<h3>Admin page</h3>
+				<div th:if="${param.error}">
+					<p class="text-danger" th:text="${param.error}"></p>
+				</div>
 			</div>
 			<div class="col-6 text-end">
 				<a th:href="@{/admin/create}" class="btn btn-primary"> Create
@@ -39,7 +41,7 @@
 					<th scope="col">Last name</th>
 					<th scope="col">Email</th>
 					<th scope="col">Address</th>
-					<th scope="col">Role</th>	
+					<th scope="col">Role</th>
 					<th scope="col">Action</th>
 				</tr>
 			</thead>
@@ -53,12 +55,29 @@
 					<td th:text="${user.email}"></td>
 					<td th:text="${user.address}"></td>
 					<td th:text="${user.strRoles}"></td>
-					<td>
-						<a th:href="@{/admin/edit?id={id}(id=${user.id})}" class="btn btn-warning"> <i
-								class="fa fa-user"></i>
-						</a>
-						<a th:href="@{/admin/delete?id={id}(id=${user.id})}" class="btn btn-danger"> <i class="fa fa-trash"></i>
-						</a>
+					<td class="d-flex">
+						<!-- <a th:href="@{/admin/edit?username={username}(username=${user.username})}"
+							class="btn btn-warning me-1"> <i class="fa fa-user"></i>
+						</a> -->
+						<form th:action="@{/admin/enable}" method="post">
+							<input hidden th:name="username" th:value="${user.username}">
+							<span th:if="${user.enabled}" class="me-1">
+								<button class="btn btn-secondary">
+									<i class="fa fa-unlock"></i>
+								</button>
+							</span>
+							<span th:if="${!user.enabled}" class="me-1">
+								<button class="btn btn-warning">
+									<i class="fa fa-lock"></i>
+								</button>
+							</span>
+						</form>
+						<form th:action="@{/admin/delete}" method="post" >
+							<input hidden th:name="username" th:value="${user.username}">
+							<button class="btn btn-danger">
+								<i class="fa fa-trash"></i>
+							</button>
+						</form>
 					</td>
 				</tr>
 			</tbody>
