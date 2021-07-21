@@ -19,20 +19,24 @@
 					new user </a>
 			</div>
 		</div>
-		<form action="#">
-			<div class="mb-3 row">
-				<label for="staticEmail" class="col-sm-1 col-form-label">Search
+
+		<div class="pb-3">
+			<form th:action="@{/admin/search}" method="get" class="row">
+				<label for="searchValue" class="col-sm-1 col-form-label">Search
 					user</label>
-				<div class="col-sm-8 col-md-5 mb-1">
-					<input type="text" class="form-control" id="staticEmail"
+				<div class="col-sm-6 col-md-5 mb-1">
+					<input type="text" class="form-control" id="searchValue"
+						name="searchValue" th:value="${searchValue}"
 						placeholder="Enter an username">
 				</div>
-				<div class="col-sm-2 col-md-1">
-					<button type="submit" class="btn btn-success w-100">Search</button>
+				<div class="col-sm-2 col-md-3 col-lg-2">
+					<button type="submit" class="btn btn-success w-sm-100">Search</button>
 				</div>
-			</div>
-		</form>
-		<table class="table table-striped table-hover table-bordered">
+			</form>
+		</div>
+
+		<table id="myTable"
+			class="table table-striped table-hover table-bordered">
 			<thead>
 				<tr>
 					<th scope="col">User id</th>
@@ -46,8 +50,11 @@
 				</tr>
 			</thead>
 			<tbody>
+				<div th:if="${users.isEmpty()}" class="text-center text-danger">
+					<h4>No data available</h4>
+				</div>
 				<!-- 1 user-->
-				<tr th:each="user : ${users}">
+				<tr th:if="${!users.isEmpty()}" th:each="user : ${users}">
 					<td th:text="${user.id}"></td>
 					<td th:text="${user.username}"></td>
 					<td th:text="${user.firstName}"></td>
@@ -56,23 +63,19 @@
 					<td th:text="${user.address}"></td>
 					<td th:text="${user.strRoles}"></td>
 					<td class="d-flex">
-						<!-- <a th:href="@{/admin/edit?username={username}(username=${user.username})}"
-							class="btn btn-warning me-1"> <i class="fa fa-user"></i>
-						</a> -->
 						<form th:action="@{/admin/enable}" method="post">
 							<input hidden th:name="username" th:value="${user.username}">
 							<span th:if="${user.enabled}" class="me-1">
 								<button class="btn btn-secondary">
 									<i class="fa fa-unlock"></i>
 								</button>
-							</span>
-							<span th:if="${!user.enabled}" class="me-1">
+							</span> <span th:if="${!user.enabled}" class="me-1">
 								<button class="btn btn-warning">
 									<i class="fa fa-lock"></i>
 								</button>
 							</span>
 						</form>
-						<form th:action="@{/admin/delete}" method="post" >
+						<form th:action="@{/admin/delete}" method="post">
 							<input hidden th:name="username" th:value="${user.username}">
 							<button class="btn btn-danger">
 								<i class="fa fa-trash"></i>
@@ -80,6 +83,7 @@
 						</form>
 					</td>
 				</tr>
+
 			</tbody>
 		</table>
 	</main>

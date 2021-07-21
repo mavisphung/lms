@@ -27,28 +27,19 @@ public class AdminController {
 
 	private UserService userService;
 	private RoleService roleService;
-	private PasswordEncoder encoder;
 	
 	@Autowired
 	public AdminController(
 			UserService userService, 
-			RoleService roleService,
-			PasswordEncoder encoder) {
+			RoleService roleService) {
 		this.userService = userService;
 		this.roleService = roleService;
-		this.encoder = encoder;
 	}
 
 	@GetMapping("/")
 	public String showAdminIndex(Model model) {
 		List<User> users = userService.findAll();
-
-		for (User user : users) {
-			Set<Role> userRoles = user.getRoles();
-			List<String> strRoles = convertToStringList(userRoles);
-			user.setStrRoles(strRoles);
-		}
-
+		callGetRoles(users);
 		model.addAttribute("users", users);
 		return "admin/index";
 	}
@@ -111,6 +102,36 @@ public class AdminController {
 		
 		return url;
 	}
+	
+	@GetMapping("/search")
+	public String searchValue(
+			@RequestParam("searchValue") String searchValue,
+			Model model) {
+		List<User> users = userService.findUsersByUsername(searchValue);
+		callGetRoles(users);
+		model.addAttribute("searchValue", searchValue);
+		model.addAttribute("users", users);
+		System.out.println("AdminController: /admin/search GET >> " + users.toString());
+		System.out.println("AdminController: /admin/search GET >> Search value: " + searchValue.trim());
+		
+		return "admin/index";
+	}
+	
+	private void callGetRoles(List<User> users) {
+		for (User user : users) {
+			Set<Role> userRoles = user.getRoles();
+			List<String> strRoles = convertToStringList(userRoles);
+			user.setStrRoles(strRoles);
+		}
+	}
+	
+	//API CALLS
+//	@GetMapping("/users")
+//	public List<User> getAllUsers() {
+//		List<User> users = userService.findAll();
+//		return users;
+//	}
+	
 	
 	private List<String> convertToStringList(Set<Role> roles) {
 		List<String> strRoles = new ArrayList<String>();

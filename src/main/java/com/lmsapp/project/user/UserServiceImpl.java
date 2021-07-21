@@ -1,6 +1,8 @@
 package com.lmsapp.project.user;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -104,6 +106,20 @@ public class UserServiceImpl implements UserService {
 		repo.delete(delete);
 	}
 	
-	
+	@Override
+	public List<User> findUsersByUsername(String username) {
+		System.out.println("UserServiceImpl: findUsersByUsername() >> " + username);
+		List<User> users = repo.findByUsernameLike(username);
+		System.out.println("UserServiceImpl: findUsersByUsername() >> " + users.toString());
+		return users;
+	}
+
+	private List<String> convertToStringList(Set<Role> roles) {
+		List<String> strRoles = new ArrayList<String>();
+		for (Role role : roles) {
+			strRoles.add(role.getName().toString());
+		}
+		return strRoles;
+	}
 	
 }
