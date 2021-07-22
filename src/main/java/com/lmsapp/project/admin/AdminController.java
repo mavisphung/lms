@@ -55,7 +55,7 @@ public class AdminController {
 	public String processCreateUser(
 			@ModelAttribute("registration") UserRegistration registration,
 			Model model) {
-		String url = "redirect:/admin/create";
+		String url = "redirect:/admin/";
 		System.out.println("AdminController: /admin/create POST >> Created " + registration.getUser().toString());
 		System.out.println("AdminController: /admin/create POST >> Created user role " + registration.getRole());
 		System.out.println("AdminController: /admin/create POST >> Created confirm password " + registration.getConfirmPassword());

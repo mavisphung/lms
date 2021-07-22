@@ -12,7 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import com.lmsapp.project.handler.CustomAuthSuccessHandler;
-import com.lmsapp.project.user.CustomUserDetailsServiceImpl;
+import com.lmsapp.project.user.service.CustomUserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
@@ -52,7 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 				.csrf().disable()
 				.authorizeRequests()
-					.antMatchers("/css/**", "/js/**", "/fonts/**", "/images/**", "/register/**").permitAll()
+					.antMatchers("/css/**", "/js/**", "/fonts/**", 
+								 "/images/**", "/register/**").permitAll()
 					//.antMatchers("/resources/**", "/register/**").permitAll()
 					.antMatchers("/admin/**").hasRole("ADMIN")
 					.anyRequest().authenticated()

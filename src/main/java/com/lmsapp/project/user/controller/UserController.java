@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.lmsapp.project.exception.UserAlreadyExistException;
 import com.lmsapp.project.model.UserRegistration;
@@ -78,5 +79,26 @@ public class UserController {
 		registration.setRole(roles.get(0));
 		model.addAttribute("registration", registration);
 		return "profile";
+	}
+	
+	@PostMapping("/profile")
+	public RedirectView processChangeProfile(@ModelAttribute("registration") UserRegistration registration) {
+		RedirectView rv = null;
+		try {
+			User updated = userService.updateProfile(registration);
+		} catch (UserAlreadyExistException ex) {
+			System.out.println("UserController >> " + ex.getMessage());
+			//ModelAndView mav = new ModelAndView("profile", "registration", registration);
+			//mav.addObject("message", ex.getMessage());
+			//return mav;
+			rv = new RedirectView("/profile");
+			rv.addStaticAttribute("registration", registration);
+			rv.addStaticAttribute("message", ex.getMessage());
+			return rv;
+		}
+		rv = new RedirectView("/profile");
+		rv.addStaticAttribute("registration", registration);
+		rv.addStaticAttribute("message", "Your profile has been updated!");
+		return rv;
 	}
 }

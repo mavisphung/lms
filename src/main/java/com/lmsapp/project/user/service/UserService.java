@@ -24,4 +24,6 @@ public interface UserService {
 	List<User> findUsersByUsername(String username);
 	
 	List<String> convertToStringList(Set<Role> roles);
+	
+	User updateProfile(UserRegistration registration);
 }

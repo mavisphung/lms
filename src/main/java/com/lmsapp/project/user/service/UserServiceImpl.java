@@ -54,7 +54,6 @@ public class UserServiceImpl implements UserService {
 		clientUser.setEnabled(true);
 		Role userRole = roleRepo.findByName(convertToERole(registration.getRole()));
 		clientUser.getRoles().add(userRole);
-		
 		return repo.save(clientUser);
 	}
 	
@@ -124,5 +123,31 @@ public class UserServiceImpl implements UserService {
 		}
 		return strRoles;
 	}
+
+	/**
+	 * This function uses to update profile
+	 */
+	@Override
+	public User updateProfile(UserRegistration registration) throws UserAlreadyExistException {
+		User userFromClient = registration.getUser();
+		User userFromDb = repo.findByUsername(userFromClient.getUsername());
+		
+		if (registration.getConfirmPassword() == null || registration.getConfirmPassword().isEmpty()) {
+			userFromDb.setFirstName(userFromClient.getFirstName());
+			userFromDb.setLastName(userFromClient.getLastName());
+			userFromDb.setEmail(userFromClient.getEmail());
+			userFromDb.setAddress(userFromClient.getAddress());
+		} else {
+			
+			if (!userFromClient.getPassword().equals(registration.getConfirmPassword())) {
+				throw new UserAlreadyExistException("The password is not matched!");
+			}
+			String encodedPassword = encoder.encode(userFromClient.getPassword());
+			userFromDb.setPassword(encodedPassword);
+		}
+		System.out.println("UserServiceImpl >> Saving profile...");
+		return repo.save(userFromDb);
+	}
+	
 	
 }
