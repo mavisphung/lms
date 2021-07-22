@@ -1,4 +1,4 @@
-package com.lmsapp.project.user;
+package com.lmsapp.project.user.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +14,8 @@ import com.lmsapp.project.model.UserRegistration;
 import com.lmsapp.project.role.ERole;
 import com.lmsapp.project.role.Role;
 import com.lmsapp.project.role.RoleRepository;
+import com.lmsapp.project.user.User;
+import com.lmsapp.project.user.repository.UserRepository;
 
 @Service
 @Transactional
@@ -114,7 +116,8 @@ public class UserServiceImpl implements UserService {
 		return users;
 	}
 
-	private List<String> convertToStringList(Set<Role> roles) {
+	@Override
+	public List<String> convertToStringList(Set<Role> roles) {
 		List<String> strRoles = new ArrayList<String>();
 		for (Role role : roles) {
 			strRoles.add(role.getName().toString());

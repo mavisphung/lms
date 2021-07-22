@@ -19,7 +19,7 @@ import com.lmsapp.project.model.UserRegistration;
 import com.lmsapp.project.role.Role;
 import com.lmsapp.project.role.RoleService;
 import com.lmsapp.project.user.User;
-import com.lmsapp.project.user.UserService;
+import com.lmsapp.project.user.service.UserService;
 
 @Controller
 @RequestMapping("/admin")
@@ -123,15 +123,7 @@ public class AdminController {
 			List<String> strRoles = convertToStringList(userRoles);
 			user.setStrRoles(strRoles);
 		}
-	}
-	
-	//API CALLS
-//	@GetMapping("/users")
-//	public List<User> getAllUsers() {
-//		List<User> users = userService.findAll();
-//		return users;
-//	}
-	
+	}	
 	
 	private List<String> convertToStringList(Set<Role> roles) {
 		List<String> strRoles = new ArrayList<String>();

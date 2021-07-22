@@ -1,7 +1,7 @@
-package com.lmsapp.project.user;
+package com.lmsapp.project.user.controller;
 
 import java.security.Principal;
-import java.util.Set;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.lmsapp.project.exception.UserAlreadyExistException;
 import com.lmsapp.project.model.UserRegistration;
+import com.lmsapp.project.user.User;
+import com.lmsapp.project.user.service.UserService;
 
 @Controller
 public class UserController {
@@ -60,5 +62,21 @@ public class UserController {
 			return mav;
 		}
 		return new ModelAndView("login");
+	}
+	
+	@GetMapping("/profile")
+	public String showUserProfile(Principal principal, Model model) {
+		String username = principal.getName();
+		
+		//lấy thông tin user
+		User user = userService.findByUsername(username);
+		List<String> roles = userService.convertToStringList(user.getRoles());
+		
+		//Tạo đối tượng update
+		UserRegistration registration = new UserRegistration();
+		registration.setUser(user);
+		registration.setRole(roles.get(0));
+		model.addAttribute("registration", registration);
+		return "profile";
 	}
 }

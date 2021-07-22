@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.lmsapp.project.user.repository.UserRepository;
+
 @Service
 @Transactional
 public class CustomUserDetailsServiceImpl implements UserDetailsService {
