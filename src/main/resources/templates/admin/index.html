@@ -16,7 +16,8 @@
 			</div>
 			<div class="col-6 text-end">
 				<a th:href="@{/admin/create}" class="btn btn-primary"> Create
-					new user </a>
+					new user </a> <a th:href="@{/admin/createCourse}"
+					class="btn btn-primary"> Create new course </a>
 			</div>
 		</div>
 		<form action="#">
@@ -65,15 +66,69 @@
 								<button class="btn btn-secondary">
 									<i class="fa fa-unlock"></i>
 								</button>
-							</span>
-							<span th:if="${!user.enabled}" class="me-1">
+							</span> <span th:if="${!user.enabled}" class="me-1">
 								<button class="btn btn-warning">
 									<i class="fa fa-lock"></i>
 								</button>
 							</span>
 						</form>
-						<form th:action="@{/admin/delete}" method="post" >
+						<form th:action="@{/admin/delete}" method="post">
 							<input hidden th:name="username" th:value="${user.username}">
+							<button class="btn btn-danger">
+								<i class="fa fa-trash"></i>
+							</button>
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<!-- Course Searching -->
+		<form action="#">
+			<div class="mb-3 row">
+				<label for="courseName" class="col-sm-1 col-form-label">Search
+					course</label>
+				<div class="col-sm-8 col-md-5 mb-1">
+					<input type="text" class="form-control" id="courseName"
+						placeholder="Enter an course name">
+				</div>
+				<div class="col-sm-2 col-md-1">
+					<button type="submit" class="btn btn-success w-100">Search</button>
+				</div>
+			</div>
+		</form>
+		<!-- Course Display -->
+		<table class="table table-striped table-hover table-bordered">
+			<thead>
+				<tr>
+					<th scope="col">Course ID</th>
+					<th scope="col">Course Name</th>
+					<th scope="col">Create Date</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- 1 user-->
+				<tr th:each="course : ${courses}">
+					<td th:text="${course.id}"></td>
+					<td th:text="${course.name}"></td>
+					<td th:text="${course.createDate}"></td>
+					<td class="d-flex">
+						<!-- <a th:href="@{/admin/edit?username={username}(username=${user.username})}"
+							class="btn btn-warning me-1"> <i class="fa fa-user"></i>
+						</a> -->
+						<form th:action="@{/admin/enableCourse}" method="post">
+							<input hidden th:name="id" th:value="${course.id}">
+							<span th:if="${course.isActive}" class="me-1">
+								<button class="btn btn-secondary">
+									<i class="fa fa-unlock"></i>
+								</button>
+							</span> <span th:if="${!course.isActive}" class="me-1">
+								<button class="btn btn-warning">
+									<i class="fa fa-lock"></i>
+								</button>
+							</span>
+						</form>
+						<form th:action="@{/admin/deleteCourse}" method="post">
+							<input hidden th:name="courseId" th:value="${course.id}">
 							<button class="btn btn-danger">
 								<i class="fa fa-trash"></i>
 							</button>
