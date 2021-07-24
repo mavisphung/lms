@@ -43,6 +43,8 @@ public class ApiActivitiesController {
 		return list;
     }
 	
+
+	
 	@RequestMapping("/getall")
 	List<UserActivities> findAll(){
 		return (List<UserActivities>) userActivitiesRepository.findAll();

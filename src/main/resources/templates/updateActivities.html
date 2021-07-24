@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/layouts :: head">
+<title>add activities - Spring LMS</title>
+</head>
+<title>Insert title here</title>
+</head>
+<body>
+	<header th:replace="fragments/layouts :: header"> </header>
+
+
+
+	<main class="container my-3">
+		<h1 class="text-centert">student activities</h1>
+		<h1 th:text="${error}" class="text-danger"></h1>
+
+		<div th:each="list : ${listActivities}">
+			<form th:action="@{/updateActivities}" th:method="POST">
+				<input type="hidden" class="form-control" th:name="id"
+					th:value="${list.id}" />
+					<input type="hidden" class="form-control" th:name="username"
+					th:value="${list.username}" />
+				<h3>username:</h3>
+				<p class="text-primary" th:text="${list.username}"></p>
+				<label>start date (YYYY-MM-DD):</label> <input type="text"
+					class="form-control" th:name="start"
+					th:attr="placeholder=${list.start}" /> <br> <label>end
+					date (YYYY-MM-DD):</label> <input type="text" class="form-control"
+					th:name="end" th:attr="placeholder=${list.end}" />
+				<br> <label>description:</label> <input type="text"
+					class="form-control" th:name="text"
+					th:attr="placeholder=${list.text}" /> <input type="submit"
+					class="btn btn-success" value="update"/>
+			</form>
+		</div>
+
+
+		<footer th:replace="fragments/layouts :: footer"
+			class="container-fluid bg-light"> </footer>
+	</main>
+</body>
+</html>

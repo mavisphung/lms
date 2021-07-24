@@ -29,4 +29,7 @@ public interface UserActivitiesRepository extends CrudRepository<UserActivities,
 	public List<UserActivities> findBetweenByUsername(@Param("from") @DateTimeFormat(iso=ISO.DATE_TIME) LocalDateTime start,
 			@Param("to") @DateTimeFormat(iso=ISO.DATE_TIME) LocalDateTime end,@Param("username") String username);
 	
+	@Query("from UserActivities e where e.username like :username")
+	public List<UserActivities> findActivitiesByname(@Param("username") String name);
+	
 }
