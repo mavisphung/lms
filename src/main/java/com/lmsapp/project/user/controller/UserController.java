@@ -3,12 +3,16 @@ package com.lmsapp.project.user.controller;
 import java.security.Principal;
 import java.util.List;
 
+import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -16,6 +20,7 @@ import com.lmsapp.project.exception.UserAlreadyExistException;
 import com.lmsapp.project.model.UserRegistration;
 import com.lmsapp.project.user.User;
 import com.lmsapp.project.user.service.UserService;
+import com.lmsapp.project.util.Utility;
 
 @Controller
 public class UserController {
@@ -44,7 +49,18 @@ public class UserController {
 	
 	@GetMapping("/register")
 	public String showRegister(Model model) {
-		model.addAttribute("registration", new UserRegistration());
+		//data for testing
+		UserRegistration registration = new UserRegistration(new User(), "12345678", "ROLE_STUDENT");
+		registration.getUser().setUsername("huypc2410");
+		registration.getUser().setPassword("12345678");
+		registration.getUser().setAddress("218/25 Hong Bang");
+		registration.getUser().setFirstName("Huy");
+		registration.getUser().setLastName("Phùng");
+		registration.getUser().setEmail("nguoibimatthegioi@gmail.com");
+		model.addAttribute("registration", registration);
+		
+		
+		//model.addAttribute("registration", new UserRegistration());
 		return "user/register";
 	}
 	
@@ -54,15 +70,30 @@ public class UserController {
 	}
 	
 	@PostMapping("/register")
-	public ModelAndView processRegistration(@ModelAttribute("registration") UserRegistration registration, Model model) {
+	public ModelAndView processRegistration(
+			@ModelAttribute("registration") UserRegistration registration, 
+			Model model,
+			HttpServletRequest request) {
 		try {
-			User registed = userService.registerNewUser(registration);
+			User registered = userService.registerNewUser(registration);
+			userService.sendVerification(registered, Utility.getSiteUrl(request));
+			
 		} catch (UserAlreadyExistException ex) {
 			ModelAndView mav = new ModelAndView("user/register", "registration", registration);
-			mav.addObject("messageError", "Wrong format input");
+			mav.addObject("messageError", "User is already existed, try another username");
+			return mav;
+		} catch (Exception ex) {
+			ModelAndView mav = new ModelAndView("user/register", "registration", registration);
+			mav.addObject("messageError", ex.getMessage());
 			return mav;
 		}
-		return new ModelAndView("login");
+		return new ModelAndView("user/confirm-page");
+	}
+	
+	@GetMapping("/verify")
+	public String verifyAccount(@RequestParam("code") String code) {
+		boolean verified = userService.verify(code);
+		return verified ? "redirect:/" : "error";
 	}
 	
 	@GetMapping("/profile")
