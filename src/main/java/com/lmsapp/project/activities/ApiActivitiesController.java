@@ -36,10 +36,10 @@ public class ApiActivitiesController {
 		String currentUser=principal.getName();
 		
 		Iterable<UserActivities> list=userActivitiesRepository.findBetweenByUsername(start, end,currentUser);
-        for(UserActivities temp:list) {
-        	String userDescription=temp.getText();
-        	temp.setText("username:"+ temp.getUsername()+ "|activity: " + userDescription );
-        }
+//        for(UserActivities temp:list) {
+//        	String userDescription=temp.getText();
+//        	temp.setText("username:"+ temp.getUsername()+ "|activity: " + userDescription );
+//        }
 		return list;
     }
 	

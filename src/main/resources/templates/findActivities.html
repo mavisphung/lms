@@ -20,7 +20,7 @@
 				<div th:each="name : ${listName}">
 					<option th:text="${name.username}"></option>
 				</div>
-			</select> <input type="submit" class="btn btn-success"/>
+			</select> <input type="submit" class="btn btn-success" value="FIND"/>
 		</form>
 
 		<footer th:replace="fragments/layouts :: footer"
