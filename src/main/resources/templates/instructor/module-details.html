@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="fragments/instructor-layout :: head">
+</head>
+
+<body>
+	<header th:replace="fragments/layouts :: header"> </header>
+	<main class="container my-3">
+
+
+		<h3 class="pb-3">Add Module Details</h3>
+		<h3 class="pb-3" th:text="${module.name}"></h3>
+
+		<!-- ________________________________________________________CONTENT___________________________________________________________ -->
+
+		<div class="row pb-3">
+			<div class="col-10">
+				<form action="#">
+					<div class="mb-3 row">
+						<label for="courseName" class="col-sm-1 col-form-label">Search
+							course</label>
+						<div class="col-sm-8 col-md-5 mb-1">
+							<input type="text" class="form-control" id="courseName"
+								placeholder="Enter an course name">
+						</div>
+						<div class="col-sm-2 col-md-1">
+							<button type="submit" class="btn btn-success w-100">Search</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="col-2">
+				<form th:action="@{/instructor/}" method="post">
+					<input hidden th:name="moduleId" th:value="${module.id}">
+					<button class="btn btn-success">
+						<i class="fa fa-plus"></i> Add Content
+					</button>
+				</form>
+			</div>
+		</div>
+
+
+
+		<!-- ________________________________________________________QUIZ___________________________________________________________ -->
+
+		<div class="row pb-3">
+			<div class="col-10">
+				<form action="#">
+					<div class="mb-3 row">
+						<label for="courseName" class="col-sm-1 col-form-label">Search
+							quiz</label>
+						<div class="col-sm-8 col-md-5 mb-1">
+							<input type="text" class="form-control" id="courseName"
+								placeholder="Enter an course name">
+						</div>
+						<div class="col-sm-2 col-md-1">
+							<button type="submit" class="btn btn-success w-100">Search</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="col-2">
+				<form th:action="@{/instructor/moduleDetails/createQuiz}" method="post">
+					<input hidden th:name="moduleId" th:value="${module.id}">
+					<button class="btn btn-success">
+						<i class="fa fa-plus"></i> Add Quiz
+					</button>
+				</form>
+			</div>
+		</div>
+		
+		<div th:if="${quizes != null}">
+		<table class="table table-striped table-hover table-bordered">
+			<thead>
+				<tr>
+					<th scope="col">Id</th>
+					<th scope="col">Name</th>
+					<th scope="col">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- 1 user-->
+				<tr th:each="quiz : ${quizes}">
+					<td th:text="${quiz.id}"></td>
+					<td th:text="${quiz.name}"></td>
+					<td class="d-flex">
+						Delete
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+	</main>
+
+	<footer th:replace="fragments/layouts :: footer"> </footer>
+</body>
+
+</html>

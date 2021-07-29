@@ -23,10 +23,10 @@ import com.lmsapp.project.exception.UserAlreadyExistException;
 import com.lmsapp.project.model.UserRegistration;
 import com.lmsapp.project.role.Role;
 import com.lmsapp.project.role.RoleService;
-import com.lmsapp.project.services.iservices.ICourseService;
-import com.lmsapp.project.services.iservices.IModuleService;
+import com.lmsapp.project.services.CourseService;
+import com.lmsapp.project.services.ModuleService;
 import com.lmsapp.project.user.User;
-import com.lmsapp.project.user.UserService;
+import com.lmsapp.project.user.service.UserService;
 
 @Controller
 @RequestMapping("/admin")
@@ -35,12 +35,12 @@ public class AdminController {
 	private UserService userService;
 	private RoleService roleService;
 	private PasswordEncoder encoder;
-	private ICourseService courseService;
-	private IModuleService moduleService;
+	private CourseService courseService;
+	private ModuleService moduleService;
 
 	@Autowired
 	public AdminController(UserService userService, RoleService roleService, PasswordEncoder encoder,
-			ICourseService courseService, IModuleService moduleService) {
+			CourseService courseService, ModuleService moduleService) {
 		this.userService = userService;
 		this.roleService = roleService;
 		this.encoder = encoder;
@@ -118,6 +118,30 @@ public class AdminController {
 		return url;
 	}
 	
+	@GetMapping("/updateCourse")
+	public String showUpdateCoursePage(Model model, @RequestParam("courseId") int courseId) {
+		Course course = courseService.findById(courseId);
+		model.addAttribute("course", course);
+		return "admin/update-course";
+	}
+	
+	@PostMapping("/updateCourse")
+	public String processUpdateCourse(@ModelAttribute("course") Course course, Model model,
+			RedirectAttributes redirectAttributes) {
+		String url = "redirect:/admin/";
+		System.out.println("AdminController: /admin/updateCourse POST >> Updated " + course.toString());
+
+		try {
+			courseService.save(course);
+			redirectAttributes.addAttribute("course", course);
+		} catch (UserAlreadyExistException e) {
+			System.err.println("AdminController: /admin/create POST >> " + e.getMessage());
+			model.addAttribute("error", e.getMessage());
+		}
+
+		return url;
+	}
+	
 	@PostMapping("/deleteCourse")
 	public String processDeleteCourse(@RequestParam("courseId") int courseId) {
 		System.out.println("AdminController: /admin/deleteCourse/ POST >> Deleting courseid " + courseId);
@@ -125,14 +149,28 @@ public class AdminController {
 		courseService.deleteById(courseId);
 		return url;
 	}
+	
+	@PostMapping("/enableCourse")
+	public String processSetActiveCourse(@RequestParam("courseId") int courseId) {
+		System.out.println("AdminController: /admin/enableCourse/ POST >> Enable/Disable courseid " + courseId);
+		String url = "redirect:/admin/";
+		courseService.setIsActive(courseId);
+		return url;
+	}
+	
+	
+	// _____________________________________________MODULE_________________________________________________
+	
 
 	@GetMapping("/createModule")
 	public String showCreateModulePage(Model model, @RequestParam Course course) {
 		model.addAttribute("course", course);
+//		List<Module> module = moduleService.getModulesByCourseId(course.getId());
+//		model.addAttribute("modules", module);
 		return "admin/create-modules";
 	}
 
-	// ______________________________________________________________________________________________
+
 
 	@PostMapping("/createModule")
 	public String processCreateModule(@RequestParam("courseId") int courseId,
@@ -156,8 +194,6 @@ public class AdminController {
 		return url;
 	}
 
-	// ______________________________________________________________________________________________
-
 	@PostMapping("/createModuleForm")
 	public String processCreateModuleForm(@RequestParam("courseId") int courseId, Model model,
 			RedirectAttributes redirectAttributes) {
@@ -171,7 +207,21 @@ public class AdminController {
 		model.addAttribute("course", course);
 		return "admin/create-modules";
 	}
-
+	
+	@PostMapping("/deleteModule")
+	public String processDeleteModule(@RequestParam("moduleId") int moduleId,
+										@RequestParam("courseId") int courseId,
+										RedirectAttributes redirectAttribute,
+										Model model) {
+		System.out.println("AdminController: /admin/deleteModule/ POST >> Deleting moduleId " + moduleId);
+		String url = "redirect:/admin/createModule/";
+		Course course = courseService.findById(courseId);
+		System.out.println(courseId);
+		redirectAttribute.addAttribute("course", course);
+		moduleService.deleteById(moduleId);
+		return url;
+	}
+	// ______________________________________________________________________________________________
 	@PostMapping("/delete")
 	public String processDelete(@RequestParam("username") String username) {
 		System.out.println("AdminController: /admin/delete/ POST >> Deleting user " + username);

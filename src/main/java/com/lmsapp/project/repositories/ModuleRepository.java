@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.lmsapp.project.enties.Module;
 
-public interface IModuleRepository extends JpaRepository<Module, Integer> {
+public interface ModuleRepository extends JpaRepository<Module, Integer> {
 
 }

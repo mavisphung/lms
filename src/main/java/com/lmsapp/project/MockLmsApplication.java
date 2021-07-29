@@ -3,6 +3,8 @@ package com.lmsapp.project;
 import com.lmsapp.project.model.UserRegistration;
 import com.lmsapp.project.role.RoleRepository;
 import com.lmsapp.project.user.*;
+import com.lmsapp.project.user.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

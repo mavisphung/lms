@@ -1,6 +1,8 @@
-package com.lmsapp.project.user;
+package com.lmsapp.project.user.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,6 +14,8 @@ import com.lmsapp.project.model.UserRegistration;
 import com.lmsapp.project.role.ERole;
 import com.lmsapp.project.role.Role;
 import com.lmsapp.project.role.RoleRepository;
+import com.lmsapp.project.user.User;
+import com.lmsapp.project.user.repository.UserRepository;
 
 @Service
 @Transactional
@@ -50,7 +54,6 @@ public class UserServiceImpl implements UserService {
 		clientUser.setEnabled(true);
 		Role userRole = roleRepo.findByName(convertToERole(registration.getRole()));
 		clientUser.getRoles().add(userRole);
-		
 		return repo.save(clientUser);
 	}
 	
@@ -104,6 +107,47 @@ public class UserServiceImpl implements UserService {
 		repo.delete(delete);
 	}
 	
+	@Override
+	public List<User> findUsersByUsername(String username) {
+		System.out.println("UserServiceImpl: findUsersByUsername() >> " + username);
+		List<User> users = repo.findByUsernameLike(username);
+		System.out.println("UserServiceImpl: findUsersByUsername() >> " + users.toString());
+		return users;
+	}
+
+	@Override
+	public List<String> convertToStringList(Set<Role> roles) {
+		List<String> strRoles = new ArrayList<String>();
+		for (Role role : roles) {
+			strRoles.add(role.getName().toString());
+		}
+		return strRoles;
+	}
+
+	/**
+	 * This function uses to update profile
+	 */
+	@Override
+	public User updateProfile(UserRegistration registration) throws UserAlreadyExistException {
+		User userFromClient = registration.getUser();
+		User userFromDb = repo.findByUsername(userFromClient.getUsername());
+		
+		if (registration.getConfirmPassword() == null || registration.getConfirmPassword().isEmpty()) {
+			userFromDb.setFirstName(userFromClient.getFirstName());
+			userFromDb.setLastName(userFromClient.getLastName());
+			userFromDb.setEmail(userFromClient.getEmail());
+			userFromDb.setAddress(userFromClient.getAddress());
+		} else {
+			
+			if (!userFromClient.getPassword().equals(registration.getConfirmPassword())) {
+				throw new UserAlreadyExistException("The password is not matched!");
+			}
+			String encodedPassword = encoder.encode(userFromClient.getPassword());
+			userFromDb.setPassword(encodedPassword);
+		}
+		System.out.println("UserServiceImpl >> Saving profile...");
+		return repo.save(userFromDb);
+	}
 	
 	
 }

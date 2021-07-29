@@ -14,22 +14,27 @@
 			<table class="table table-striped table-hover table-bordered">
 				<thead>
 					<tr>
+						<th scope="col">No</th>
 						<th scope="col">Module Name</th>
 						<th scope="col">Action</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="theModule : ${course.modules}">
+					<tr th:each="theModule, state : ${course.modules}">
+						<td th:text="${state.count}"></td>
 						<td th:text="${theModule.name}"></td>
 						<td class="d-flex">
-							<form th:action="@{/admin/moduleDetails}" method="post">
+							<form th:action="@{/instructor/module/moduleDetails}"
+								method="post">
+								<input hidden th:name="moduleId" th:value="${theModule.id}">
 								<button class="btn btn-success">
 									<i class="fa fa-info"></i> Details
 								</button>
 							</form>
-							<form th:action="@{/admin/deleteModule}" method="post">
-							<input hidden th:name="courseId" th:value="${course.id}">
-							<input hidden th:name="moduleId" th:value="${theModule.id}">
+							<form th:action="@{/instructor/module/deleteModule}"
+								method="post">
+								<input hidden th:name="courseId" th:value="${course.id}">
+								<input hidden th:name="moduleId" th:value="${theModule.id}">
 								<button class="btn btn-danger">
 									<i class="fa fa-trash"></i> Delete
 								</button>
@@ -40,16 +45,37 @@
 			</table>
 		</div>
 
-		<form th:action="@{/admin/createModuleForm}" method="post">
-			<input hidden th:name="courseId" th:value="${course.id}">
-			<button class="btn btn-success">
-				<i class="fa fa-plus"></i> Add Module
-			</button>
-		</form>
+		<div th:if="${moduleForm == null}">
+
+			<div class="mb-3 row">
+				<div class="col-sm-10">
+
+					<form th:action="@{/instructor/module/createModuleForm}"
+						method="post" class="btn">
+						<input hidden th:name="courseId" th:value="${course.id}">
+						<button class="btn btn-success">
+							<i class="fa fa-plus"></i> Add Module
+						</button>
+					</form>
+
+					<form th:action="@{/instructor/course/updateCourse}"
+						method="get" class="btn">
+						<input hidden th:name="courseId" th:value="${course.id}">
+						<button class="btn btn-warning">
+							<i class="fa fa-undo"></i> Back to Course
+						</button>
+					</form>
+
+					<a th:href="@{/instructor/}" class="btn btn-danger">Cancel</a>
+				</div>
+			</div>
+
+		</div>
+
 
 		<div th:if="${moduleForm != null}">
 			<!-- add module form -->
-			<form th:action="@{/admin/createModule}" method="post"
+			<form th:action="@{/instructor/module/createModule}" method="post"
 				th:object="${module}">
 				<input hidden th:name="courseId" th:value="${course.id}">
 				<div th:if="${param.error}">
@@ -69,37 +95,12 @@
 					<div class="offset-sm-2 col-sm-6">
 						<button type="submit" class="btn btn-success">Save
 							changes</button>
-						<a th:href="@{/admin/}" class="btn btn-dark">Cancel</a>
+						<a th:href="@{/instructor/}" class="btn btn-dark">Cancel</a>
 					</div>
 				</div>
 			</form>
 		</div>
-		<!-- <form th:action="@{/admin/createModule}" method="post" th:object="modules">
-    	<div th:if="${param.error}">
-    		<p class="text-danger" th:text="${param.error}"></p>
-    	</div>
-      Course Name
-      <div class="mb-3 row">
-        <label class="col-sm-2 col-form-label text-md-end">Course Name</label>
-        <div class="col-sm-6">
-          <input type="text" class="form-control" required th:field="*{name}">
-        </div>
-      </div>
-      Description
-      <div class="mb-3 row">
-        <label class="col-sm-2 col-form-label text-md-end">Description</label>
-        <div class="col-sm-6">
-          <input type="text" class="form-control" required th:field="*{description}">
-        </div>
-      </div>
-      Save change button
-      <div class="mb-3 row">
-        <div class="offset-sm-2 col-sm-6">
-          <button type="submit" class="btn btn-success">Save changes</button>
-          <a th:href="@{/admin/}" class="btn btn-dark">Cancel</a>
-        </div>
-      </div>
-    </form> -->
+
 	</main>
 
 	<footer th:replace="fragments/layouts :: footer"> </footer>

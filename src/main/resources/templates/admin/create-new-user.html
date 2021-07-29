@@ -18,14 +18,14 @@
       <div class="mb-3 row">
         <label class="col-sm-2 col-form-label text-md-end">Username</label>
         <div class="col-sm-6">
-          <input type="text" class="form-control" required th:field="*{user.username}">
+          <input type="text" class="form-control" required th:field="*{user.username}" minlength="8">
         </div>
       </div>
       <!-- Password -->
       <div class="mb-3 row">
         <label class="col-sm-2 col-form-label text-md-end">Password</label>
         <div class="col-sm-6">
-          <input type="password" class="form-control" required th:field="*{user.password}">
+          <input type="password" class="form-control" required th:field="*{user.password}" minlength="8">
         </div>
       </div>
       <!-- confirm password -->

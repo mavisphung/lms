@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="fragments/instructor-layout :: head">
+</head>
+
+<body>
+	<header th:replace="fragments/layouts :: header"> </header>
+	<main class="container my-3">
+
+
+		<h3 class="pb-3">Add Answer To Question</h3>
+		<h3 class="pb-3" th:text="${question.title}"></h3>
+
+
+		<div th:if="${question.answers != null}">
+			<table class="table table-striped table-hover table-bordered">
+				<thead>
+					<tr>
+						<th scope="col">No</th>
+						<th scope="col">Answer</th>
+						<th scope="col">Correct/Incorrect</th>
+						<th scope="col">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- 1 user-->
+					<tr th:each="answer, state : ${question.answers}">
+						<td th:text="${state.count}"></td>
+						<td th:text="${answer.content}"></td>
+						<td th:text="${answer.isCorrect}"></td>
+						<td class="d-flex">Delete</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<form th:action="@{/instructor/answer/createAnswerForm}" method="post">
+			<input hidden th:name="questionId" th:value="${question.id}">
+			<button class="btn btn-success">
+				<i class="fa fa-plus"></i> Add Answer
+			</button>
+		</form>
+
+		<div th:if="${answerForm != null}">
+			<!-- add module form -->
+			<form th:action="@{/instructor/answer/createAnswer}" method="post"
+				th:object="${answer}">
+				<input hidden th:name="questionId" th:value="${question.id}">
+				<div th:if="${param.error}">
+					<p class="text-danger" th:text="${param.error}"></p>
+				</div>
+				<!-- Course Name -->
+				<div class="mb-3 row">
+					<label class="col-sm-2 col-form-label text-md-end">Answer</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" required
+							th:field="*{content}">
+					</div>
+				</div>
+
+				<!-- Course Name -->
+				<div class="mb-3 row">
+					<label class="col-sm-2 col-form-label text-md-end">Is Correct</label>
+					<div class="col-sm-6">
+						<input class="form-check-input" name="isCorrect" type="radio" value="correct" required/> Correct 
+						<br/>
+						<input class="form-check-input" name="isCorrect" type="radio" value="incorrect" /> Incorrect
+					</div>
+				</div>
+
+				<!-- Save change button -->
+				<div class="mb-3 row">
+					<div class="offset-sm-2 col-sm-6">
+						<button type="submit" class="btn btn-success">Save
+							changes</button>
+						<a th:href="@{/instructor/}" class="btn btn-dark">Cancel</a>
+					</div>
+				</div>
+
+			</form>
+		</div>
+
+	</main>
+
+	<footer th:replace="fragments/layouts :: footer"> </footer>
+</body>
+
+</html>

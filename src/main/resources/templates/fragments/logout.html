@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
@@ -15,9 +15,7 @@
 		</button>
 		<ul class="dropdown-menu dropdown-menu-end"
 			aria-labelledby="dropdownMenuButton1">
-			<li><a class="dropdown-item" href="user-profile.html">Profile</a></li>
-			<li><a class="dropdown-item" href="change-password.html">Change
-					password</a></li>
+			<li><a class="dropdown-item" th:href="@{/profile}">Profile</a></li>
 			<li><a class="dropdown-item" href="#">Review quizzes</a></li>
 			<li><a class="dropdown-item" href="#">View courses</a></li>
 			<li>

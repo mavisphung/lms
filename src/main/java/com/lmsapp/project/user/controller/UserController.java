@@ -1,7 +1,7 @@
-package com.lmsapp.project.user;
+package com.lmsapp.project.user.controller;
 
 import java.security.Principal;
-import java.util.Set;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.lmsapp.project.exception.UserAlreadyExistException;
 import com.lmsapp.project.model.UserRegistration;
+import com.lmsapp.project.user.User;
+import com.lmsapp.project.user.service.UserService;
 
 @Controller
 public class UserController {
@@ -60,5 +63,42 @@ public class UserController {
 			return mav;
 		}
 		return new ModelAndView("login");
+	}
+	
+	@GetMapping("/profile")
+	public String showUserProfile(Principal principal, Model model) {
+		String username = principal.getName();
+		
+		//lấy thông tin user
+		User user = userService.findByUsername(username);
+		List<String> roles = userService.convertToStringList(user.getRoles());
+		
+		//Tạo đối tượng update
+		UserRegistration registration = new UserRegistration();
+		registration.setUser(user);
+		registration.setRole(roles.get(0));
+		model.addAttribute("registration", registration);
+		return "profile";
+	}
+	
+	@PostMapping("/profile")
+	public RedirectView processChangeProfile(@ModelAttribute("registration") UserRegistration registration) {
+		RedirectView rv = null;
+		try {
+			User updated = userService.updateProfile(registration);
+		} catch (UserAlreadyExistException ex) {
+			System.out.println("UserController >> " + ex.getMessage());
+			//ModelAndView mav = new ModelAndView("profile", "registration", registration);
+			//mav.addObject("message", ex.getMessage());
+			//return mav;
+			rv = new RedirectView("/profile");
+			rv.addStaticAttribute("registration", registration);
+			rv.addStaticAttribute("message", ex.getMessage());
+			return rv;
+		}
+		rv = new RedirectView("/profile");
+		rv.addStaticAttribute("registration", registration);
+		rv.addStaticAttribute("message", "Your profile has been updated!");
+		return rv;
 	}
 }

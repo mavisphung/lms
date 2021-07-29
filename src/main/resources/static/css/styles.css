@@ -56,7 +56,7 @@ p {
   color: #0d6efd;
 }
 
-/* dưới màn hình điện thoại */
+/* dÆ°á»›i mÃ n hÃ¬nh Ä‘iá»‡n thoáº¡i */
 @media screen and (max-width: 768px) {
   .mobile-col-content {
     width: 100%;
@@ -66,7 +66,7 @@ p {
   }
 }
 
-/* trên màn hình ipad, ipad pro, desktop */
+/* trÃªn mÃ n hÃ¬nh ipad, ipad pro, desktop */
 @media screen and (min-width: 768px) {
   .mobile-col-content {
     width: 50%;
@@ -80,9 +80,9 @@ p {
   padding: 1rem 0;
 }
 
-/* điều chỉnh chiều ngang cho login form */
+/* Ä‘iá»�u chá»‰nh chiá»�u ngang cho login form */
 
-/* iphone 6 đến iphone x 320px ~ 414px */
+/* iphone 6 Ä‘áº¿n iphone x 320px ~ 414px */
 @media (min-width: 312px) and (max-width: 414px) {
   .login-form-content {
     /* width: 391px; */
@@ -92,6 +92,13 @@ p {
   .profile-form-content {
     /* width: 100%; */
   }
+  
+}
+
+@media (max-width: 540px) {
+	.w-sm-100 {
+		width: 100%;
+	}
 }
 
 /* ipad */
@@ -165,6 +172,7 @@ p {
   background-color: #3e8e41;
 }
 /* -------------------------------------------------- */
+
 
 #content-col {
   order: 2;
