@@ -50,17 +50,17 @@ public class UserController {
 	@GetMapping("/register")
 	public String showRegister(Model model) {
 		//data for testing
-		UserRegistration registration = new UserRegistration(new User(), "12345678", "ROLE_STUDENT");
-		registration.getUser().setUsername("huypc2410");
-		registration.getUser().setPassword("12345678");
-		registration.getUser().setAddress("218/25 Hong Bang");
-		registration.getUser().setFirstName("Huy");
-		registration.getUser().setLastName("Phùng");
-		registration.getUser().setEmail("nguoibimatthegioi@gmail.com");
-		model.addAttribute("registration", registration);
+//		UserRegistration registration = new UserRegistration(new User(), "12345678", "ROLE_STUDENT");
+//		registration.getUser().setUsername("huypc2410");
+//		registration.getUser().setPassword("12345678");
+//		registration.getUser().setAddress("218/25 Hong Bang");
+//		registration.getUser().setFirstName("Huy");
+//		registration.getUser().setLastName("Phùng");
+//		registration.getUser().setEmail("nguoibimatthegioi@gmail.com");
+//		model.addAttribute("registration", registration);
 		
 		
-		//model.addAttribute("registration", new UserRegistration());
+		model.addAttribute("registration", new UserRegistration());
 		return "user/register";
 	}
 	
@@ -84,7 +84,8 @@ public class UserController {
 			return mav;
 		} catch (Exception ex) {
 			ModelAndView mav = new ModelAndView("user/register", "registration", registration);
-			mav.addObject("messageError", ex.getMessage());
+			System.out.println(ex.getMessage());
+			mav.addObject("messageError", "Username or email is existed!");
 			return mav;
 		}
 		return new ModelAndView("user/confirm-page");
