@@ -65,6 +65,9 @@ public class User implements Serializable {
 	@Transient
 	private List<String> strRoles = new ArrayList<String>();
 	
+	@Column(name = "verification_code")
+	private String verificationCode;
+	
 	public User(String username,
 				String password,
 				String email,
