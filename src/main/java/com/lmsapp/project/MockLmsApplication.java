@@ -1,22 +1,26 @@
 package com.lmsapp.project;
 
-import com.lmsapp.project.model.UserRegistration;
-import com.lmsapp.project.role.RoleRepository;
-import com.lmsapp.project.user.*;
+import java.io.File;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.Arrays;
+
+import com.lmsapp.project.admin.AdminController;
+import com.lmsapp.project.role.RoleRepository;
+import com.lmsapp.project.user.UserService;
 
 @SpringBootApplication
 public class MockLmsApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
+		
 		SpringApplication.run(MockLmsApplication.class, args);
 	}
 
+	
 	// For testing
 	@Autowired
 	private UserService userService;

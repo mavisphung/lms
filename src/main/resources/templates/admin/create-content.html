@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="fragments/admin-layout :: head">
+<title>Add content</title>
+</head>
+<body>
+	<header th:replace="fragments/layouts :: header"> </header>
+	<main class="container my-3">
+		<h3 class="pb-3">Add Content To Module</h3>
+		<form th:action="@{/admin/createContentForm}" method="post"
+			th:object="${content}" encType="multipart/form-data">
+			<input hidden th:name="moduleId" th:value="${moduleId}"> 
+			<input type="text" th:field=*{name} required> <br>
+			<input type="file" name ="file" multiple required>
+			<button type="submit" class="btn btn-success">Add</button>
+		</form>
+		<hr>
+		<h3>List of uploaded Content</h3>
+		<table class="table table-striped table-hover table-bordered">
+		<thead>
+		<tr>
+		<th>Id</th>
+		<th>Name</th>
+		<th>Download Link</th>
+		<th>Modify</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr th:each="content : ${files}">
+		<td th:text="${content.id}"/>
+		<td th:text="${content.name}"/>
+		<td><a th:href="@{'/admin/downloadFile?fileURL='+ ${content.url}}">Download</a></td>
+		<td><a th:href="@{'/admin/deleteContent?contentId='+ ${content.id}}">Delete</a></td>
+		</tr>
+		</tbody>
+		</table>
+		<div>
+			<button class="btn btn-success">
+				<i class="bi bi-arrow-left"> <a th:href="@{/admin/}">Go
+						back</a></i>
+			</button>
+		</div>
+	</main>
+	<footer th:replace="fragments/layouts :: footer"> </footer>
+</body>
+
+</html>
