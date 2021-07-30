@@ -22,13 +22,21 @@
 					<tr th:each="question : ${quiz.questions}">
 						<td th:text="${question.title}"></td>
 						<td class="d-flex">
-							<form th:action="@{/instructor/question/answer}" method="post">
+							<form th:action="@{/instructor/question/answer}" class="btn" method="post">
 								<input hidden th:name="questionId" th:value="${question.id}">
 								<button class="btn btn-success">
 									<i class="fa fa-info"></i> Create/Edit Answer
 								</button>
 							</form>
-							<form th:action="@{/instructor/question/deleteQuestion}"
+							<form th:action="@{/instructor/question/updateQuestionForm}"
+								method="post" class="btn">
+								<input hidden th:name="questionId" th:value="${question.id}">
+								<input hidden th:name="quizId" th:value="${quiz.id}">
+								<button class="btn btn-warning">
+									<i class="fa fa-wrench"></i> Update Form
+								</button>
+							</form>
+							<form th:action="@{/instructor/question/deleteQuestion}" class="btn"
 								method="post">
 								<input hidden th:name="quizId" th:value="${quiz.id}"> <input
 									hidden th:name="questionId" th:value="${question.id}">
@@ -77,6 +85,7 @@
 			<!-- add module form -->
 			<form th:action="@{/instructor/question/createQuestion}"
 				method="post" th:object="${question}">
+				<input type="hidden" th:field="*{id}" />
 				<input hidden th:name="quizId" th:value="${quiz.id}">
 				<div th:if="${param.error}">
 					<p class="text-danger" th:text="${param.error}"></p>

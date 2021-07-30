@@ -31,7 +31,16 @@
 						<td th:text="${answer.isCorrect}"></td>
 						<td class="d-flex">
 
-							<form th:action="@{/instructor/answer/deleteAnswer}"
+							<form th:action="@{/instructor/answer/updateAnswerForm}" class="btn"
+								method="post">
+								<input hidden th:name="answerId" th:value="${answer.id}">
+								<input hidden th:name="questionId" th:value="${question.id}">
+								<button class="btn btn-warning">
+									<i class="fa fa-trash"></i> Update
+								</button>
+							</form>
+
+							<form th:action="@{/instructor/answer/deleteAnswer}" class="btn"
 								method="post">
 								<input hidden th:name="answerId" th:value="${answer.id}">
 								<input hidden th:name="questionId" th:value="${question.id}">
@@ -77,6 +86,7 @@
 			<!-- add module form -->
 			<form th:action="@{/instructor/answer/createAnswer}" method="post"
 				th:object="${answer}">
+				<input type="hidden" th:field="*{id}" />
 				<input hidden th:name="questionId" th:value="${question.id}">
 				<div th:if="${param.error}">
 					<p class="text-danger" th:text="${param.error}"></p>
