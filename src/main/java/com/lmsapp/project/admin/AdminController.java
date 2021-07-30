@@ -48,7 +48,7 @@ public class AdminController {
 		this.moduleService = moduleService;
 	}
 
-	@GetMapping("/")
+	@GetMapping(value = { "/", ""})
 	public String showAdminIndex(Model model) {
 
 		// get user list
@@ -76,7 +76,7 @@ public class AdminController {
 
 	@PostMapping("/create")
 	public String processCreateUser(@ModelAttribute("registration") UserRegistration registration, Model model) {
-		String url = "redirect:/admin/create";
+		String url = "redirect:/admin/";
 		System.out.println("AdminController: /admin/create POST >> Created " + registration.getUser().toString());
 		System.out.println("AdminController: /admin/create POST >> Created user role " + registration.getRole());
 		System.out.println(
