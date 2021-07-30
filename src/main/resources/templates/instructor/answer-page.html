@@ -29,18 +29,49 @@
 						<td th:text="${state.count}"></td>
 						<td th:text="${answer.content}"></td>
 						<td th:text="${answer.isCorrect}"></td>
-						<td class="d-flex">Delete</td>
+						<td class="d-flex">
+
+							<form th:action="@{/instructor/answer/deleteAnswer}"
+								method="post">
+								<input hidden th:name="answerId" th:value="${answer.id}">
+								<input hidden th:name="questionId" th:value="${question.id}">
+								<button class="btn btn-danger">
+									<i class="fa fa-trash"></i> Delete
+								</button>
+							</form>
+
+						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 
-		<form th:action="@{/instructor/answer/createAnswerForm}" method="post">
-			<input hidden th:name="questionId" th:value="${question.id}">
-			<button class="btn btn-success">
-				<i class="fa fa-plus"></i> Add Answer
-			</button>
-		</form>
+
+		<div th:if="${questionForm == null}">
+
+			<div class="mb-3 row">
+				<div class="col-sm-10">
+
+					<form th:action="@{/instructor/answer/createAnswerForm}"
+						method="post" class="btn">
+						<input hidden th:name="questionId" th:value="${question.id}">
+						<button class="btn btn-success">
+							<i class="fa fa-plus"></i> Add Answer
+						</button>
+					</form>
+
+					<form th:action="@{/instructor/question}" method="get" class="btn">
+						<input hidden th:name="quizId" th:value="${question.quiz.id}">
+						<button class="btn btn-warning">
+							<i class="fa fa-undo"></i> Back to Question
+						</button>
+					</form>
+
+					<a th:href="@{/instructor/}" class="btn btn-danger">Cancel</a>
+				</div>
+			</div>
+
+		</div>
 
 		<div th:if="${answerForm != null}">
 			<!-- add module form -->
@@ -61,11 +92,13 @@
 
 				<!-- Course Name -->
 				<div class="mb-3 row">
-					<label class="col-sm-2 col-form-label text-md-end">Is Correct</label>
+					<label class="col-sm-2 col-form-label text-md-end">Is
+						Correct</label>
 					<div class="col-sm-6">
-						<input class="form-check-input" name="isCorrect" type="radio" value="correct" required/> Correct 
-						<br/>
-						<input class="form-check-input" name="isCorrect" type="radio" value="incorrect" /> Incorrect
+						<input class="form-check-input" name="isCorrect" type="radio"
+							value="correct" required /> Correct <br /> <input
+							class="form-check-input" name="isCorrect" type="radio"
+							value="incorrect" /> Incorrect
 					</div>
 				</div>
 

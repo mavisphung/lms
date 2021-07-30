@@ -25,14 +25,14 @@
 						<td th:text="${theModule.name}"></td>
 						<td class="d-flex">
 							<form th:action="@{/instructor/module/moduleDetails}"
-								method="post">
+								method="post" class="btn">
 								<input hidden th:name="moduleId" th:value="${theModule.id}">
 								<button class="btn btn-success">
 									<i class="fa fa-info"></i> Details
 								</button>
 							</form>
 							<form th:action="@{/instructor/module/deleteModule}"
-								method="post">
+								method="post" class="btn">
 								<input hidden th:name="courseId" th:value="${course.id}">
 								<input hidden th:name="moduleId" th:value="${theModule.id}">
 								<button class="btn btn-danger">
@@ -58,7 +58,7 @@
 						</button>
 					</form>
 
-					<form th:action="@{/instructor/course/updateCourse}"
+					<form th:action="@{/instructor/course/showForFormForUpdate}"
 						method="get" class="btn">
 						<input hidden th:name="courseId" th:value="${course.id}">
 						<button class="btn btn-warning">

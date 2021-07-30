@@ -70,7 +70,7 @@ public class InstructorController {
 	@PostMapping("course/saveCourse")
 	public String processCreateCourse(@ModelAttribute("course") Course course, Model model,
 			RedirectAttributes redirectAttributes, BindingResult bindingResult) {
-		String url = "redirect:/instructor/module/createModule";
+		String url = "redirect:/instructor/module";
 		System.out.println(course);
 		System.out.println("instructorController: /instructor/createCourse POST >> Created " + course.toString());
 
@@ -114,7 +114,7 @@ public class InstructorController {
 
 	// ______________________________________________START_MODULE_________________________________________________
 
-	@GetMapping("module/createModule")
+	@GetMapping("module")
 	public String showCreateModulePage(Model model, @RequestParam Course course) {
 		model.addAttribute("course", course);
 		return "instructor/module-page";
@@ -123,7 +123,7 @@ public class InstructorController {
 	@PostMapping("module/createModule")
 	public String processCreateModule(@RequestParam("courseId") int courseId, Model model,
 			@ModelAttribute("module") Module module, RedirectAttributes redirectAttributes) {
-		String url = "redirect:/instructor/module/createModule";
+		String url = "redirect:/instructor/module";
 		System.out.println("instructorController: /instructor/createModule POST >> Created " + module.toString());
 
 		try {
@@ -165,8 +165,6 @@ public class InstructorController {
 		moduleService.deleteById(moduleId);
 		return url;
 	}
-	
-	
 
 	@PostMapping("module/moduleDetails")
 	public String processRedirectModuleDetails(@RequestParam("moduleId") int moduleId,
@@ -196,7 +194,7 @@ public class InstructorController {
 		model.addAttribute("contents", contents);
 
 		// Lấy tất cả quizes trong module và lưu vào model
-		
+
 		List<Quiz> quizes = module.getQuizes();
 		model.addAttribute("quizes", quizes);
 
@@ -213,6 +211,25 @@ public class InstructorController {
 		return url;
 	}
 
+	@PostMapping("moduleDetails/backToModule")
+	public String processRedirectToModule(@RequestParam("moduleId") int moduleId,
+			RedirectAttributes redirectAttribute) {
+		String url = "redirect:/instructor/module/";
+		Module module = moduleService.findById(moduleId);
+		Course course = module.getCourse();
+		redirectAttribute.addAttribute("course", course);
+		return url;
+	}
+
+	@PostMapping("moduleDetails/deleteQuiz")
+	public String processDeleteQuiz(@RequestParam("moduleId") int moduleId, @RequestParam("quizId") int quizId,
+			RedirectAttributes redirectAttribute, Model model) {
+		String url = "redirect:/instructor/moduleDetails/";
+		redirectAttribute.addAttribute("moduleId", moduleId);
+		quizService.deleteById(quizId);
+		return url;
+	}
+
 	// ______________________________________________END_MODULE_DETAILS_________________________________________________
 
 	// ______________________________________________START_QUIZ_________________________________________________
@@ -223,6 +240,15 @@ public class InstructorController {
 		System.out.println(module);
 		model.addAttribute("module", module);
 		model.addAttribute("quiz", new Quiz());
+		return "instructor/create-new-quiz";
+	}
+
+	@GetMapping("quiz/updateQuiz")
+	public String showUpdateQuizPage(Model model, @RequestParam int moduleId, @RequestParam int quizId) {
+		Module module = moduleService.findById(moduleId);
+		model.addAttribute("module", module);
+		Quiz quiz = quizService.findById(quizId);
+		model.addAttribute("quiz", quiz);
 		return "instructor/create-new-quiz";
 	}
 
@@ -343,11 +369,11 @@ public class InstructorController {
 		System.out.println("instructorController: /instructor/answer/createAnswer POST >> Answer Created ");
 
 		try {
-			if(isCorrect.equals("correct")) {
+			if (isCorrect.equals("correct")) {
 				answer.setCorrect(true);
-			}else if(isCorrect.equals("incorrect")) {
+			} else if (isCorrect.equals("incorrect")) {
 				answer.setCorrect(false);
-			}else {
+			} else {
 				throw new RuntimeException("Not find isCorrect variable");
 			}
 			Question question = questionService.findById(questionId);
@@ -361,6 +387,16 @@ public class InstructorController {
 
 		return url;
 	}
-	
+
+	@PostMapping("answer/deleteAnswer")
+	public String processDeleteAnswer(@RequestParam("answerId") int answerId,
+			@RequestParam("questionId") int questionId, RedirectAttributes redirectAttribute,
+			Model model) {
+		String url = "redirect:/instructor/answer/";
+		redirectAttribute.addAttribute("questionId", questionId);
+		answerService.deleteById(answerId);
+		return url;
+	}
+
 	// ______________________________________________END_ANSWER_________________________________________________
 }
