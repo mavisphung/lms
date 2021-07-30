@@ -105,12 +105,16 @@
 						<td th:text="${quiz.id}"></td>
 						<td th:text="${quiz.name}"></td>
 						<td class="d-flex">
-							<a th:href="@{'/instructor/quiz/updateQuiz/?moduleId=' + ${module.id} + '&quizId=' + ${quiz.id}}" 
-							class="btn btn-success"><i class="fa fa-edit"></i> Edit Quiz</a>
-							<form th:action="@{/instructor/moduleDetails/deleteQuiz}"
+							<div class="btn">
+								<a
+									th:href="@{'/instructor/quiz/updateQuiz/?moduleId=' + ${module.id} + '&quizId=' + ${quiz.id}}"
+									class="btn btn-success"><i class="fa fa-edit"></i> Edit
+									Quiz</a>
+							</div>
+							<form th:action="@{/instructor/moduleDetails/deleteQuiz}" class="btn"
 								method="post">
-								<input hidden th:name="quizId" th:value="${quiz.id}">
-								<input hidden th:name="moduleId" th:value="${module.id}">
+								<input hidden th:name="quizId" th:value="${quiz.id}"> <input
+									hidden th:name="moduleId" th:value="${module.id}">
 								<button class="btn btn-danger">
 									<i class="fa fa-trash"></i> Delete Quiz
 								</button>

@@ -58,28 +58,28 @@
 						<!-- <a th:href="@{/instructor/edit?username={username}(username=${user.username})}"
 							class="btn btn-warning me-1"> <i class="fa fa-user"></i>
 						</a> -->
-						<form th:action="@{/instructor/course/enableCourse}" method="post">
+						<form th:action="@{/instructor/course/enableCourse}" class="btn" method="post">
 							<input hidden th:name="courseId" th:value="${course.id}">
 							<span th:if="${course.isActive}" class="me-1">
 								<button class="btn btn-secondary">
-									<i class="fa fa-unlock"></i>
+									<i class="fa fa-unlock"></i> Unlock
 								</button>
 							</span> <span th:if="${!course.isActive}" class="me-1">
 								<button class="btn btn-warning">
-									<i class="fa fa-lock"></i>
+									<i class="fa fa-lock"></i> Lock
 								</button>
 							</span>
 						</form>
-						<form th:action="@{/instructor/course/showForFormForUpdate}" method="get">
+						<form th:action="@{/instructor/course/showForFormForUpdate}" method="get" class="btn">
 							<input hidden th:name="courseId" th:value="${course.id}">
 							<button class="btn btn-success">
-								<i class="fa fa-edit"></i>
+								<i class="fa fa-edit"></i> Edit
 							</button>
 						</form>
-						<form th:action="@{/instructor/course/deleteCourse}" method="post">
+						<form th:action="@{/instructor/course/deleteCourse}" class="btn" method="post">
 							<input hidden th:name="courseId" th:value="${course.id}">
 							<button class="btn btn-danger">
-								<i class="fa fa-trash"></i>
+								<i class="fa fa-trash"></i> Delete
 							</button>
 						</form>
 						

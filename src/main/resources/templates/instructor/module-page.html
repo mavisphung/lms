@@ -31,6 +31,14 @@
 									<i class="fa fa-info"></i> Details
 								</button>
 							</form>
+							<form th:action="@{/instructor/module/updateModuleForm}"
+								method="post" class="btn">
+								<input hidden th:name="courseId" th:value="${course.id}">
+								<input hidden th:name="moduleId" th:value="${theModule.id}">
+								<button class="btn btn-warning">
+									<i class="fa fa-wrench"></i> Update Form
+								</button>
+							</form>
 							<form th:action="@{/instructor/module/deleteModule}"
 								method="post" class="btn">
 								<input hidden th:name="courseId" th:value="${course.id}">
@@ -77,6 +85,7 @@
 			<!-- add module form -->
 			<form th:action="@{/instructor/module/createModule}" method="post"
 				th:object="${module}">
+				<input type="hidden" th:field="*{id}" />
 				<input hidden th:name="courseId" th:value="${course.id}">
 				<div th:if="${param.error}">
 					<p class="text-danger" th:text="${param.error}"></p>

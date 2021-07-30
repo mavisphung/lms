@@ -154,11 +154,23 @@ public class InstructorController {
 		return "instructor/module-page";
 	}
 
+	@PostMapping("module/updateModuleForm")
+	public String processUpdateModuleForm(@RequestParam("courseId") int courseId,
+			@RequestParam("moduleId") int moduleId, Model model, RedirectAttributes redirectAttributes) {
+		Module module = moduleService.findById(moduleId);
+		model.addAttribute("module", module);
+		String permitOpenForm = "yes";
+		model.addAttribute("moduleForm", permitOpenForm);
+		Course course = courseService.findById(courseId);
+		model.addAttribute("course", course);
+		return "instructor/module-page";
+	}
+
 	@PostMapping("module/deleteModule")
 	public String processDeleteModule(@RequestParam("moduleId") int moduleId, @RequestParam("courseId") int courseId,
 			RedirectAttributes redirectAttribute, Model model) {
 		System.out.println("instructorController: /instructor/deleteModule/ POST >> Deleting moduleId " + moduleId);
-		String url = "redirect:/instructor/module/createModule/";
+		String url = "redirect:/instructor/module/";
 		Course course = courseService.findById(courseId);
 		System.out.println(courseId);
 		redirectAttribute.addAttribute("course", course);
@@ -302,6 +314,24 @@ public class InstructorController {
 		return "instructor/quiz-details";
 	}
 
+	@PostMapping("question/updateQuestionForm")
+	public String processUpdateQuestionForm(@RequestParam("quizId") int quizId,
+			@RequestParam("questionId") int questionId,
+			Model model,
+			RedirectAttributes redirectAttributes) {
+		String url = "redirect:/instructor/question/";
+
+		String permitOpenForm = "yes";
+		model.addAttribute("questionForm", permitOpenForm);
+		Quiz quiz = quizService.findById(quizId);
+		model.addAttribute("quiz", quiz);
+		Question question = questionService.findById(questionId);
+		model.addAttribute("question", question);
+		System.out
+				.println("___________________________________________________________________________________________");
+		return "instructor/quiz-details";
+	}
+
 	@PostMapping("question/createQuestion")
 	public String processCreateQuestion(@RequestParam("quizId") int quizId, RedirectAttributes redirectAttribute,
 			@ModelAttribute("question") Question question, Model model) {
@@ -360,6 +390,26 @@ public class InstructorController {
 				.println("___________________________________________________________________________________________");
 		return "instructor/answer-page";
 	}
+	
+	@PostMapping("answer/updateAnswerForm")
+	public String processUpdateAnswerForm(@RequestParam("questionId") int questionId,
+			@RequestParam("answerId") int answerId,
+			Model model,
+			RedirectAttributes redirectAttributes) {
+		System.out.println("instructorController: /instructor/createAnswerForm POST >> Answer Created ");
+
+		String url = "redirect:/instructor/answer/";
+
+		String permitOpenForm = "yes";
+		model.addAttribute("answerForm", permitOpenForm);
+		Question question = questionService.findById(questionId);
+		model.addAttribute("question", question);
+		Answer answer = answerService.findById(answerId);
+		model.addAttribute("answer", answer);
+		System.out
+				.println("___________________________________________________________________________________________");
+		return "instructor/answer-page";
+	}
 
 	@PostMapping("answer/createAnswer")
 	public String processCreateAnswer(@RequestParam("questionId") int questionId, RedirectAttributes redirectAttribute,
@@ -390,8 +440,7 @@ public class InstructorController {
 
 	@PostMapping("answer/deleteAnswer")
 	public String processDeleteAnswer(@RequestParam("answerId") int answerId,
-			@RequestParam("questionId") int questionId, RedirectAttributes redirectAttribute,
-			Model model) {
+			@RequestParam("questionId") int questionId, RedirectAttributes redirectAttribute, Model model) {
 		String url = "redirect:/instructor/answer/";
 		redirectAttribute.addAttribute("questionId", questionId);
 		answerService.deleteById(answerId);
