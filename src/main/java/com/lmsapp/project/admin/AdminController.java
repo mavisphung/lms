@@ -56,7 +56,7 @@ import com.lmsapp.project.services.ModuleService;
 import com.lmsapp.project.services.iservices.ICourseService;
 import com.lmsapp.project.services.iservices.IModuleService;
 import com.lmsapp.project.user.User;
-import com.lmsapp.project.user.UserService;
+import com.lmsapp.project.user.service.UserService;
 
 
 @Controller
@@ -92,6 +92,9 @@ public class AdminController {
 			List<String> strRoles = convertToStringList(userRoles);
 			user.setStrRoles(strRoles);
 		}
+
+		callGetRoles(users);
+
 		model.addAttribute("users", users);
 
 		// get course list
@@ -107,9 +110,11 @@ public class AdminController {
 		return "admin/create-new-user";
 	}
 
-	@PostMapping("/create")
-	public String processCreateUser(@ModelAttribute("registration") UserRegistration registration, Model model) {
-		String url = "redirect:/admin/create";
+	@PostMapping("/create")	
+	public String processCreateUser(
+			@ModelAttribute("registration") UserRegistration registration,
+			Model model) {
+		String url = "redirect:/admin/";
 		System.out.println("AdminController: /admin/create POST >> Created " + registration.getUser().toString());
 		System.out.println("AdminController: /admin/create POST >> Created user role " + registration.getRole());
 		System.out.println(
@@ -222,6 +227,30 @@ public class AdminController {
 
 		return url;
 	}
+
+	
+	@GetMapping("/search")
+	public String searchValue(
+			@RequestParam("searchValue") String searchValue,
+			Model model) {
+		List<User> users = userService.findUsersByUsername(searchValue);
+		callGetRoles(users);
+		model.addAttribute("searchValue", searchValue);
+		model.addAttribute("users", users);
+		System.out.println("AdminController: /admin/search GET >> " + users.toString());
+		System.out.println("AdminController: /admin/search GET >> Search value: " + searchValue.trim());
+		
+		return "admin/index";
+	}
+	
+	private void callGetRoles(List<User> users) {
+		for (User user : users) {
+			Set<Role> userRoles = user.getRoles();
+			List<String> strRoles = convertToStringList(userRoles);
+			user.setStrRoles(strRoles);
+		}
+	}	
+	
 
 	private List<String> convertToStringList(Set<Role> roles) {
 		List<String> strRoles = new ArrayList<String>();

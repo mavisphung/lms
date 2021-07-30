@@ -19,6 +19,8 @@ import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import com.lmsapp.project.role.RoleRepository;
+import com.lmsapp.project.user.User;
+import com.lmsapp.project.user.service.UserService;
 
 public class CustomAuthSuccessHandler implements AuthenticationSuccessHandler {
 
@@ -26,6 +28,9 @@ public class CustomAuthSuccessHandler implements AuthenticationSuccessHandler {
 	
 	@Autowired
 	private RoleRepository roleRepo;
+	
+	@Autowired
+	private UserService userService;
 	
 	@Override
 	public void onAuthenticationSuccess(
@@ -72,6 +77,7 @@ public class CustomAuthSuccessHandler implements AuthenticationSuccessHandler {
 		 */
 		
 		String url = "";
+		//------------------------------------------------
 		//lấy authorities của logged in user
 		Collection<? extends GrantedAuthority> authorities
         					= auth.getAuthorities();

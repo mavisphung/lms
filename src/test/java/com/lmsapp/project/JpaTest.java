@@ -10,8 +10,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 
 import com.lmsapp.project.user.User;
-import com.lmsapp.project.user.UserRepository;
-import com.lmsapp.project.user.UserService;
+import com.lmsapp.project.user.repository.UserRepository;
+import com.lmsapp.project.user.service.UserService;
 
 @DataJpaTest
 //Cho phep su dung database thay vi in memory
