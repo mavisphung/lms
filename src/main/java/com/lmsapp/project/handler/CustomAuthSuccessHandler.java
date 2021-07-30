@@ -65,7 +65,7 @@ public class CustomAuthSuccessHandler implements AuthenticationSuccessHandler {
 
         redirectStrategy.sendRedirect(request, response, targetUrl);
 	}
-	
+	//Sửa chỗ comment thôiiii
 	//Xử lí chuyển trang tại hàm này
 	public String determineTargetUrl(Authentication auth) {
 		/*
@@ -93,6 +93,8 @@ public class CustomAuthSuccessHandler implements AuthenticationSuccessHandler {
 		
 		if (roles.contains("ROLE_ADMIN")) {
 			url = "/admin/";
+		}else if (roles.contains("ROLE_INSTRUCTOR")) {
+			url = "/instructor/";
 		}
 		//throw new IllegalStateException();
 		return url;
