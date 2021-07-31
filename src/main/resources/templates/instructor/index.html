@@ -1,66 +1,66 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head th:include="fragments/instructor-layout :: head">
-<meta charset="UTF-8">
-<title>Instructor page</title>
+    <meta charset="UTF-8">
+    <title>Instructor page</title>
 </head>
+
 <body>
-	<header th:replace="fragments/layouts :: header"></header>
-	<main class="container my-3">
-		<div class="row pb-3">
-			<div class="col-6">
-				<h3>Instructor page</h3>
-				<div th:if="${param.error}">
-					<p class="text-danger" th:text="${param.error}"></p>
-				</div>
-			</div>
-			<div class="col-6 text-end">
-				<a th:href="@{/instructor/course/showCourseFormForAdd}"
-					class="btn btn-primary"> Create new course </a>
-			</div>
-		</div>
+    <header th:replace="fragments/layouts :: header"></header>
+    <main class="container my-3">
+        <div class="row pb-3">
+            <div class="col-6">
+                <h3>Instructor page</h3>
+                <div th:if="${param.error}">
+                    <p class="text-danger" th:text="${param.error}"></p>
+                </div>
+            </div>
+            <div class="col-6 text-end">
+                <a th:href="@{/instructor/course/showCourseFormForAdd}" class="btn btn-primary"> Create new course </a>
+            </div>
+        </div>
 
-		<!-- Chưa làm -->
+        <!-- Chưa làm -->
 
-		<!-- Course Searching -->
-		<form action="#">
-			<div class="mb-3 row">
-				<label for="courseName" class="col-sm-1 col-form-label">Search
+        <!-- Course Searching -->
+        <form action="#">
+            <div class="mb-3 row">
+                <label for="courseName" class="col-sm-1 col-form-label">Search
 					course</label>
-				<div class="col-sm-8 col-md-5 mb-1">
-					<input type="text" class="form-control" id="courseName"
-						placeholder="Enter an course name">
-				</div>
-				<div class="col-sm-2 col-md-1">
-					<button type="submit" class="btn btn-success w-100">Search</button>
-				</div>
-			</div>
-		</form>
-		
-		<!-- Course Display -->
+                <div class="col-sm-8 col-md-5 mb-1">
+                    <input type="text" class="form-control" id="courseName" placeholder="Enter an course name">
+                </div>
+                <div class="col-sm-2 col-md-1">
+                    <button type="submit" class="btn btn-success w-100">Search</button>
+                </div>
+            </div>
+        </form>
 
-		<table class="table table-striped table-hover table-bordered">
-			<thead>
-				<tr>
-					<th scope="col">Course ID</th>
-					<th scope="col">Course Name</th>
-					<th scope="col">Create Date</th>
-					<th scope="col">Action</th>
-				</tr>
-			</thead>
-			<tbody>
-				<!-- 1 user-->
-				<tr th:each="course, state : ${courses}">
-					<td th:text="${state.count}"></td>
-					<td th:text="${course.name}"></td>
-					<td th:text="${course.createDate}"></td>
-					<td class="d-flex">
-						<!-- <a th:href="@{/instructor/edit?username={username}(username=${user.username})}"
+        <!-- Course Display -->
+
+        <table class="table table-striped table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Course ID</th>
+                    <th scope="col">Course Name</th>
+                    <th scope="col">Create Date</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 1 user-->
+                <tr th:each="course, state : ${courses}">
+                    <td th:text="${state.count}"></td>
+                    <td th:text="${course.name}"></td>
+                    <td th:text="${course.createDate}"></td>
+                    <td class="d-flex">
+                        <!-- <a th:href="@{/instructor/edit?username={username}(username=${user.username})}"
 							class="btn btn-warning me-1"> <i class="fa fa-user"></i>
 						</a> -->
-						<form th:action="@{/instructor/course/enableCourse}" class="btn" method="post">
-							<input hidden th:name="courseId" th:value="${course.id}">
-							<span th:if="${course.isActive}" class="me-1">
+                        <form th:action="@{/instructor/course/enableCourse}" class="btn" method="post">
+                            <input hidden th:name="courseId" th:value="${course.id}">
+                            <span th:if="${course.isActive}" class="me-1">
 								<button class="btn btn-secondary">
 									<i class="fa fa-unlock"></i> Unlock
 								</button>
@@ -69,25 +69,31 @@
 									<i class="fa fa-lock"></i> Lock
 								</button>
 							</span>
-						</form>
-						<form th:action="@{/instructor/course/showForFormForUpdate}" method="get" class="btn">
-							<input hidden th:name="courseId" th:value="${course.id}">
-							<button class="btn btn-success">
+                        </form>
+                        <form th:action="@{/instructor/course/showForFormForUpdate}" method="get" class="btn">
+                            <input hidden th:name="courseId" th:value="${course.id}">
+                            <button class="btn btn-success">
 								<i class="fa fa-edit"></i> Edit
 							</button>
-						</form>
-						<form th:action="@{/instructor/course/deleteCourse}" class="btn" method="post">
-							<input hidden th:name="courseId" th:value="${course.id}">
-							<button class="btn btn-danger">
+                        </form>
+                        <form th:action="@{/instructor/course/showCourseDetails}" class="btn" method="post">
+                            <input hidden th:name="courseId" th:value="${course.id}">
+                            <button class="btn btn-primary">
+								<i class="fa fa-info"></i> Course Details
+							</button>
+                        </form>
+                        <form th:action="@{/instructor/course/deleteCourse}" class="btn" method="post">
+                            <input hidden th:name="courseId" th:value="${course.id}">
+                            <button class="btn btn-danger">
 								<i class="fa fa-trash"></i> Delete
 							</button>
-						</form>
-						
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</main>
-	<footer th:replace="fragments/layouts :: footer"></footer>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+    <footer th:replace="fragments/layouts :: footer"></footer>
 </body>
+
 </html>

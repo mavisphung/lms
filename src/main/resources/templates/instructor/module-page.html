@@ -66,15 +66,8 @@
 						</button>
 					</form>
 
-					<form th:action="@{/instructor/course/showForFormForUpdate}"
-						method="get" class="btn">
-						<input hidden th:name="courseId" th:value="${course.id}">
-						<button class="btn btn-warning">
-							<i class="fa fa-undo"></i> Back to Course
-						</button>
-					</form>
-
-					<a th:href="@{/instructor/}" class="btn btn-danger">Cancel</a>
+					<a th:href="@{/instructor/}" class="btn btn-danger"><i
+						class="fa fa-undo"></i> Back to Course</a> 
 				</div>
 			</div>
 
@@ -85,8 +78,8 @@
 			<!-- add module form -->
 			<form th:action="@{/instructor/module/createModule}" method="post"
 				th:object="${module}">
-				<input type="hidden" th:field="*{id}" />
-				<input hidden th:name="courseId" th:value="${course.id}">
+				<input type="hidden" th:field="*{id}" /> <input hidden
+					th:name="courseId" th:value="${course.id}">
 				<div th:if="${param.error}">
 					<p class="text-danger" th:text="${param.error}"></p>
 				</div>
@@ -104,7 +97,8 @@
 					<div class="offset-sm-2 col-sm-6">
 						<button type="submit" class="btn btn-success">Save
 							changes</button>
-						<a th:href="@{/instructor/}" class="btn btn-dark">Cancel</a>
+						<a th:href="@{'/instructor/module/?courseId=' + ${course.id}}"
+						class="btn btn-secondary"><i class="fa fa-edit"></i> Cancel</a>
 					</div>
 				</div>
 			</form>

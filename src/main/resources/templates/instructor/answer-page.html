@@ -76,7 +76,6 @@
 						</button>
 					</form>
 
-					<a th:href="@{/instructor/}" class="btn btn-danger">Cancel</a>
 				</div>
 			</div>
 
@@ -117,7 +116,8 @@
 					<div class="offset-sm-2 col-sm-6">
 						<button type="submit" class="btn btn-success">Save
 							changes</button>
-						<a th:href="@{/instructor/}" class="btn btn-dark">Cancel</a>
+						<a th:href="@{'/instructor/answer/?questionId=' + ${question.id}}"
+						class="btn btn-dark"><i class="fa fa-edit"></i> Cancel</a>
 					</div>
 				</div>
 
