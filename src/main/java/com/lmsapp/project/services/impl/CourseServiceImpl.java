@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.lmsapp.project.enties.Course;
+import com.lmsapp.project.entities.Course;
 import com.lmsapp.project.repositories.CourseRepository;
 import com.lmsapp.project.services.CourseService;
 

@@ -2,7 +2,7 @@ package com.lmsapp.project.services;
 
 import java.util.List;
 
-import com.lmsapp.project.enties.Question;
+import com.lmsapp.project.entities.Question;
 
 public interface QuestionService {
 

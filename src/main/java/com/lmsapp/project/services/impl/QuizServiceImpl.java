@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.lmsapp.project.enties.Quiz;
+import com.lmsapp.project.entities.Quiz;
 import com.lmsapp.project.repositories.QuizRepository;
 import com.lmsapp.project.services.QuizService;
 

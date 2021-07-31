@@ -2,7 +2,7 @@ package com.lmsapp.project.services;
 
 import java.util.List;
 
-import com.lmsapp.project.enties.Answer;
+import com.lmsapp.project.entities.Answer;
 
 public interface AnswerService {
 	public List<Answer> findAll();

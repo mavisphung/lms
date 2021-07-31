@@ -2,7 +2,7 @@ package com.lmsapp.project.services;
 
 import java.util.List;
 
-import com.lmsapp.project.enties.Course;
+import com.lmsapp.project.entities.Course;
 
 public interface CourseService {
 	public List<Course> findAll();

@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.lmsapp.project.enties.Answer;
+import com.lmsapp.project.entities.Answer;
 import com.lmsapp.project.repositories.AnswerRepository;
 import com.lmsapp.project.services.AnswerService;
 

@@ -2,7 +2,10 @@ package com.lmsapp.project.services;
 
 import java.util.List;
 
-import com.lmsapp.project.enties.Content;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.lmsapp.project.entities.Content;
+import com.lmsapp.project.entities.Module;
 
 public interface ContentService {
 
@@ -11,4 +14,8 @@ public interface ContentService {
 	public List<Content> findAll();
 	
 	public void remove(int id);
+	
+//	Content save(MultipartFile file);
+	
+	Content save(MultipartFile file, Integer moduleId);
 }

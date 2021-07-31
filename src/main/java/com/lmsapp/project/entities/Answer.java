@@ -1,4 +1,4 @@
-package com.lmsapp.project.enties;
+package com.lmsapp.project.entities;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

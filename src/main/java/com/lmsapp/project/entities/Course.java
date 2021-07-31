@@ -1,4 +1,4 @@
-package com.lmsapp.project.enties;
+package com.lmsapp.project.entities;
 
 import java.util.ArrayList;
 import java.util.Date;
