@@ -70,13 +70,18 @@ public class InstructorController {
 	@PostMapping("course/saveCourse")
 	public String processCreateCourse(@ModelAttribute("course") Course course, Model model,
 			RedirectAttributes redirectAttributes, BindingResult bindingResult) {
-		String url = "redirect:/instructor/module";
+		String url = null;
+		if (course.getId() == 0) {
+			url = "redirect:/instructor/module";
+		} else {
+			url = "redirect:/instructor/";
+		}
 		System.out.println(course);
 		System.out.println("instructorController: /instructor/createCourse POST >> Created " + course.toString());
 
 		try {
 			courseService.save(course);
-			redirectAttributes.addAttribute("course", course);
+			redirectAttributes.addAttribute("courseId", course.getId());
 		} catch (UserAlreadyExistException e) {
 			System.err.println("instructorController: /instructor/create POST >> " + e.getMessage());
 			model.addAttribute("error", e.getMessage());
@@ -110,12 +115,21 @@ public class InstructorController {
 		return url;
 	}
 
+	@PostMapping("course/showCourseDetails")
+	public String processRedirectCourseDetailsPage(@RequestParam("courseId") int courseId,
+			RedirectAttributes redirectAttribute) {
+		String url = "redirect:/instructor/module/";
+		redirectAttribute.addAttribute("courseId", courseId);
+		return url;
+	}
+
 	// _______________________________________________END_COURSE__________________________________________________
 
 	// ______________________________________________START_MODULE_________________________________________________
 
 	@GetMapping("module")
-	public String showCreateModulePage(Model model, @RequestParam Course course) {
+	public String showCreateModulePage(Model model, @RequestParam("courseId") int courseId) {
+		Course course = courseService.findById(courseId);
 		model.addAttribute("course", course);
 		return "instructor/module-page";
 	}
@@ -123,15 +137,15 @@ public class InstructorController {
 	@PostMapping("module/createModule")
 	public String processCreateModule(@RequestParam("courseId") int courseId, Model model,
 			@ModelAttribute("module") Module module, RedirectAttributes redirectAttributes) {
-		String url = "redirect:/instructor/module";
+		String url = "redirect:/instructor/module/";
 		System.out.println("instructorController: /instructor/createModule POST >> Created " + module.toString());
 
 		try {
 			System.out.println(courseId);
 			Course course = courseService.findById(courseId);
-			redirectAttributes.addAttribute("course", course);
 			module.setCourse(course);
 			moduleService.save(module);
+			redirectAttributes.addAttribute("courseId", courseId);
 		} catch (UserAlreadyExistException e) {
 			System.err.println("instructorController: /instructor/create POST >> " + e.getMessage());
 			model.addAttribute("error", e.getMessage());
@@ -171,9 +185,7 @@ public class InstructorController {
 			RedirectAttributes redirectAttribute, Model model) {
 		System.out.println("instructorController: /instructor/deleteModule/ POST >> Deleting moduleId " + moduleId);
 		String url = "redirect:/instructor/module/";
-		Course course = courseService.findById(courseId);
-		System.out.println(courseId);
-		redirectAttribute.addAttribute("course", course);
+		redirectAttribute.addAttribute("courseId", courseId);
 		moduleService.deleteById(moduleId);
 		return url;
 	}
@@ -229,7 +241,7 @@ public class InstructorController {
 		String url = "redirect:/instructor/module/";
 		Module module = moduleService.findById(moduleId);
 		Course course = module.getCourse();
-		redirectAttribute.addAttribute("course", course);
+		redirectAttribute.addAttribute("courseId", course.getId());
 		return url;
 	}
 
@@ -239,6 +251,14 @@ public class InstructorController {
 		String url = "redirect:/instructor/moduleDetails/";
 		redirectAttribute.addAttribute("moduleId", moduleId);
 		quizService.deleteById(quizId);
+		return url;
+	}
+	
+	@PostMapping("moduleDetails/quizDetails")
+	public String processRedirectToQuizDetails(@RequestParam("quizId") int quizId,
+			RedirectAttributes redirectAttribute) {
+		String url = "redirect:/instructor/question/";
+		redirectAttribute.addAttribute("quizId", quizId);
 		return url;
 	}
 
@@ -267,8 +287,14 @@ public class InstructorController {
 	@PostMapping("quiz/createQuiz")
 	public String processCreateQuiz(@RequestParam("moduleId") int moduleId, RedirectAttributes redirectAttribute,
 			@ModelAttribute("quiz") Quiz quiz, Model model, RedirectAttributes redirectAttributes) {
-		String url = "redirect:/instructor/question";
+		String url = null;
 
+		if (quiz.getId() == 0) {
+			url = "redirect:/instructor/question";
+		} else {
+			url = "redirect:/instructor/moduleDetails";
+		}
+		
 		System.out.println("instructorController: /instructor/createQuiz POST >> Quiz Created ");
 
 		try {
@@ -276,7 +302,7 @@ public class InstructorController {
 			quiz.setModule(module);
 			quizService.save(quiz);
 			redirectAttributes.addAttribute("quizId", quiz.getId());
-
+			redirectAttributes.addAttribute("moduleId", moduleId);
 		} catch (UserAlreadyExistException e) {
 			System.err.println("instructorController: /instructor/create POST >> " + e.getMessage());
 			model.addAttribute("error", e.getMessage());
@@ -316,9 +342,7 @@ public class InstructorController {
 
 	@PostMapping("question/updateQuestionForm")
 	public String processUpdateQuestionForm(@RequestParam("quizId") int quizId,
-			@RequestParam("questionId") int questionId,
-			Model model,
-			RedirectAttributes redirectAttributes) {
+			@RequestParam("questionId") int questionId, Model model, RedirectAttributes redirectAttributes) {
 		String url = "redirect:/instructor/question/";
 
 		String permitOpenForm = "yes";
@@ -361,6 +385,17 @@ public class InstructorController {
 		redirectAttribute.addAttribute("questionId", questionId);
 		return url;
 	}
+	
+	@PostMapping("question/deleteQuestion")
+	public String processDeleteQuestion(@RequestParam("questionId") int questionId, @RequestParam("quizId") int quizId,
+			RedirectAttributes redirectAttribute, Model model) {
+		String url = "redirect:/instructor/question/";
+		redirectAttribute.addAttribute("quizId", quizId);
+		questionService.deleteById(questionId);
+		return url;
+	}
+	
+	
 
 	// ______________________________________________END_QUESTION_________________________________________________
 
@@ -390,12 +425,10 @@ public class InstructorController {
 				.println("___________________________________________________________________________________________");
 		return "instructor/answer-page";
 	}
-	
+
 	@PostMapping("answer/updateAnswerForm")
 	public String processUpdateAnswerForm(@RequestParam("questionId") int questionId,
-			@RequestParam("answerId") int answerId,
-			Model model,
-			RedirectAttributes redirectAttributes) {
+			@RequestParam("answerId") int answerId, Model model, RedirectAttributes redirectAttributes) {
 		System.out.println("instructorController: /instructor/createAnswerForm POST >> Answer Created ");
 
 		String url = "redirect:/instructor/answer/";

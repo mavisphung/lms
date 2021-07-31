@@ -111,6 +111,13 @@
 									class="btn btn-success"><i class="fa fa-edit"></i> Edit
 									Quiz</a>
 							</div>
+							<form th:action="@{/instructor/moduleDetails/quizDetails}" class="btn"
+								method="post">
+								<input hidden th:name="quizId" th:value="${quiz.id}">
+								<button class="btn btn-primary">
+									<i class="fa fa-trash"></i> Quiz Details
+								</button>
+							</form>
 							<form th:action="@{/instructor/moduleDetails/deleteQuiz}" class="btn"
 								method="post">
 								<input hidden th:name="quizId" th:value="${quiz.id}"> <input
