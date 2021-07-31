@@ -65,16 +65,14 @@
 						</button>
 					</form>
 
-					<form th:action="@{/instructor/quiz/updateQuiz}"
+					<form th:action="@{/instructor/moduleDetails}"
 						method="get" class="btn">
-						<input hidden th:name="quizId" th:value="${quiz.id}">
 						<input hidden th:name="moduleId" th:value="${quiz.module.id}">
 						<button class="btn btn-warning">
 							<i class="fa fa-undo"></i> Back to Quiz
 						</button>
 					</form>
 
-					<a th:href="@{/instructor/}" class="btn btn-danger">Cancel</a>
 				</div>
 			</div>
 
@@ -103,7 +101,8 @@
 					<div class="offset-sm-2 col-sm-6">
 						<button type="submit" class="btn btn-success">Save
 							changes</button>
-						<a th:href="@{/instructor/}" class="btn btn-dark">Cancel</a>
+						<a th:href="@{'/instructor/question/?quizId=' + ${quiz.id}}"
+						class="btn btn-dark"><i class="fa fa-edit"></i> Cancel</a>
 					</div>
 				</div>
 			</form>
