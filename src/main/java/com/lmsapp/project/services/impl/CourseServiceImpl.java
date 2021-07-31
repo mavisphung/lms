@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.lmsapp.project.enties.Course;
 import com.lmsapp.project.repositories.CourseRepository;
 import com.lmsapp.project.services.CourseService;
+import com.lmsapp.project.user.User;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -62,6 +63,14 @@ public class CourseServiceImpl implements CourseService {
 			course.setActive(false);
 		}
 		save(course);
+	}
+
+	@Override
+	public List<Course> findCoursesByCourseName(String courseName) {
+		System.out.println("CourseServiceImpl: findByCourseNameLike() >> " + courseName);
+		List<Course> courses = courseRepository.findByCoursenameLike(courseName);
+		System.out.println("CourseServiceImpl: findByCourseNameLike() >> " + courses.toString());
+		return courses;
 	}
 
 }

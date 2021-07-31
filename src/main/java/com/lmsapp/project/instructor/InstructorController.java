@@ -66,6 +66,16 @@ public class InstructorController {
 		model.addAttribute("course", new Course());
 		return "instructor/course-form-page";
 	}
+	
+	@PostMapping("/searchCourse")
+	public String showListCourseBySearchCourseName(Model model, @RequestParam("courseName") String courseName) {
+
+		// get course list
+		List<Course> courses = courseService.findCoursesByCourseName(courseName);
+		model.addAttribute("courses", courses);
+
+		return "instructor/index";
+	}
 
 	@PostMapping("course/saveCourse")
 	public String processCreateCourse(@ModelAttribute("course") Course course, Model model,

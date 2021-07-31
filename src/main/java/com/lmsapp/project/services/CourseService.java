@@ -14,4 +14,6 @@ public interface CourseService {
 	public void deleteById(int theId);
 
 	public void setIsActive(int theId);
+	
+	public List<Course> findCoursesByCourseName(String courseName);
 }

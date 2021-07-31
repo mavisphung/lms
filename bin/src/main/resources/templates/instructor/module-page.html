@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="fragments/admin-layout :: head">
+</head>
+
+<body>
+	<header th:replace="fragments/layouts :: header"> </header>
+	<main class="container my-3">
+		<h3 class="pb-3">Add Module To Course</h3>
+		<h3 class="pb-3" th:text="${course.name}"></h3>
+
+		<div th:if="${course.modules != null}">
+			<table class="table table-striped table-hover table-bordered">
+				<thead>
+					<tr>
+						<th scope="col">No</th>
+						<th scope="col">Module Name</th>
+						<th scope="col">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="theModule, state : ${course.modules}">
+						<td th:text="${state.count}"></td>
+						<td th:text="${theModule.name}"></td>
+						<td class="d-flex">
+							<form th:action="@{/instructor/module/moduleDetails}"
+								method="post" class="btn">
+								<input hidden th:name="moduleId" th:value="${theModule.id}">
+								<button class="btn btn-success">
+									<i class="fa fa-info"></i> Details
+								</button>
+							</form>
+							<form th:action="@{/instructor/module/updateModuleForm}"
+								method="post" class="btn">
+								<input hidden th:name="courseId" th:value="${course.id}">
+								<input hidden th:name="moduleId" th:value="${theModule.id}">
+								<button class="btn btn-warning">
+									<i class="fa fa-wrench"></i> Update Form
+								</button>
+							</form>
+							<form th:action="@{/instructor/module/deleteModule}"
+								method="post" class="btn">
+								<input hidden th:name="courseId" th:value="${course.id}">
+								<input hidden th:name="moduleId" th:value="${theModule.id}">
+								<button class="btn btn-danger">
+									<i class="fa fa-trash"></i> Delete
+								</button>
+							</form>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div th:if="${moduleForm == null}">
+
+			<div class="mb-3 row">
+				<div class="col-sm-10">
+
+					<form th:action="@{/instructor/module/createModuleForm}"
+						method="post" class="btn">
+						<input hidden th:name="courseId" th:value="${course.id}">
+						<button class="btn btn-success">
+							<i class="fa fa-plus"></i> Add Module
+						</button>
+					</form>
+
+					<a th:href="@{/instructor/}" class="btn btn-danger"><i
+						class="fa fa-undo"></i> Back to Course</a> 
+				</div>
+			</div>
+
+		</div>
+
+
+		<div th:if="${moduleForm != null}">
+			<!-- add module form -->
+			<form th:action="@{/instructor/module/createModule}" method="post"
+				th:object="${module}">
+				<input type="hidden" th:field="*{id}" /> <input hidden
+					th:name="courseId" th:value="${course.id}">
+				<div th:if="${param.error}">
+					<p class="text-danger" th:text="${param.error}"></p>
+				</div>
+				<!-- Course Name -->
+				<div class="mb-3 row">
+					<label class="col-sm-2 col-form-label text-md-end">Module
+						Name</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" required
+							th:field="*{name}">
+					</div>
+				</div>
+				<!-- Save change button -->
+				<div class="mb-3 row">
+					<div class="offset-sm-2 col-sm-6">
+						<button type="submit" class="btn btn-success">Save
+							changes</button>
+						<a th:href="@{'/instructor/module/?courseId=' + ${course.id}}"
+						class="btn btn-secondary"><i class="fa fa-edit"></i> Cancel</a>
+					</div>
+				</div>
+			</form>
+		</div>
+
+	</main>
+
+	<footer th:replace="fragments/layouts :: footer"> </footer>
+</body>
+
+</html>
