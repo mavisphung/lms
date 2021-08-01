@@ -37,10 +37,10 @@
 			<div class="col-10">
 				<form action="#">
 					<div class="mb-3 row">
-						<label for="courseName" class="col-sm-1 col-form-label">Search
+						<label class="col-sm-1 col-form-label">Search
 							course</label>
 						<div class="col-sm-8 col-md-5 mb-1">
-							<input type="text" class="form-control" id="courseName"
+							<input type="text" class="form-control"
 								placeholder="Enter an course name">
 						</div>
 						<div class="col-sm-2 col-md-1">
@@ -50,7 +50,7 @@
 				</form>
 			</div>
 			<div class="col-2">
-				<form th:action="@{/instructor/}" method="post">
+				<form th:action="@{/instructor/content}" method="get">
 					<input hidden th:name="moduleId" th:value="${module.id}">
 					<button class="btn btn-success">
 						<i class="fa fa-plus"></i> Add Content
@@ -67,10 +67,10 @@
 			<div class="col-10">
 				<form action="#">
 					<div class="mb-3 row">
-						<label for="courseName" class="col-sm-1 col-form-label">Search
+						<label class="col-sm-1 col-form-label">Search
 							quiz</label>
 						<div class="col-sm-8 col-md-5 mb-1">
-							<input type="text" class="form-control" id="courseName"
+							<input type="text" class="form-control"
 								placeholder="Enter an course name">
 						</div>
 						<div class="col-sm-2 col-md-1">

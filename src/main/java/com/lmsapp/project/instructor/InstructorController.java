@@ -279,7 +279,7 @@ public class InstructorController {
 	@GetMapping("quiz/createQuiz")
 	public String showCreateQuizPage(Model model, @RequestParam int moduleId) {
 		Module module = moduleService.findById(moduleId);
-		System.out.println(module);
+//		System.out.println(module);
 		model.addAttribute("module", module);
 		model.addAttribute("quiz", new Quiz());
 		return "instructor/create-new-quiz";
@@ -297,7 +297,7 @@ public class InstructorController {
 	@PostMapping("quiz/createQuiz")
 	public String processCreateQuiz(@RequestParam("moduleId") int moduleId, RedirectAttributes redirectAttribute,
 			@ModelAttribute("quiz") Quiz quiz, Model model, RedirectAttributes redirectAttributes) {
-		String url = null;
+		String url = "";
 
 		if (quiz.getId() == 0) {
 			url = "redirect:/instructor/question";

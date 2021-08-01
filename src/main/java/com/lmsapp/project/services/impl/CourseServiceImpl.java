@@ -11,6 +11,7 @@ import com.lmsapp.project.entities.Course;
 import com.lmsapp.project.repositories.CourseRepository;
 import com.lmsapp.project.services.CourseService;
 import com.lmsapp.project.user.User;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CourseServiceImpl implements CourseService {

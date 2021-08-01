@@ -36,7 +36,7 @@ public class Content {
 	@Lob
 	private byte[] data;
 	
-	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
+	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinColumn(name = "module_id")
 	private Module module;
 	

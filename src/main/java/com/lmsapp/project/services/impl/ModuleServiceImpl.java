@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service;
 import com.lmsapp.project.entities.Module;
 import com.lmsapp.project.repositories.ModuleRepository;
 import com.lmsapp.project.services.ModuleService;
-
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
