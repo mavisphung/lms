@@ -7,7 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.lmsapp.project.enties.Content;
+import com.lmsapp.project.entities.Content;
 import com.lmsapp.project.repositories.ContentRepository;
 import com.lmsapp.project.services.ContentService;
 

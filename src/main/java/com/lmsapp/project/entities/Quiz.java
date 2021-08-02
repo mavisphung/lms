@@ -1,4 +1,4 @@
-package com.lmsapp.project.enties;
+package com.lmsapp.project.entities;
 
 import java.util.List;
 
@@ -15,8 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "modules")
-public class Module {
+@Table(name = "quizzes")
+public class Quiz {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,23 +26,20 @@ public class Module {
 	@Column(name = "name")
 	private String name;
 	
-	@ManyToOne(cascade = {CascadeType.PERSIST,
+	@ManyToOne(cascade = { CascadeType.PERSIST,
 							CascadeType.MERGE,
 							CascadeType.DETACH,
 							CascadeType.REFRESH})
-	@JoinColumn(name="course_id")
-	private Course course;
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "module", cascade = {CascadeType.ALL})
-	private List<Content> contents;
+	@JoinColumn(name = "module_id")
+	private Module module;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "module", cascade = {CascadeType.ALL})
-	private List<Quiz> quizes;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "quiz", cascade = {CascadeType.ALL})
+	private List<Question> questions;
 	
-	public Module() {
+	public Quiz() {
 	}
 
-	public Module(String name) {
+	public Quiz(String name) {
 		this.name = name;
 	}
 
@@ -62,32 +59,24 @@ public class Module {
 		this.name = name;
 	}
 
-	public Course getCourse() {
-		return course;
+	public Module getModule() {
+		return module;
 	}
 
-	public void setCourse(Course course) {
-		this.course = course;
-	}
-	
-	public List<Content> getContents() {
-		return contents;
+	public void setModule(Module module) {
+		this.module = module;
 	}
 
-	public void setContents(List<Content> contents) {
-		this.contents = contents;
+	public List<Question> getQuestions() {
+		return questions;
 	}
 
-	public List<Quiz> getQuizes() {
-		return quizes;
-	}
-
-	public void setQuizes(List<Quiz> quizes) {
-		this.quizes = quizes;
+	public void setQuestions(List<Question> questions) {
+		this.questions = questions;
 	}
 
 	@Override
 	public String toString() {
-		return "Module [id=" + id + ", name=" + name + "]";
+		return "Quiz [id=" + id + ", name=" + name + "]";
 	}
 }

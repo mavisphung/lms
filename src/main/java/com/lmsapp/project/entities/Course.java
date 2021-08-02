@@ -1,4 +1,4 @@
-package com.lmsapp.project.enties;
+package com.lmsapp.project.entities;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,8 +11,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.lmsapp.project.user.User;
 
 @Entity
 @Table(name = "courses")
@@ -37,6 +42,19 @@ public class Course {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "course", cascade = {CascadeType.ALL})
 	private List<Module> modules;
+	
+	@ManyToMany(fetch = FetchType.LAZY,
+			cascade = {CascadeType.PERSIST,
+					CascadeType.MERGE,
+					CascadeType.DETACH,
+					CascadeType.REFRESH})
+	
+	@JoinTable(
+			name="users_courses",
+			joinColumns = @JoinColumn(name="courseId"),
+			inverseJoinColumns = @JoinColumn(name="username")
+			)
+	private List<User> users;
 	
 	public Course() {
 	}

@@ -2,7 +2,7 @@ package com.lmsapp.project.services;
 
 import java.util.List;
 
-import com.lmsapp.project.enties.Content;
+import com.lmsapp.project.entities.Content;
 
 public interface ContentService {
 

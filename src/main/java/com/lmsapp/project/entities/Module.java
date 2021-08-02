@@ -1,4 +1,4 @@
-package com.lmsapp.project.enties;
+package com.lmsapp.project.entities;
 
 import java.util.List;
 
@@ -15,8 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "quizzes")
-public class Quiz {
+@Table(name = "modules")
+public class Module {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,20 +26,23 @@ public class Quiz {
 	@Column(name = "name")
 	private String name;
 	
-	@ManyToOne(cascade = { CascadeType.PERSIST,
+	@ManyToOne(cascade = {CascadeType.PERSIST,
 							CascadeType.MERGE,
 							CascadeType.DETACH,
 							CascadeType.REFRESH})
-	@JoinColumn(name = "module_id")
-	private Module module;
+	@JoinColumn(name="course_id")
+	private Course course;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "module", cascade = {CascadeType.ALL})
+	private List<Content> contents;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "quiz", cascade = {CascadeType.ALL})
-	private List<Question> questions;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "module", cascade = {CascadeType.ALL})
+	private List<Quiz> quizes;
 	
-	public Quiz() {
+	public Module() {
 	}
 
-	public Quiz(String name) {
+	public Module(String name) {
 		this.name = name;
 	}
 
@@ -59,24 +62,32 @@ public class Quiz {
 		this.name = name;
 	}
 
-	public Module getModule() {
-		return module;
+	public Course getCourse() {
+		return course;
 	}
 
-	public void setModule(Module module) {
-		this.module = module;
+	public void setCourse(Course course) {
+		this.course = course;
+	}
+	
+	public List<Content> getContents() {
+		return contents;
 	}
 
-	public List<Question> getQuestions() {
-		return questions;
+	public void setContents(List<Content> contents) {
+		this.contents = contents;
 	}
 
-	public void setQuestions(List<Question> questions) {
-		this.questions = questions;
+	public List<Quiz> getQuizes() {
+		return quizes;
+	}
+
+	public void setQuizes(List<Quiz> quizes) {
+		this.quizes = quizes;
 	}
 
 	@Override
 	public String toString() {
-		return "Quiz [id=" + id + ", name=" + name + "]";
+		return "Module [id=" + id + ", name=" + name + "]";
 	}
 }

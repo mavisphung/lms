@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.lmsapp.project.enties.Course;
-import com.lmsapp.project.enties.Module;
+import com.lmsapp.project.entities.Course;
+import com.lmsapp.project.entities.Module;
 import com.lmsapp.project.exception.UserAlreadyExistException;
 import com.lmsapp.project.model.UserRegistration;
 import com.lmsapp.project.role.Role;

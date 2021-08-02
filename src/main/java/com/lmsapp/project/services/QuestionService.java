@@ -2,7 +2,7 @@ package com.lmsapp.project.services;
 
 import java.util.List;
 
-import com.lmsapp.project.enties.Question;
+import com.lmsapp.project.entities.Question;
 
 public interface QuestionService {
 
@@ -13,4 +13,6 @@ public interface QuestionService {
 	public void save(Question theQuestion);
 
 	public void deleteById(int theId);
+	
+	public int findAnswerIdCorrect(int questionId);
 }

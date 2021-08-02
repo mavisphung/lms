@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.lmsapp.project.enties.Answer;
-import com.lmsapp.project.enties.Content;
-import com.lmsapp.project.enties.Course;
-import com.lmsapp.project.enties.Module;
-import com.lmsapp.project.enties.Question;
-import com.lmsapp.project.enties.Quiz;
+import com.lmsapp.project.entities.Answer;
+import com.lmsapp.project.entities.Content;
+import com.lmsapp.project.entities.Course;
+import com.lmsapp.project.entities.Module;
+import com.lmsapp.project.entities.Question;
+import com.lmsapp.project.entities.Quiz;
 import com.lmsapp.project.exception.UserAlreadyExistException;
 import com.lmsapp.project.services.AnswerService;
 import com.lmsapp.project.services.ContentService;

@@ -1,4 +1,4 @@
-package com.lmsapp.project.enties;
+package com.lmsapp.project.entities;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,31 +10,33 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import com.lmsapp.project.user.User;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "contents")
-public class Content {
+@Table(name = "users_quizzes")
+public class UserQuizz{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
-
-	@Column(name = "url")
-	private String url;
-
-	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
-	@JoinColumn(name = "module_id")
-	private Module module;
-
-	public Content(int id, String url) {
-		this.id = id;
-		this.url = url;
-	}
-
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private User user;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "quizz_id")
+	private Quiz quiz;
+	
+	@Column(name = "score")
+	private float score;
+	
 }
