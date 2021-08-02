@@ -1,0 +1,36 @@
+package com.lmsapp.project.services.impl;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.lmsapp.project.entities.Question;
+import com.lmsapp.project.repositories.UserAnswerRepository;
+import com.lmsapp.project.services.UserAnswerService;
+
+@Service
+public class UserAnswerServiceImpl implements UserAnswerService{
+	
+	private UserAnswerRepository userAnswerRepository;
+	
+	@Autowired
+	public UserAnswerServiceImpl (UserAnswerRepository userAnswerRepository) {
+		this.userAnswerRepository = userAnswerRepository;
+	}
+
+	@Override
+	public Map<Integer, Integer> getUserAnswerList(String username, int quizId, List<Question> listQuestion) {
+		Map<Integer, Integer> listUserAnswer = new HashMap<Integer, Integer>();
+		int questionId;
+		int answerId;
+		for (Question question : listQuestion) {
+			questionId = question.getId();
+			answerId = userAnswerRepository.getUserAnswer(username, quizId, questionId);
+			listUserAnswer.put(questionId, answerId);
+		}
+		return listUserAnswer;
+	}
+}

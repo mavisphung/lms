@@ -24,12 +24,13 @@
         <!-- Chưa làm -->
 
         <!-- Course Searching -->
-        <form action="#">
+        <form th:action="@{/instructor/searchCourse}" method="post">
             <div class="mb-3 row">
                 <label for="courseName" class="col-sm-1 col-form-label">Search
 					course</label>
                 <div class="col-sm-8 col-md-5 mb-1">
-                    <input type="text" class="form-control" id="courseName" placeholder="Enter an course name">
+                    <input type="text" class="form-control" id="courseName" th:name="courseName"                   
+                     th:value="${searchValue}" placeholder="Enter an course name">
                 </div>
                 <div class="col-sm-2 col-md-1">
                     <button type="submit" class="btn btn-success w-100">Search</button>
@@ -50,8 +51,8 @@
             </thead>
             <tbody>
                 <!-- 1 user-->
-                <tr th:each="course, state : ${courses}">
-                    <td th:text="${state.count}"></td>
+                <tr th:each="course : ${courses}">
+                    <td th:text="${course.id}"></td>
                     <td th:text="${course.name}"></td>
                     <td th:text="${course.createDate}"></td>
                     <td class="d-flex">

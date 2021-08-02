@@ -47,4 +47,13 @@ public class QuestionServiceImpl implements QuestionService {
 	public void deleteById(int theId) {
 		questionRepository.deleteById(theId);
 	}
+	
+	@Override
+	public List<Question> findByQuizId(int quizId) {
+		List<Question> listQuestion = questionRepository.findByQuizId(quizId);
+		if(listQuestion.isEmpty() || listQuestion.size() == 0) {
+			throw new RuntimeException("This quiz have no question");
+		}
+		return listQuestion;
+	}
 }

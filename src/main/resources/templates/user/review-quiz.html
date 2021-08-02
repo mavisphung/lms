@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/layouts :: head">
+<meta charset="UTF-8">
+<title>User page</title>
+</head>
+<body>
+	<header th:replace="fragments/layouts :: header"></header>
+	<main class="container my-3">
+		<h3 class="m-3 text-primary" th:text="${param.quizName}"></h3>
+
+		<table class="table table-hover table-bordered">
+			<tbody>
+				<tr th:each="question,state : ${listQuestion}">
+					<td>
+						<h5
+							th:text="${'Question ' + state.count + '/' + listQuestion.size()}"></h5>
+						<hr />
+						<h6 th:text="${question.title}"></h6> <br />
+						<ul>
+							<li th:each="answer : ${question.answers}">
+								<div th:if="${answer.id == listUserAnswer.get(question.id)}">
+									<div th:if="${answer.isCorrect}" class="p-1 rounded bg-success">
+										<input type="radio" th:value="${answer.id}"
+											th:id="${answer.id}" th:name="${'question_' + question.id}"
+											disabled="disabled" checked="checked" />
+										<label th:text="${answer.content}"></label>
+									</div>
+									<div th:if="${!answer.isCorrect}" class="p-1 rounded bg-danger">
+										<input type="radio" th:value="${answer.id}"
+											th:id="${answer.id}" th:name="${'question_' + question.id}"
+											disabled="disabled" checked="checked" />
+										<label th:text="${answer.content}"></label>
+									</div>
+								</div>
+								<div th:if="${answer.id != listUserAnswer.get(question.id)}" class="p-1 rounded">
+									<input type="radio" th:value="${answer.id}"
+										th:id="${answer.id}" th:name="${'question_' + question}"
+										disabled="disabled" />
+									<label th:text="${answer.content}"></label>
+								</div>
+							</li>
+						</ul>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</main>
+	<footer th:replace="fragments/layouts :: footer"></footer>
+</body>
+</html>

@@ -1,12 +1,16 @@
 package com.lmsapp.project.user.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +20,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.lmsapp.project.entities.Question;
+import com.lmsapp.project.entities.Quiz;
 import com.lmsapp.project.exception.UserAlreadyExistException;
 import com.lmsapp.project.model.UserRegistration;
+import com.lmsapp.project.services.QuestionService;
+import com.lmsapp.project.services.UserAnswerService;
+import com.lmsapp.project.services.UserQuizService;
 import com.lmsapp.project.user.User;
 import com.lmsapp.project.user.service.UserService;
 import com.lmsapp.project.util.Utility;
@@ -27,10 +36,16 @@ public class UserController {
 
 	//@Autowired
 	private final UserService userService;
+	private final UserQuizService userQuizService;
+	private final UserAnswerService userAnswerService;
+	private final QuestionService questionService;
 
 	@Autowired
-	public UserController(UserService userService) {
+	public UserController(UserService userService, UserQuizService userQuizService, UserAnswerService userAnswerService, QuestionService questionService) {
 		this.userService = userService;
+		this.userQuizService = userQuizService;
+		this.userAnswerService = userAnswerService;
+		this.questionService = questionService;
 	}
 
 	@GetMapping("/")
@@ -132,5 +147,60 @@ public class UserController {
 		rv.addStaticAttribute("registration", registration);
 		rv.addStaticAttribute("message", "Your profile has been updated!");
 		return rv;
+	}
+	
+	@GetMapping("/quizzes")
+	public String showAttemptedQuizzesPage(Principal principal, Model model) {
+		String rv = "user/attempted-quizzes";
+		String username = principal.getName();
+		Map<Quiz, Float> listQuiz = new HashMap<Quiz, Float>();
+		Map<String, List<Quiz>> listCourse = new HashMap<String, List<Quiz>>();
+		try {
+			listQuiz = userQuizService.getAttemptedQuiz(username);
+			String courseName;
+			for (Map.Entry<Quiz, Float> quiz : listQuiz.entrySet()) {
+				courseName = quiz.getKey().getModule().getCourse().getName().trim();
+				if(listCourse.containsKey(courseName)) {
+					listCourse.get(courseName).add(quiz.getKey());
+				} else {
+					List<Quiz> tempList = new ArrayList<Quiz>();
+					tempList.add(quiz.getKey());
+					listCourse.put(courseName, tempList);
+				}
+			}
+			
+		} catch (RuntimeException e) {
+			model.addAttribute("errorMessage", e.getMessage());
+			return rv;
+		} catch (Exception e) {
+			model.addAttribute("errorMessage", e.getMessage());
+			return rv;
+		} finally {
+			System.out.println("List Quiz: " + listQuiz.toString());
+		}
+		model.addAttribute("listCourse", listCourse);
+		model.addAttribute("listQuiz", listQuiz);
+		return rv;
+	}
+	
+	@GetMapping("/reviewQuiz")
+	public String showReviewQuizPage(Principal principal, Model model, @Param("quizId") int quizId) {
+		String rv = "user/review-quiz";
+		String username = principal.getName();
+		List<Question> listQuestion = new ArrayList<Question>();
+		Map<Integer, Integer> listUserAnswer = new HashMap<Integer, Integer>();
+		try {
+			listQuestion = questionService.findByQuizId(quizId);
+			listUserAnswer = userAnswerService.getUserAnswerList(username, quizId, listQuestion);
+		}catch (Exception e) {
+			model.addAttribute("errorMessage", e.getMessage());
+			return rv;
+		} finally {
+			System.out.println("List Question: " + listQuestion);
+			System.out.println("List User Answer: "+ listUserAnswer);
+		}
+		model.addAttribute("listUserAnswer", listUserAnswer);
+		model.addAttribute("listQuestion", listQuestion);
+		return "user/review-quiz";
 	}
 }

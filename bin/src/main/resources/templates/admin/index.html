@@ -22,11 +22,11 @@
 		</div>
 
 		<div class="pb-3">
-			<form th:action="@{/admin/search}" method="get" class="row">
+			<form th:action="@{/admin/search}" method="post" class="row">
 				<label for="searchValue" class="col-sm-1 col-form-label">Search
 					user</label>
 				<div class="col-sm-6 col-md-5 mb-1">
-					<input type="text" class="form-control" id="searchValue"
+					<input type="text" class="form-control" id="searchValue" th:name="searchValue"
 						name="searchValue" th:value="${searchValue}"
 						placeholder="Enter an username">
 				</div>

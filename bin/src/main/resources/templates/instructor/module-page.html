@@ -20,8 +20,8 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="theModule, state : ${course.modules}">
-						<td th:text="${state.count}"></td>
+					<tr th:each="theModule : ${course.modules}">
+						<td th:text="${theModule.id}"></td>
 						<td th:text="${theModule.name}"></td>
 						<td class="d-flex">
 							<form th:action="@{/instructor/module/moduleDetails}"
