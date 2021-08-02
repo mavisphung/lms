@@ -31,10 +31,9 @@ import com.lmsapp.project.user.service.UserService;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+	
 
 	private UserService userService;
-	private RoleService roleService;
-	private PasswordEncoder encoder;
 	private CourseService courseService;
 	private ModuleService moduleService;
 
@@ -42,13 +41,11 @@ public class AdminController {
 	public AdminController(UserService userService, RoleService roleService, PasswordEncoder encoder,
 			CourseService courseService, ModuleService moduleService) {
 		this.userService = userService;
-		this.roleService = roleService;
-		this.encoder = encoder;
 		this.courseService = courseService;
 		this.moduleService = moduleService;
 	}
 
-	@GetMapping("/")
+	@GetMapping(value = { "/", ""})
 	public String showAdminIndex(Model model) {
 
 		// get user list
@@ -76,20 +73,36 @@ public class AdminController {
 
 	@PostMapping("/create")
 	public String processCreateUser(@ModelAttribute("registration") UserRegistration registration, Model model) {
-		String url = "redirect:/admin/create";
+		String url = "redirect:/admin/";
 		System.out.println("AdminController: /admin/create POST >> Created " + registration.getUser().toString());
 		System.out.println("AdminController: /admin/create POST >> Created user role " + registration.getRole());
 		System.out.println(
 				"AdminController: /admin/create POST >> Created confirm password " + registration.getConfirmPassword());
 
 		try {
-			User registered = userService.registerNewUser(registration);
+			userService.registerNewUser(registration);
 		} catch (UserAlreadyExistException e) {
 			System.err.println("AdminController: /admin/create POST >> " + e.getMessage());
 			model.addAttribute("error", e.getMessage());
 		}
 
 		return url;
+	}
+	
+	@PostMapping("/search")
+	public String showListCourseBySearchCourseName(Model model, @RequestParam("searchValue") String username) {
+
+		// get course list
+		List<User> users = userService.findUsersByUsername(username);
+
+		for (User user : users) {
+			Set<Role> userRoles = user.getRoles();
+			List<String> strRoles = convertToStringList(userRoles);
+			user.setStrRoles(strRoles);
+		}
+		model.addAttribute("users", users);
+
+		return "admin/index";
 	}
 
 	//______________________________________COURSE________________________________________

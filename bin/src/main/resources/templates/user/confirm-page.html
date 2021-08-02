@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="fragments/layouts :: head">
+  <title>Register - Spring LMS</title>
+</head>
+
+<body>
+  <!-- Header-->
+  <header th:replace="fragments/layouts :: header">
+  </header>
+  <!-- main-->
+  <main class="container my-3">
+    <!-- register form-->
+    <div class="d-flex justify-content-center">
+      <!-- login form-->
+      <div class="login-form-content">
+        <h4>User Registration</h4>
+        <p>You have registered successfully as a student</p>
+        <p>Check your email to verify your account</p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- footer-->
+  <footer th:replace="fragments/layouts :: footer" class="container-fluid bg-light">
+  </footer>
+</body>
+
+</html>

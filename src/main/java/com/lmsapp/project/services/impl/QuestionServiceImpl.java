@@ -10,6 +10,7 @@ import com.lmsapp.project.entities.Answer;
 import com.lmsapp.project.entities.Question;
 import com.lmsapp.project.repositories.QuestionRepository;
 import com.lmsapp.project.services.QuestionService;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class QuestionServiceImpl implements QuestionService {

@@ -185,7 +185,6 @@ public class UserController {
 		try {
 			int count = 0;
 			String[] questionIdss = request.getParameterValues("questionId");
-			System.out.println("__________________________________sdfsdfs__________");
 			
 			for (String questionId : questionIdss) {
 				System.out.println(questionId);
@@ -198,7 +197,6 @@ public class UserController {
 					count++;
 				}
 			}
-			System.out.println("____________________________________________");
 			float score = (float) (count * 10)/questionIds.size();
 			redirectAttribute.addAttribute("score",score);
 			redirectAttribute.addAttribute("quizId", quizId);

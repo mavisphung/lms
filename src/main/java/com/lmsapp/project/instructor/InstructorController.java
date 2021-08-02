@@ -66,6 +66,16 @@ public class InstructorController {
 		model.addAttribute("course", new Course());
 		return "instructor/course-form-page";
 	}
+	
+	@PostMapping("/searchCourse")
+	public String showListCourseBySearchCourseName(Model model, @RequestParam("courseName") String courseName) {
+
+		// get course list
+		List<Course> courses = courseService.findCoursesByCourseName(courseName);
+		model.addAttribute("courses", courses);
+
+		return "instructor/index";
+	}
 
 	@PostMapping("course/saveCourse")
 	public String processCreateCourse(@ModelAttribute("course") Course course, Model model,
@@ -219,7 +229,7 @@ public class InstructorController {
 
 		// Lấy tất cả quizes trong module và lưu vào model
 
-		List<Quiz> quizes = module.getQuizes();
+		List<Quiz> quizes = module.getQuizzes();
 		model.addAttribute("quizes", quizes);
 
 		return "instructor/module-details";
@@ -269,7 +279,7 @@ public class InstructorController {
 	@GetMapping("quiz/createQuiz")
 	public String showCreateQuizPage(Model model, @RequestParam int moduleId) {
 		Module module = moduleService.findById(moduleId);
-		System.out.println(module);
+//		System.out.println(module);
 		model.addAttribute("module", module);
 		model.addAttribute("quiz", new Quiz());
 		return "instructor/create-new-quiz";
@@ -287,7 +297,7 @@ public class InstructorController {
 	@PostMapping("quiz/createQuiz")
 	public String processCreateQuiz(@RequestParam("moduleId") int moduleId, RedirectAttributes redirectAttribute,
 			@ModelAttribute("quiz") Quiz quiz, Model model, RedirectAttributes redirectAttributes) {
-		String url = null;
+		String url = "";
 
 		if (quiz.getId() == 0) {
 			url = "redirect:/instructor/question";
@@ -481,4 +491,5 @@ public class InstructorController {
 	}
 
 	// ______________________________________________END_ANSWER_________________________________________________
+
 }

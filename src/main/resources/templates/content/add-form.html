@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/instructor-layout :: head">
+<title>Content - Spring LMS</title>
+</head>
+
+<body>
+	<!-- Header-->
+	<header th:replace="fragments/layouts :: header"> </header>
+	<!-- main-->
+	<main class="container my-3">
+		<h4>Upload contents for <span th:text="${contentVM.module.name}"></span></h4>
+		<form class="row" th:action="@{/instructor/content/add}" 
+				method="post" enctype="multipart/form-data"
+				th:object="${contentVM}">
+			<input hidden th:field="${contentVM.module.id}" th:value="${contentVM.module.id}">
+			<input hidden th:field="${contentVM.module.name}" th:value="${contentVM.module.name}">
+			<div class="col-12 col-sm-8 my-3">
+				<input class="form-control" type="file" name="files" multiple required th:field=*{files}>
+			</div>
+			<div class="col-12 col-sm-4 my-3">
+				<button type="submit" class="btn btn-success w-sm-100">Upload</button>
+			</div>
+		</form>
+		
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Name</th>
+					<th>Type</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="content : ${contentVM.contents}">
+					<td th:text="${content.id}"></td>
+					<td th:text="${content.name}"></td>
+					<td th:text="${content.extension}"></td>
+					<td>
+						<a th:onclick="|Delete('/instructor/content/api/delete/${content.id}')|"
+							class="btn btn-danger">
+							<i class="fa fa-trash"></i>	
+						</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+	</main>
+
+	<!-- footer-->
+	<footer th:replace="fragments/layouts :: footer"> </footer>
+</body>
+
+</html>
