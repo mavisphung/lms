@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.lmsapp.project.entities.Answer;
 import com.lmsapp.project.repositories.AnswerRepository;
 import com.lmsapp.project.services.AnswerService;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AnswerServiceImpl implements AnswerService {
