@@ -20,10 +20,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.lmsapp.project.entities.Answer;
 import com.lmsapp.project.entities.Question;
 import com.lmsapp.project.entities.Quiz;
+import com.lmsapp.project.entities.UserAnswer;
 import com.lmsapp.project.exception.UserAlreadyExistException;
 import com.lmsapp.project.model.UserRegistration;
+import com.lmsapp.project.services.AnswerService;
 import com.lmsapp.project.services.QuestionService;
 import com.lmsapp.project.services.UserAnswerService;
 import com.lmsapp.project.services.UserQuizService;
@@ -38,14 +41,14 @@ public class UserController {
 	private final UserService userService;
 	private final UserQuizService userQuizService;
 	private final UserAnswerService userAnswerService;
-	private final QuestionService questionService;
+	private final AnswerService answerService;
 
 	@Autowired
-	public UserController(UserService userService, UserQuizService userQuizService, UserAnswerService userAnswerService, QuestionService questionService) {
+	public UserController(UserService userService, UserQuizService userQuizService, UserAnswerService userAnswerService, AnswerService answerService) {
 		this.userService = userService;
 		this.userQuizService = userQuizService;
 		this.userAnswerService = userAnswerService;
-		this.questionService = questionService;
+		this.answerService = answerService;
 	}
 
 	@GetMapping("/")
@@ -175,8 +178,6 @@ public class UserController {
 		} catch (Exception e) {
 			model.addAttribute("errorMessage", e.getMessage());
 			return rv;
-		} finally {
-			System.out.println("List Quiz: " + listQuiz.toString());
 		}
 		model.addAttribute("listCourse", listCourse);
 		model.addAttribute("listQuiz", listQuiz);
@@ -184,23 +185,26 @@ public class UserController {
 	}
 	
 	@GetMapping("/reviewQuiz")
-	public String showReviewQuizPage(Principal principal, Model model, @Param("quizId") int quizId) {
+	public String showReviewQuizPage(Principal principal, Model model, @Param("quiz") int quizId) {
 		String rv = "user/review-quiz";
 		String username = principal.getName();
-		List<Question> listQuestion = new ArrayList<Question>();
-		Map<Integer, Integer> listUserAnswer = new HashMap<Integer, Integer>();
+		List<Integer> listCorrectAnswer = new ArrayList<Integer>();
+		List<UserAnswer> listUserAnswer = new ArrayList<UserAnswer>();
+		float questionScore;
 		try {
-			listQuestion = questionService.findByQuizId(quizId);
-			listUserAnswer = userAnswerService.getUserAnswerList(username, quizId, listQuestion);
-		}catch (Exception e) {
+			listCorrectAnswer = answerService.findAllCorrectAnswer();
+			listUserAnswer = userAnswerService.findByUsernameQuiz(username, quizId);
+			questionScore = 10/(listUserAnswer.size());
+		} catch (RuntimeException e) {
 			model.addAttribute("errorMessage", e.getMessage());
 			return rv;
-		} finally {
-			System.out.println("List Question: " + listQuestion);
-			System.out.println("List User Answer: "+ listUserAnswer);
+		} catch (Exception e) {
+			model.addAttribute("errorMessage", e.getMessage());
+			return rv;
 		}
+		model.addAttribute("questionScore", questionScore);
 		model.addAttribute("listUserAnswer", listUserAnswer);
-		model.addAttribute("listQuestion", listQuestion);
-		return "user/review-quiz";
+		model.addAttribute("listCorrectAnswer", listCorrectAnswer);
+		return rv;
 	}
 }

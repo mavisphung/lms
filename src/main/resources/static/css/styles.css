@@ -10,6 +10,20 @@ p {
   box-sizing: border-box;
 }
 
+.answer {
+	padding: 1px;
+	margin: 10px;
+	border-radius: 10px;
+}
+
+.correctAnswer {
+	background-color: #29cf8a;
+}
+
+.incorrectAnswer {
+	background-color: #f57a7e;
+}
+
 * {
   margin: 0;
   padding: 0;

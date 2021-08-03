@@ -33,7 +33,7 @@ public class UserQuizServiceImpl implements UserQuizService {
 				listQuiz.put(quiz, score);
 			}
 		} else {
-			throw new RuntimeException("You have not attempt any quizz");
+			throw new RuntimeException("You have not attempted any quizz");
 		}
 		return listQuiz;
 	}

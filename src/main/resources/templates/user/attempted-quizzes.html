@@ -29,7 +29,7 @@
 						<td th:text="${quiz.name}"></td>
 						<td th:text="${listQuiz.get(quiz)}"></td>
 						<td>
-							<a th:href="@{/reviewQuiz(quizId=${quiz.getId()},quizName=${quiz.name})}">Review</a>
+							<a th:href="@{/reviewQuiz(quizId=${quiz.id},quizName=${quiz.name},score=${listQuiz.get(quiz)})}">Review</a>
 						</td>
 					</tr>
 				</tbody>
