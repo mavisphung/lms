@@ -18,17 +18,15 @@ import com.lmsapp.project.services.ModuleService;
 @Controller
 @RequestMapping("/instructor/content")
 public class ContentController {
-	
+
 	@Autowired
 	private ContentService contentService;
 
 	@Autowired
 	private ModuleService moduleService;
 
-	@GetMapping(value = {"/", ""})
-	public String showContentIndex(
-			@RequestParam(name = "moduleId", required = false) Integer moduleId,
-			Model model) {
+	@GetMapping(value = { "/", "" })
+	public String showContentIndex(@RequestParam(name = "moduleId", required = false) Integer moduleId, Model model) {
 		ContentVM vm = new ContentVM();
 		Module module = moduleService.findById(moduleId);
 		vm.setModule(module);
@@ -38,24 +36,22 @@ public class ContentController {
 	}
 
 	@PostMapping("/add")
-	public String processAddContents(
-			@ModelAttribute("contentVM") ContentVM vm,
-			Model model) {
+	public String processAddContents(@ModelAttribute("contentVM") ContentVM vm, Model model) {
 		String url = "/instructor/content";
 		System.out.println(vm.getModule().toString());
-		//update lại module
+		// update lại module
 		Module moduleFromdB = moduleService.findById(vm.getModule().getId());
-		//xử lí add bằng service
+		// xử lí add bằng service
 		try {
-			for (MultipartFile file :
-					vm.getFiles()) {
+			for (MultipartFile file : vm.getFiles()) {
 				contentService.save(file, moduleFromdB);
 			}
 		} catch (Exception e) {
 			System.out.println("ContentController >> Error: " + e.getMessage());
-			model.addAttribute("error", e.getLocalizedMessage());
+			model.addAttribute("error", e);
 			return "error";
 		}
+		
 
 		return "redirect:" + url + "?moduleId=" + vm.getModule().getId();
 	}

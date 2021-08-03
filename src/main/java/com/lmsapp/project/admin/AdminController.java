@@ -101,7 +101,10 @@ public class AdminController {
 			user.setStrRoles(strRoles);
 		}
 		model.addAttribute("users", users);
-
+		
+		// get course list
+		List<Course> courses = courseService.findAll();
+		model.addAttribute("courses", courses);
 		return "admin/index";
 	}
 

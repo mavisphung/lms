@@ -1,6 +1,5 @@
 package com.lmsapp.project.entities;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,8 +13,13 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Entity
 @Table(name = "courses")
+@Data
+@NoArgsConstructor
 public class Course {
 
 	@Id
@@ -34,78 +38,16 @@ public class Course {
 	
 	@Column(name = "description")
 	private String description;
-
+	
+	@Column(name = "username")
+	private String username;
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "course", cascade = {CascadeType.ALL})
 	private List<Module> modules;
-	
-	public Course() {
-	}
 
 	public Course(String name, boolean isActive, String description) {
 		this.name = name;
 		this.isActive = isActive;
 		this.description = description;
-	}
-	
-	public List<Module> getModules() {
-		return modules;
-	}
-
-	public void setModules(List<Module> modules) {
-		this.modules = modules;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Date getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-
-	public boolean isActive() {
-		return isActive;
-	}
-
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	@Override
-	public String toString() {
-		return "Course [id=" + id + ", name=" + name + ", createDate=" + createDate + ", isActive=" + isActive
-				+ ", description=" + description + "]";
-	}
-
-	public void add(Module tempModule) {
-		if(modules == null) {
-			modules = new ArrayList<>();
-		}
-		modules.add(tempModule);
-		tempModule.setCourse(this);
 	}
 }
