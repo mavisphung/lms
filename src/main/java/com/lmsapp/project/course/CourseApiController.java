@@ -41,11 +41,12 @@ public class CourseApiController {
 	@PostMapping("/api/enroll/{course_id}")
 	public ResponseEntity<Object> searchResult(
 			@PathVariable("course_id") Integer courseId,
-			Principal principal) {
+			Principal principal) throws ResponseException {
 		
 		Enrollment enrollment = enrollService.findByUsernameAndCourseId(principal.getName(), courseId);
 		if (enrollment != null) {
-			
+			String message = "You have already enrolled this course";
+			throw new ResponseException(HttpStatus.METHOD_NOT_ALLOWED.toString(), message);
 		}
 		
 		Course courseFromDb = courseService.findById(courseId);
