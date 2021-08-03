@@ -1,6 +1,8 @@
 package com.lmsapp.project.user.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.mail.MessagingException;
@@ -17,15 +19,21 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.lmsapp.project.entities.Answer;
 import com.lmsapp.project.entities.Course;
 import com.lmsapp.project.entities.Module;
 import com.lmsapp.project.entities.Question;
 import com.lmsapp.project.entities.Quiz;
+import com.lmsapp.project.entities.UserAnswer;
+import com.lmsapp.project.entities.UserQuizz;
 import com.lmsapp.project.exception.UserAlreadyExistException;
 import com.lmsapp.project.model.UserRegistration;
+import com.lmsapp.project.services.AnswerService;
 import com.lmsapp.project.services.CourseService;
 import com.lmsapp.project.services.QuestionService;
 import com.lmsapp.project.services.QuizService;
+import com.lmsapp.project.services.UserAnswerService;
+import com.lmsapp.project.services.UserQuizService;
 import com.lmsapp.project.user.User;
 import com.lmsapp.project.user.service.UserService;
 import com.lmsapp.project.util.Utility;
@@ -38,14 +46,21 @@ public class UserController {
 	private final CourseService courseService;
 	private final QuizService quizService;
 	private final QuestionService questionService;
+	private final AnswerService answerService;
+	private final UserQuizService userQuizService;
+	private final UserAnswerService userAnswerService;
 
 	@Autowired
 	public UserController(UserService userService, CourseService courseService, QuizService quizService,
-			QuestionService questionService) {
+			QuestionService questionService, UserQuizService userQuizService, UserAnswerService userAnswerService,
+			AnswerService answerService) {
 		this.userService = userService;
 		this.courseService = courseService;
 		this.quizService = quizService;
 		this.questionService = questionService;
+		this.userQuizService = userQuizService;
+		this.userAnswerService = userAnswerService;
+		this.answerService = answerService;
 	}
 
 	@GetMapping("/")
@@ -154,8 +169,8 @@ public class UserController {
 	}
 
 	// ______________________________________________DUNG_LQ___________________________________________________
-	
-	//_______________________________________________START_COURSE______________________________________________
+
+	// _______________________________________________START_COURSE______________________________________________
 	@GetMapping("course")
 	public String showCoursePage(Model model, @RequestParam("courseId") int courseId) {
 		Course course = courseService.findById(courseId);
@@ -166,48 +181,88 @@ public class UserController {
 		return "course-page";
 	}
 
-	//_______________________________________________END_COURSE_______________________________________________
-	
-	//_______________________________________________START_QUIZ_______________________________________________
+	// _______________________________________________END_COURSE_______________________________________________
+
+	// __________________________________________START_ATTEMPT_QUIZ____________________________________________
+
+	@GetMapping("quiz/attempt")
+	public String showAttemptQuizPage(Model model, @RequestParam("quizId") int quizId) {
+		Quiz quiz = quizService.findById(quizId);
+		model.addAttribute("quiz", quiz);
+		return "attempt-quiz-page";
+	}
+
+	@PostMapping("quiz/attempt")
+	public String processAttemptQuiz(Model model, @RequestParam("quizId") int quizId, Principal principal,
+			RedirectAttributes redirectAttribute) {
+		String url = "redirect:/quiz/";
+		User user = userService.findByUsername(principal.getName());
+		Quiz quiz = quizService.findById(quizId);
+		UserQuizz userQuiz = new UserQuizz();
+		userQuiz.setQuiz(quiz);
+		userQuiz.setUser(user);
+		Date currentDate = new Date();
+		System.out.println(currentDate);
+		userQuiz.setDoingDate(currentDate);
+		userQuizService.saveAttemptQuiz(userQuiz);
+		redirectAttribute.addAttribute("quizId", quizId);
+		int userQuizId = userQuiz.getId();
+		redirectAttribute.addAttribute("userQuizId", userQuiz.getId());
+		return url;
+	}
+
+	// ___________________________________________END_ATTEMPT_QUIZ_____________________________________________
+
+	// _______________________________________________START_QUIZ_______________________________________________
 	@GetMapping("quiz")
-	public String showDoingQuizPage(Model model, @RequestParam("quizId") int quizId) {
+	public String showDoingQuizPage(Model model, @RequestParam("quizId") int quizId,
+			@RequestParam("userQuizId") int userQuizId) {
 		Quiz quiz = quizService.findById(quizId);
 		String welcomeQuiz = "quiz " + quiz.getName();
 		model.addAttribute("welcome", welcomeQuiz);
 		model.addAttribute("quiz", quiz);
+		model.addAttribute("userQuizId", userQuizId);
 		return "doing-quiz-page";
 	}
 
 	@PostMapping("quiz/submit")
-	public String processCreateModule(@RequestParam("questionId") List<Integer> questionIds, Model model,
-			HttpServletRequest request, @RequestParam("quizId") int quizId, RedirectAttributes redirectAttribute) {
+	public String processCreateModule(HttpServletRequest request, RedirectAttributes redirectAttribute) {
 		String url = "redirect:/quiz/score";
 		try {
 			int count = 0;
-			String[] questionIdss = request.getParameterValues("questionId");
-			
-			for (String questionId : questionIdss) {
-				System.out.println(questionId);
+			String[] questionIdsString = request.getParameterValues("questionId");
+			int userQuizId = Integer.parseInt(request.getParameter("userQuizId"));
+			UserQuizz userQuizz = userQuizService.findById(userQuizId);
+			List<Integer> questionIds = new ArrayList<Integer>();
+			for (String questionIdString : questionIdsString) {
+				int questionId = Integer.parseInt(questionIdString);
+				questionIds.add(questionId);
 			}
+			int quizId = Integer.parseInt(request.getParameter("quizId"));
 			for (int questionId : questionIds) {
 				int answerIdCorrect = questionService.findAnswerIdCorrect(questionId);
 				String answerIdString = request.getParameter("answer_" + questionId);
 				int answerId = Integer.parseInt(answerIdString);
-				if(answerIdCorrect == answerId) {
+				if (answerIdCorrect == answerId) {
 					count++;
 				}
+				// ------------------------------------
+				UserAnswer userAnswer = new UserAnswer(userQuizz, questionService.findById(questionId),
+						answerService.findById(answerId));
+				userAnswerService.save(userAnswer);
 			}
-			float score = (float) (count * 10)/questionIds.size();
-			redirectAttribute.addAttribute("score",score);
+			float score = (float) (count * 10) / questionIds.size();
+			userQuizz.setScore(score);
+			userQuizService.saveAttemptQuiz(userQuizz);
+			redirectAttribute.addAttribute("score", score);
 			redirectAttribute.addAttribute("quizId", quizId);
 		} catch (UserAlreadyExistException e) {
 			System.err.println("instructorController: /instructor/create POST >> " + e.getMessage());
-			model.addAttribute("error", e.getMessage());
 		}
 
 		return url;
 	}
-	
+
 	@GetMapping("quiz/score")
 	public String showQuizScore(Model model, @RequestParam("quizId") int quizId, @RequestParam("score") float score) {
 		Quiz quiz = quizService.findById(quizId);
@@ -217,5 +272,5 @@ public class UserController {
 		model.addAttribute("score", score);
 		return "score-page";
 	}
-	//_______________________________________________END_QUIZ_________________________________________________
+	// _______________________________________________END_QUIZ_________________________________________________
 }

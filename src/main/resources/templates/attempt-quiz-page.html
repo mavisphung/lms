@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="fragments/layouts :: head">
+
+<title>Home page</title>
+</head>
+
+<body>
+	<header th:replace="fragments/layouts :: header"></header>
+
+	<main class="container my-3">
+		<div class="row pb-3">
+			<div class="col-3">
+				<h1 class="toast-header">Attemp Quiz</h1>
+			</div>
+		</div>
+
+
+		<form th:action="@{/quiz/attempt}" method="post">
+			<input hidden th:name="quizId" th:value="${quiz.id}">
+			<div class="mb-3 row">
+				<label class="col-sm-2  text-md-end fs-3">Quiz Name:</label>
+				<div class="col-sm-6">
+					<p type="text" class="col-3 text-end fs-3" required th:text="${quiz.name}"></p>
+				</div>
+			</div>
+			<div class="mb-3 row">
+				<label class="col-sm-2 text-md-end fs-3">Time
+					Allow:</label>
+				<div class="col-sm-6">
+					<p type="text" class="col-3 text-end fs-3" required
+						th:text="${quiz.timeAllow} + ' minutes'"></p>
+				</div>
+			</div>
+			<div class="mb-3 row">
+				<div class="offset-sm-2 col-sm-6">
+					<button type="submit" class="btn btn-success">Attempt</button>
+					<a th:href="@{/}" class="btn btn-dark">Cancel</a>
+				</div>
+			</div>
+		</form>
+
+	</main>
+
+	<footer th:replace="fragments/layouts :: footer"></footer>
+	<!-- popper-->
+	<!-- Jquery-->
+
+</body>
+
+</html>

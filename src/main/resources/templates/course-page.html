@@ -26,8 +26,8 @@
 						<h3 th:text="${module.name}"></h3>
 						<div class="course">
 							<h3>Quiz</h3>
-							<div th:each="quiz : ${module.quizes}">
-								<a th:href="@{'/quiz/?quizId=' + ${quiz.id}}">
+							<div th:each="quiz : ${module.quizzes}">
+								<a th:href="@{'/quiz/attempt/?quizId=' + ${quiz.id}}">
 									<h4 th:text="${quiz.name}"></h4>
 								</a>
 							</div>

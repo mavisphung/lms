@@ -53,7 +53,6 @@ public class ContentController {
 			}
 		} catch (Exception e) {
 			System.out.println("ContentController >> Error: " + e.getMessage());
-			model.addAttribute("error", e.getLocalizedMessage());
 			return "error";
 		}
 

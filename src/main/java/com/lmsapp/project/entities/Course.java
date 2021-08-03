@@ -40,6 +40,9 @@ public class Course {
 	
 	@Column(name = "description")
 	private String description;
+	
+	@Column(name = "username")
+	private String username;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "course", cascade = {CascadeType.ALL})
 	private List<Module> modules;

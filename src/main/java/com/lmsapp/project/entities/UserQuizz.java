@@ -1,5 +1,7 @@
 package com.lmsapp.project.entities;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 import com.lmsapp.project.user.User;
 
 import lombok.AllArgsConstructor;
@@ -38,5 +43,13 @@ public class UserQuizz{
 	
 	@Column(name = "score")
 	private float score;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "doing_date")
+	private Date doingDate;
+
+	public UserQuizz(float score) {
+		this.score = score;
+	}
 	
 }

@@ -38,4 +38,12 @@ public class UserAnswer {
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "answer_id")
 	private Answer answer;
+
+	public UserAnswer(UserQuizz userQuiz, Question question, Answer answer) {
+		this.userQuiz = userQuiz;
+		this.question = question;
+		this.answer = answer;
+	}
+	
+	
 }

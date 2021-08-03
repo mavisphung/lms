@@ -12,22 +12,16 @@
 	<main class="container my-3">
 		<div class="row pb-3">
 			<div class="col-6">
-				<h3 class="pb-3" th:text="'Quiz Name: ' + ${quiz.name}"></h3>
-				<div th:if="${param.error}">
-					<p class="text-danger" th:text="${param.error}"></p>
-				</div>
+				<h1 class="toast-header" th:text="'Quiz Name: ' + ${quiz.name}"></h1>
 			</div>
-			<div class="col-6 text-end">
-				<a th:href="@{/instructor/course/showCourseFormForAdd}"
-					class="btn btn-primary"> Create new course </a>
-			</div>
+			
 		</div>
 		<div>
 			<div>
-				<p th:text="'Score: ' + ${score}">
+				<p class="fs-3" th:text="'Score: ' + ${score}">
 			</div>
 			<div>
-				<a th:href="@{/instructor/course/showCourseFormForAdd}"
+				<a th:href="@{'/quiz/attempt?quizId=' + ${quiz.id}}"
 					class="btn btn-primary"> Try Again </a>
 			</div>
 		</div>
