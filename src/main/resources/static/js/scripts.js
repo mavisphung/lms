@@ -16,8 +16,8 @@ function Enroll(url) {
               window.location.href = "/";
             }
           },
-          error: function(exception) {
-            window.location.href = "/error";
+          error: function() {
+            alert('You have already enrolled this course');
           }
         }
       )
