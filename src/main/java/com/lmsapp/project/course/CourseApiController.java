@@ -77,4 +77,5 @@ public class CourseApiController {
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"" + content.getName() + "\"")
 				.body(new ByteArrayResource(content.getData()));
 	}
+
 }

@@ -25,4 +25,5 @@ public interface ContentService {
 	//boolean save(ContentVM vm);
 	
 	Content findById(Integer id);
+
 }

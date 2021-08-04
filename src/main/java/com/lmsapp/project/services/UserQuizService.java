@@ -1,5 +1,6 @@
 package com.lmsapp.project.services;
 
+import java.util.List;
 import java.util.Map;
 
 import com.lmsapp.project.entities.Quiz;
@@ -12,4 +13,6 @@ public interface UserQuizService {
 	public void saveAttemptQuiz(UserQuizz userQuizz);
 
 	public UserQuizz findById(int id);
+	
+	List<UserQuizz> findByUsername(String username);
 }
