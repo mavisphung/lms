@@ -14,7 +14,7 @@
 
 			<!-- col content -->
 			<aside id="content-col" class="mobile-col-content ">
-				<form th:action="@{/quiz/submit}" method="post" class="">
+				<form th:action="@{/quiz/submit}" method="post" id="form-id">
 					<!-- course overview-->
 					<input hidden th:name="quizId" th:value="${quiz.id}"> <input
 						hidden th:name="userQuizId" th:value="${userQuizId}">
@@ -67,16 +67,12 @@
 
 </body>
 <script>
-        /* var minutes = "[[${quiz.timeAllow}]]"; */
-        var minutes = 0.15;
+/*          var minutes = "[[${quiz.timeAllow}]]";  */
+var minutes = 0.15
 function elapse() {
     minutes -= 1 / 60;
     document.getElementById('time').innerText = minuteConvert(minutes)
 }
-
-var form = $('<form action="' + /quiz/submit + '" method="post">' +
-		  '<input type="text" name="api_url" value="' + Return_URL + '" />' +
-		  '</form>');
 
 function minuteConvert(d) {
     d = Number(d);
@@ -89,14 +85,14 @@ function minuteConvert(d) {
     var sDisplay = s > 0 ? s + (s == 1 ? " second" : " second") : "";
     return hDisplay + mDisplay + sDisplay;
 }
-
+var form = document.getElementById("form-id");
 setInterval(elapse, 1000);
 setTimeout(() => {
     clearInterval(elapse);
-    callAjax();
+    form.submit();
 }, minutes * 60 * 1000);
 
-function callAjax() {
+/* function callAjax() {
     $.ajax({
         type: "post",
         url: "/quiz/submit",
@@ -107,6 +103,6 @@ function callAjax() {
     		alert("error");
     	}
     })
-}
+} */
     </script>
 </html>

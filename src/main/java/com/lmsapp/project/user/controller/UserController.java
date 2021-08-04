@@ -3,13 +3,16 @@ package com.lmsapp.project.user.controller;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
-
 
 import com.lmsapp.project.entities.Course;
 import com.lmsapp.project.entities.Enrollment;
@@ -52,18 +54,12 @@ public class UserController {
 	private final UserQuizService userQuizService;
 	private final UserAnswerService userAnswerService;
 	private final AnswerService answerService;
-	
+
 	@Autowired
 
-	public UserController(
-			UserService userService,
-			CourseService courseService,
-			EnrollmentService enrollService,
-			QuizService quizService,
-			QuestionService questionService,
-			UserQuizService userQuizService,
-			UserAnswerService userAnswerService,
-			AnswerService answerService) {
+	public UserController(UserService userService, CourseService courseService, EnrollmentService enrollService,
+			QuizService quizService, QuestionService questionService, UserQuizService userQuizService,
+			UserAnswerService userAnswerService, AnswerService answerService) {
 
 		this.userService = userService;
 		this.courseService = courseService;
@@ -80,11 +76,11 @@ public class UserController {
 		String username = principal.getName();
 		User user = userService.findByUsername(username);
 
-		
 		List<Enrollment> enrollments = enrollService.findByUserId(user.getId());
 //		model.addAttribute("courses", enrolledCourses);
 		for (Enrollment enrollment : enrollments) {
-			System.out.println("UserController >> user " + enrollment.getUser().getUsername() + " enrolled " + enrollment.getCourse().getName());
+			System.out.println("UserController >> user " + enrollment.getUser().getUsername() + " enrolled "
+					+ enrollment.getCourse().getName());
 		}
 		model.addAttribute("enrollments", enrollments);
 
@@ -256,14 +252,23 @@ public class UserController {
 			for (int questionId : questionIds) {
 				int answerIdCorrect = questionService.findAnswerIdCorrect(questionId);
 				String answerIdString = request.getParameter("answer_" + questionId);
-				int answerId = Integer.parseInt(answerIdString);
+				int answerId = 0;
+				if (answerIdString != null) {
+					answerId = Integer.parseInt(answerIdString);
+				}
 				if (answerIdCorrect == answerId) {
 					count++;
 				}
 				// ------------------------------------
-				UserAnswer userAnswer = new UserAnswer(userQuizz, questionService.findById(questionId),
-						answerService.findById(answerId));
-				userAnswerService.save(userAnswer);
+				if (answerId != 0) {
+					UserAnswer userAnswer = new UserAnswer(userQuizz, questionService.findById(questionId),
+							answerService.findById(answerId));
+					userAnswerService.save(userAnswer);
+				}else {
+					UserAnswer userAnswer = new UserAnswer(userQuizz, questionService.findById(questionId),
+							null);
+					userAnswerService.save(userAnswer);
+				}
 			}
 			float score = (float) (count * 10) / questionIds.size();
 			userQuizz.setScore(score);
@@ -287,4 +292,61 @@ public class UserController {
 		return "score-page";
 	}
 	// _______________________________________________END_QUIZ_________________________________________________
+
+	// ____________________________________________THAO_________________________________________________________
+	@GetMapping("/quizzes")
+	public String showAttemptedQuizzesPage(Principal principal, Model model) {
+		String rv = "user/attempted-quizzes";
+		String username = principal.getName();
+		Map<Quiz, Float> listQuiz = new HashMap<Quiz, Float>();
+		Map<String, List<Quiz>> listCourse = new HashMap<String, List<Quiz>>();
+		try {
+			listQuiz = userQuizService.getAttemptedQuiz(username);
+			String courseName;
+			for (Map.Entry<Quiz, Float> quiz : listQuiz.entrySet()) {
+				courseName = quiz.getKey().getModule().getCourse().getName().trim();
+				if (listCourse.containsKey(courseName)) {
+					listCourse.get(courseName).add(quiz.getKey());
+				} else {
+					List<Quiz> tempList = new ArrayList<Quiz>();
+					tempList.add(quiz.getKey());
+					listCourse.put(courseName, tempList);
+				}
+			}
+
+		} catch (RuntimeException e) {
+			model.addAttribute("errorMessage", e.getMessage());
+			return rv;
+		} catch (Exception e) {
+			model.addAttribute("errorMessage", e.getMessage());
+			return rv;
+		}
+		model.addAttribute("listCourse", listCourse);
+		model.addAttribute("listQuiz", listQuiz);
+		return rv;
+	}
+
+	@GetMapping("/reviewQuiz")
+	public String showReviewQuizPage(Principal principal, Model model, @Param("quiz") int quizId) {
+		String rv = "user/review-quiz";
+		String username = principal.getName();
+		List<Integer> listCorrectAnswer = new ArrayList<Integer>();
+		List<UserAnswer> listUserAnswer = new ArrayList<UserAnswer>();
+		float questionScore;
+		try {
+			listCorrectAnswer = answerService.findAllCorrectAnswer();
+			listUserAnswer = userAnswerService.findByUsernameQuiz(username, quizId);
+			questionScore = 10 / (listUserAnswer.size());
+		} catch (RuntimeException e) {
+			model.addAttribute("errorMessage", e.getMessage());
+			return rv;
+		} catch (Exception e) {
+			model.addAttribute("errorMessage", e.getMessage());
+			return rv;
+		}
+		model.addAttribute("questionScore", questionScore);
+		model.addAttribute("listUserAnswer", listUserAnswer);
+		model.addAttribute("listCorrectAnswer", listCorrectAnswer);
+		return rv;
+	}
 }

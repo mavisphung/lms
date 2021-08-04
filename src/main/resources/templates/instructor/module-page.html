@@ -7,8 +7,7 @@
 <body>
 	<header th:replace="fragments/layouts :: header"> </header>
 	<main class="container my-3">
-		<h3 class="pb-3">Add Module To Course</h3>
-		<h3 class="pb-3" th:text="${course.name}"></h3>
+		<h3 class="pb-3" th:text="${'Add Module To Course: ' + course.name}"></h3>
 
 		<div th:if="${course.modules != null and !course.modules.isEmpty()}">
 			<table class="table table-striped table-hover table-bordered">
@@ -52,9 +51,10 @@
 				</tbody>
 			</table>
 		</div>
-		
-		<div th:unless="${course.modules != null and !course.modules.isEmpty()}">
-		<p>There is no module in course, please add</p>
+
+		<div
+			th:unless="${course.modules != null and !course.modules.isEmpty()}">
+			<p>There is no module in course, please add</p>
 		</div>
 
 		<div th:if="${moduleForm == null}">
@@ -71,7 +71,7 @@
 					</form>
 
 					<a th:href="@{/instructor/}" class="btn btn-danger"><i
-						class="fa fa-undo"></i> Back to Course</a> 
+						class="fa fa-undo"></i> Back to Course</a>
 				</div>
 			</div>
 
@@ -99,10 +99,11 @@
 				<!-- Save change button -->
 				<div class="mb-3 row">
 					<div class="offset-sm-2 col-sm-6">
-						<button type="submit" class="btn btn-success">Save
-							changes</button>
+						<button type="submit" class="btn btn-success">
+							<i class="fa fa-save"></i> Save changes
+						</button>
 						<a th:href="@{'/instructor/module/?courseId=' + ${course.id}}"
-						class="btn btn-secondary"><i class="fa fa-edit"></i> Cancel</a>
+							class="btn btn-secondary"><i class="fa fa-window-close"></i> Cancel</a>
 					</div>
 				</div>
 			</form>

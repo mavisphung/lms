@@ -1,5 +1,6 @@
 package com.lmsapp.project.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,5 +47,15 @@ public class AnswerServiceImpl implements AnswerService {
 	@Override
 	public void deleteById(int theId) {
 		answerRepository.deleteById(theId);
+	}
+
+	@Override
+	public List<Integer> findAllCorrectAnswer() {
+		List<Integer> listCorrectAnswer = new ArrayList<Integer>();
+		for (Answer answer : answerRepository.findAll()) {
+			if (answer.isCorrect())
+				listCorrectAnswer.add(answer.getId());
+		}
+		return listCorrectAnswer;
 	}
 }
