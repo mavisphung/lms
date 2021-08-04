@@ -23,4 +23,6 @@ public interface ContentService {
 	Content save(MultipartFile file, Module module);
 	
 	//boolean save(ContentVM vm);
+	
+	Content findById(Integer id);
 }

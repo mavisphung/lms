@@ -72,3 +72,16 @@ function Delete(url) {
         }
     });
 }
+
+function Download(url) {
+  $.ajax({
+    type: "GET",
+    url: url,
+    success: function (data) {
+      alert("downloaded")
+    },
+    error: function() {
+      alert("Can not download resource");
+    }
+  });
+}
