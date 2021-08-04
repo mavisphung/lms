@@ -11,65 +11,76 @@
 
 	<main class="container my-3">
 		<div class="d-md-flex">
+
+
+
+
 			<!-- col content -->
 			<aside id="content-col" class="mobile-col-content pe-md-3">
 				<!-- course overview-->
 				<div id="course-overview" class="pb-4">
-					<h3>Course Overview</h3>
-					<div th:if="${enrollments != null and !enrollments.isEmpty()}">
-						<div th:each="enrollment : ${enrollments}">
-							<!-- 1 course-->
-							<div class="course">
-								<a th:href="@{'/course/?courseId=' + ${enrollment.course.id}}">
-									<h4 th:text="${enrollment.course.name}"></h4>
+					<h3 th:text="${welcome}"></h3>
+					<hr>
+					<!-- 1 course-->
+					<div th:each="module : ${course.modules}">
+						<h3 th:text="${module.name}"></h3>
+						<div class="course">
+							<h3>Quiz</h3>
+							<div th:each="quiz : ${module.quizzes}">
+								<a th:href="@{'/quiz/attempt/?quizId=' + ${quiz.id}}">
+									<h4 th:text="${quiz.name}"></h4>
 								</a>
-								<p>You have assignment that need attention</p>
 							</div>
 						</div>
 						<hr>
 					</div>
-					<div th:unless="${enrollments != null and !enrollments.isEmpty()}">
-						<h5 class="text-danger">You have not enrolled any course yet!</h5>
-						<hr>
-					</div>				
+			</aside>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<!-- col trái-->
+			<aside id="left-col" class="mobile-col pe-md-3">
+				<div class="pb-3">
+					<h3>Navigation</h3>
+					<ul class="list-navigation">
+						<li><a href="index.html">Dashboard</a></li>
+						<li><a href="user-profile.html">Go to profile</a></li>
+						<li><a href="change-password.html">Change your password</a></li>
+						<li><a href="change-password.html">Courses</a></li>
+					</ul>
 				</div>
-
-
-				<!-- Enrollment-->
-				<div id="enrollment-section">
-					<h3>Enroll to your courses</h3>
-					<form th:action="@{/course}" class="d-flex mt-2 mb-3 pe-md-5">
-						<input type="text" class="form-control" name="searchCourse">
-						<button type="submit" class="btn btn-outline-primary">Search</button>
-					</form>
-					<div id="list-courses">
-						<!-- 1 course-->
-						<div class="course">
-							<a href="#">
-								<h4>Lab 3 - Web based Application_ThanhPC</h4>
-							</a>
-							<p>You have assignment that need attention</p>
-						</div>
-						<!-- 1 course-->
-						<div class="course">
-							<a href="#">
-								<h4>DBI202 - Shared</h4>
-							</a>
-							<p>You have assignment that need attention</p>
-						</div>
-						<!-- 1 course-->
-						<div class="course">
-							<a href="#">
-								<h4>Introduction to Computing - CSI101 - Shared</h4>
-							</a>
-							<p>You have assignment that need attention</p>
-						</div>
-					</div>
+				<div class="pb-3">
+					<h3>Notifications</h3>
+					<h5>Lorem</h5>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+						Reiciendis in consectetur amet repudiandae maxime!</p>
+					<h5>Lorem</h5>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+						Reiciendis in consectetur amet repudiandae maxime!</p>
+				</div>
+				<div class="pb-3">
+					<h3>Activities</h3>
+					<ul class="list-navigation">
+						<li><a href="index.html">Review quizzes</a></li>
+						<li><a href="user-profile.html"></a></li>
+						<li><a href="change-password.html">Change your password</a></li>
+					</ul>
 				</div>
 			</aside>
-			<!-- col tr�i-->
-			<aside th:replace="fragments/layouts :: left-col" id="left-col"
-				class="mobile-col pe-md-3"></aside>
 			<!-- col phải-->
 			<aside id="right-col" class="mobile-col">
 				<!-- đây là cột bên phải -->
@@ -148,9 +159,6 @@
 			</aside>
 		</div>
 	</main>
-
-
-
 
 	<footer th:replace="fragments/layouts :: footer"></footer>
 	<!-- popper-->

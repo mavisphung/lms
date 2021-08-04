@@ -1,5 +1,6 @@
 package com.lmsapp.project.instructor;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,10 +51,11 @@ public class InstructorController {
 	}
 
 	@GetMapping("/")
-	public String showinstructorIndex(Model model) {
+	public String showinstructorIndex(Model model, Principal principal) {
 
 		// get course list
-		List<Course> courses = courseService.findAll();
+		
+		List<Course> courses = courseService.findCourseByUserName(principal.getName());
 		model.addAttribute("courses", courses);
 
 		return "instructor/index";
@@ -79,10 +81,11 @@ public class InstructorController {
 
 	@PostMapping("course/saveCourse")
 	public String processCreateCourse(@ModelAttribute("course") Course course, Model model,
-			RedirectAttributes redirectAttributes, BindingResult bindingResult) {
+			RedirectAttributes redirectAttributes, BindingResult bindingResult, Principal principal) {
 		String url = null;
 		if (course.getId() == 0) {
 			url = "redirect:/instructor/module";
+			course.setUsername(principal.getName());
 		} else {
 			url = "redirect:/instructor/";
 		}
@@ -150,7 +153,6 @@ public class InstructorController {
 		System.out.println("instructorController: /instructor/createModule POST >> Created " + module.toString());
 
 		try {
-			System.out.println(courseId);
 			Course course = courseService.findById(courseId);
 			module.setCourse(course);
 			moduleService.save(module);
@@ -171,7 +173,6 @@ public class InstructorController {
 		model.addAttribute("module", new Module());
 		String permitOpenForm = "yes";
 		model.addAttribute("moduleForm", permitOpenForm);
-		System.out.println(courseId);
 		Course course = courseService.findById(courseId);
 		model.addAttribute("course", course);
 		return "instructor/module-page";
@@ -278,7 +279,6 @@ public class InstructorController {
 	@GetMapping("quiz/createQuiz")
 	public String showCreateQuizPage(Model model, @RequestParam int moduleId) {
 		Module module = moduleService.findById(moduleId);
-//		System.out.println(module);
 		model.addAttribute("module", module);
 		model.addAttribute("quiz", new Quiz());
 		return "instructor/create-new-quiz";
@@ -300,16 +300,20 @@ public class InstructorController {
 
 		if (quiz.getId() == 0) {
 			url = "redirect:/instructor/question";
+			System.out.println();
 		} else {
 			url = "redirect:/instructor/moduleDetails";
 		}
-		
+		System.out.println(url);
 		System.out.println("instructorController: /instructor/createQuiz POST >> Quiz Created ");
 
 		try {
 			Module module = moduleService.findById(moduleId);
+			System.out.println(1);
 			quiz.setModule(module);
+			System.out.println(2);
 			quizService.save(quiz);
+			System.out.println(3);
 			redirectAttributes.addAttribute("quizId", quiz.getId());
 			redirectAttributes.addAttribute("moduleId", moduleId);
 		} catch (UserAlreadyExistException e) {
@@ -327,7 +331,6 @@ public class InstructorController {
 	@GetMapping("question")
 	public String showCreateQuestionPage(Model model, @RequestParam int quizId) {
 		Quiz quiz = quizService.findById(quizId);
-		System.out.println(quiz);
 		model.addAttribute("quiz", quiz);
 		return "instructor/quiz-details";
 	}
@@ -413,7 +416,6 @@ public class InstructorController {
 	@GetMapping("answer")
 	public String showAnswerPage(Model model, @RequestParam int questionId) {
 		Question question = questionService.findById(questionId);
-		System.out.println(question);
 		model.addAttribute("question", question);
 		return "instructor/answer-page";
 	}

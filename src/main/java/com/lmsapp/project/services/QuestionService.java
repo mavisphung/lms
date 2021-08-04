@@ -13,4 +13,6 @@ public interface QuestionService {
 	public void save(Question theQuestion);
 
 	public void deleteById(int theId);
+	
+	public int findAnswerIdCorrect(int questionId);
 }

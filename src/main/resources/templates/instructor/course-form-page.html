@@ -12,6 +12,7 @@
     <h3 class="pb-3">Create new course</h3>
     <form th:action="@{/instructor/course/saveCourse}" method="post" th:object="${course}">
     <input type="hidden" th:field="*{id}" />
+    <input type="hidden" th:field="*{username}" />
     <div></div>
     	<div th:if="${param.error}">
     		<p class="text-danger" th:text="${param.error}"></p>

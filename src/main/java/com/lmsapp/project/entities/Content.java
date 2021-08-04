@@ -45,6 +45,5 @@ public class Content {
 		this.extension = extension;
 		this.data = data;
 	}
-	
-	
+
 }

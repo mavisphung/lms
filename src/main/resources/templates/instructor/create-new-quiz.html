@@ -19,11 +19,18 @@
 			</div>
 			<!-- Course Name -->
 			<div class="mb-3 row">
-				<label class="col-sm-2 col-form-label text-md-end">Quiz Name</label>
+				<label class="col-sm-2 col-form-label text-md-end">Quiz Name:</label>
 				<div class="col-sm-6">
 					<input type="text" class="form-control" required th:field="*{name}">
 				</div>
 			</div>
+			<!-- Course Name -->
+			<div class="mb-3 row">
+				<label class="col-sm-2 col-form-label text-md-end">Time Allow (Minute):</label>
+				<div class="col-sm-6">
+					<input type="number" min="1" max="180" class="form-control" required th:field="*{timeAllow}">
+				</div>
+			</div> 
 
 			<!-- Save change button -->
 			<div class="mb-3 row">

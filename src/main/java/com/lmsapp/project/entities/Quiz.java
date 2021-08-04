@@ -26,6 +26,9 @@ public class Quiz {
 	@Column(name = "name")
 	private String name;
 	
+	@Column(name = "time_allow")
+	private int timeAllow;
+	
 	@ManyToOne(cascade = { CascadeType.PERSIST,
 							CascadeType.MERGE,
 							CascadeType.DETACH,
@@ -39,8 +42,10 @@ public class Quiz {
 	public Quiz() {
 	}
 
-	public Quiz(String name) {
+	
+	public Quiz(String name, int timeAllow) {
 		this.name = name;
+		this.timeAllow = timeAllow;
 	}
 
 	public int getId() {
@@ -75,8 +80,16 @@ public class Quiz {
 		this.questions = questions;
 	}
 
+	public int getTimeAllow() {
+		return timeAllow;
+	}
+
+	public void setTimeAllow(int timeAllow) {
+		this.timeAllow = timeAllow;
+	}
+
 	@Override
 	public String toString() {
-		return "Quiz [id=" + id + ", name=" + name + "]";
+		return "Quiz [name=" + name + ", timeAllow=" + timeAllow + "]";
 	}
 }

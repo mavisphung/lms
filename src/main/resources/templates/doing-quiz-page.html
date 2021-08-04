@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="fragments/layouts :: head">
+
+<title>Home page</title>
+</head>
+
+<body>
+	<header th:replace="fragments/layouts :: header"></header>
+
+	<main class="container my-3">
+		<div class="d-md-flex">
+
+			<!-- col content -->
+			<aside id="content-col" class="mobile-col-content ">
+				<form th:action="@{/quiz/submit}" method="post" class="">
+					<!-- course overview-->
+					<input hidden th:name="quizId" th:value="${quiz.id}">
+					<input hidden th:name="userQuizId" th:value="${userQuizId}">
+					<div id="course-overview" class="pb-4">
+						<h3 th:text="${welcome}"></h3>
+						<strong><p id="time" class="text-danger"></p></strong>
+						<hr>
+						<!-- 1 course-->
+						<div th:each="question, state : ${quiz.questions}">
+							<input hidden th:name="questionId" th:value="${question.id}">
+							<div class="mb-3 row">
+								<div class="border-3 col-2">
+									<strong><p
+											th:text="'Question ' + ${state.count} + ':'"></p></strong>
+								</div>
+								<div class="col-sm-10">
+									<strong><p th:text="${question.title}"></p></strong>
+									<ol type="a">
+										<div th:each="answer, state : ${question.answers}">
+
+											<li><input type="radio" th:value="${answer.id}"
+												th:name="'answer_' + ${question.id}"
+												th:text="${answer.content}"></li>
+
+										</div>
+									</ol>
+
+								</div>
+							</div>
+
+							<hr>
+						</div>
+						<div class="mb-3 row">
+							<div class="offset-sm-6 col-sm-6">
+								<button type="submit" class="btn btn-success">Save
+									changes</button>
+							</div>
+				</form>
+			</aside>
+
+		</div>
+	</main>
+
+	<footer th:replace="fragments/layouts :: footer"></footer>
+	<!-- popper-->
+	<!-- Jquery-->
+
+</body>
+<script>
+        var minutes = "[[${quiz.timeAllow}]]";
+function elapse() {
+    minutes -= 1 / 60;
+    document.getElementById('time').innerText = minuteConvert(minutes)
+}
+
+
+function minuteConvert(d) {
+    d = Number(d);
+    var h = Math.floor(d / 60);
+    var m = Math.floor(d % 60);
+    var s = Math.floor(((d % 60) % 1) * 60);
+
+    var hDisplay = h > 0 ? h + (h == 1 ? " hour  " : " hours  ") : "";
+    var mDisplay = m > 0 ? m + (m == 1 ? " minute  " : " minutes  ") : "";
+    var sDisplay = s > 0 ? s + (s == 1 ? " second" : " second") : "";
+    return hDisplay + mDisplay + sDisplay;
+}
+
+setInterval(elapse, 1000);
+setTimeout(() => {
+    clearInterval(elapse);
+    alert('Time Out');
+}, minutes * 60 * 1000);
+    </script>
+</html>

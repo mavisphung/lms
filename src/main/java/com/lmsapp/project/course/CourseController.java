@@ -13,7 +13,7 @@ import com.lmsapp.project.entities.Course;
 import com.lmsapp.project.services.CourseService;
 
 @Controller
-@RequestMapping("/course")
+@RequestMapping("/courses")
 public class CourseController {
 	
 	private final CourseService courseService;

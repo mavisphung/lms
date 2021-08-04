@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lmsapp.project.entities.Answer;
 import com.lmsapp.project.entities.Question;
 import com.lmsapp.project.repositories.QuestionRepository;
 import com.lmsapp.project.services.QuestionService;
@@ -46,5 +47,16 @@ public class QuestionServiceImpl implements QuestionService {
 	@Override
 	public void deleteById(int theId) {
 		questionRepository.deleteById(theId);
+	}
+
+	@Override
+	public int findAnswerIdCorrect(int questionId) {
+		Question question = questionRepository.findById(questionId).get();
+		for(Answer answer : question.getAnswers()) {
+			if(answer.isCorrect()) {
+				return answer.getId();
+			}
+		}
+		return -1;
 	}
 }
