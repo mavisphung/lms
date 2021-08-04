@@ -51,10 +51,11 @@ public class InstructorController {
 	}
 
 	@GetMapping("/")
-	public String showinstructorIndex(Model model) {
+	public String showinstructorIndex(Model model, Principal principal) {
 
 		// get course list
-		List<Course> courses = courseService.findAll();
+		
+		List<Course> courses = courseService.findCourseByUserName(principal.getName());
 		model.addAttribute("courses", courses);
 
 		return "instructor/index";

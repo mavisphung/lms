@@ -16,4 +16,6 @@ public interface CourseService {
 	public void setIsActive(int theId);
 	
 	public List<Course> findCoursesByCourseName(String courseName);
+	
+	public List<Course> findCourseByUserName(String userName);
 }

@@ -74,4 +74,9 @@ public class CourseServiceImpl implements CourseService {
 		return courses;
 	}
 
+	@Override
+	public List<Course> findCourseByUserName(String userName) {
+		return courseRepository.findByUserName(userName);
+	}
+
 }
