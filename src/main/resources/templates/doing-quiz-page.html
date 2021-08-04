@@ -16,8 +16,8 @@
 			<aside id="content-col" class="mobile-col-content ">
 				<form th:action="@{/quiz/submit}" method="post" class="">
 					<!-- course overview-->
-					<input hidden th:name="quizId" th:value="${quiz.id}">
-					<input hidden th:name="userQuizId" th:value="${userQuizId}">
+					<input hidden th:name="quizId" th:value="${quiz.id}"> <input
+						hidden th:name="userQuizId" th:value="${userQuizId}">
 					<div id="course-overview" class="pb-4">
 						<h3 th:text="${welcome}"></h3>
 						<strong><p id="time" class="text-danger"></p></strong>
@@ -35,9 +35,12 @@
 									<ol type="a">
 										<div th:each="answer, state : ${question.answers}">
 
-											<li><input type="radio" th:value="${answer.id}"
-												th:name="'answer_' + ${question.id}"
-												th:text="${answer.content}"></li>
+											<li>
+												<input type="radio" th:value="${answer.id}"
+												th:name="'answer_' + ${question.id}">
+
+												<label th:text="${answer.content}"></label>
+											</li>
 
 										</div>
 									</ol>
@@ -64,12 +67,16 @@
 
 </body>
 <script>
-        var minutes = "[[${quiz.timeAllow}]]";
+        /* var minutes = "[[${quiz.timeAllow}]]"; */
+        var minutes = 0.15;
 function elapse() {
     minutes -= 1 / 60;
     document.getElementById('time').innerText = minuteConvert(minutes)
 }
 
+var form = $('<form action="' + /quiz/submit + '" method="post">' +
+		  '<input type="text" name="api_url" value="' + Return_URL + '" />' +
+		  '</form>');
 
 function minuteConvert(d) {
     d = Number(d);
@@ -86,7 +93,20 @@ function minuteConvert(d) {
 setInterval(elapse, 1000);
 setTimeout(() => {
     clearInterval(elapse);
-    alert('Time Out');
+    callAjax();
 }, minutes * 60 * 1000);
+
+function callAjax() {
+    $.ajax({
+        type: "post",
+        url: "/quiz/submit",
+        success: function(data) {
+            alert("success ajax");
+        },
+    	error: function(){
+    		alert("error");
+    	}
+    })
+}
     </script>
 </html>

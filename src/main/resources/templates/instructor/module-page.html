@@ -10,7 +10,7 @@
 		<h3 class="pb-3">Add Module To Course</h3>
 		<h3 class="pb-3" th:text="${course.name}"></h3>
 
-		<div th:if="${course.modules != null}">
+		<div th:if="${course.modules != null and !course.modules.isEmpty()}">
 			<table class="table table-striped table-hover table-bordered">
 				<thead>
 					<tr>
@@ -51,6 +51,10 @@
 					</tr>
 				</tbody>
 			</table>
+		</div>
+		
+		<div th:unless="${course.modules != null and !course.modules.isEmpty()}">
+		<p>There is no module in course, please add</p>
 		</div>
 
 		<div th:if="${moduleForm == null}">

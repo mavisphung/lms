@@ -15,6 +15,6 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
 	@Query("SELECT c FROM Course c WHERE c.name LIKE %:coursename% AND c.username LIKE :username")
 	List<Course> findByCoursenameLike(@Param("coursename") String coursename,@Param("username") String username);
 	
-	@Query("SELECT c FROM Course c WHERE c.username LIKE %?1%")
-	List<Course> findByUserName(String userName);
+	@Query("SELECT c FROM Course c WHERE c.username LIKE :username")
+	List<Course> findByUserName(@Param("username") String username);
 }

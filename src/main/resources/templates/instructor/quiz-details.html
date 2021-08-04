@@ -10,7 +10,7 @@
 		<h3 class="pb-3">Add Question To Quiz</h3>
 		<h3 class="pb-3" th:text="${quiz.name}"></h3>
 
-		<div th:if="${quiz.questions != null}">
+		<div th:if="${quiz.questions != null and !quiz.questions.isEmpty()}">
 			<table class="table table-striped table-hover table-bordered">
 				<thead>
 					<tr>
@@ -22,7 +22,8 @@
 					<tr th:each="question : ${quiz.questions}">
 						<td th:text="${question.title}"></td>
 						<td class="d-flex">
-							<form th:action="@{/instructor/question/answer}" class="btn" method="post">
+							<form th:action="@{/instructor/question/answer}" class="btn"
+								method="post">
 								<input hidden th:name="questionId" th:value="${question.id}">
 								<button class="btn btn-success">
 									<i class="fa fa-info"></i> Create/Edit Answer
@@ -36,8 +37,8 @@
 									<i class="fa fa-wrench"></i> Update Form
 								</button>
 							</form>
-							<form th:action="@{/instructor/question/deleteQuestion}" class="btn"
-								method="post">
+							<form th:action="@{/instructor/question/deleteQuestion}"
+								class="btn" method="post">
 								<input hidden th:name="quizId" th:value="${quiz.id}"> <input
 									hidden th:name="questionId" th:value="${question.id}">
 								<button class="btn btn-danger">
@@ -48,6 +49,11 @@
 					</tr>
 				</tbody>
 			</table>
+		</div>
+
+		<div
+			th:unless="${quiz.questions != null and !quiz.questions.isEmpty()}">
+			<p>There is no question, please add</p>
 		</div>
 
 
@@ -65,8 +71,8 @@
 						</button>
 					</form>
 
-					<form th:action="@{/instructor/moduleDetails}"
-						method="get" class="btn">
+					<form th:action="@{/instructor/moduleDetails}" method="get"
+						class="btn">
 						<input hidden th:name="moduleId" th:value="${quiz.module.id}">
 						<button class="btn btn-warning">
 							<i class="fa fa-undo"></i> Back to Quiz
@@ -83,8 +89,8 @@
 			<!-- add module form -->
 			<form th:action="@{/instructor/question/createQuestion}"
 				method="post" th:object="${question}">
-				<input type="hidden" th:field="*{id}" />
-				<input hidden th:name="quizId" th:value="${quiz.id}">
+				<input type="hidden" th:field="*{id}" /> <input hidden
+					th:name="quizId" th:value="${quiz.id}">
 				<div th:if="${param.error}">
 					<p class="text-danger" th:text="${param.error}"></p>
 				</div>
@@ -102,7 +108,7 @@
 						<button type="submit" class="btn btn-success">Save
 							changes</button>
 						<a th:href="@{'/instructor/question/?quizId=' + ${quiz.id}}"
-						class="btn btn-dark"><i class="fa fa-edit"></i> Cancel</a>
+							class="btn btn-dark"><i class="fa fa-edit"></i> Cancel</a>
 					</div>
 				</div>
 			</form>
