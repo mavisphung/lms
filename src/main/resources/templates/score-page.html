@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="fragments/layouts :: head">
+
+<title>Home page</title>
+</head>
+
+<body>
+	<header th:replace="fragments/layouts :: header"></header>
+
+	<main class="container my-3">
+		<div class="row pb-3">
+			<div class="col-6">
+				<h1 class="toast-header" th:text="'Quiz Name: ' + ${quiz.name}"></h1>
+			</div>
+			
+		</div>
+		<div>
+			<div>
+				<p class="fs-3" th:text="'Score: ' + ${score}">
+			</div>
+			<div>
+				<a th:href="@{'/quiz/attempt?quizId=' + ${quiz.id}}"
+					class="btn btn-primary"> Try Again </a>
+			</div>
+		</div>
+	</main>
+
+	<footer th:replace="fragments/layouts :: footer"></footer>
+	<!-- popper-->
+	<!-- Jquery-->
+
+</body>
+
+</html>

@@ -3,187 +3,159 @@
 
 <head th:include="fragments/layouts :: head">
 
-	<title>Home page</title>
+<title>Home page</title>
 </head>
 
 <body>
-  <header th:replace="fragments/layouts :: header"></header>
-  
-  <main class="container my-3">
-    <div class="d-md-flex">
-      <!-- col content -->
-      <aside id="content-col" class="mobile-col-content pe-md-3">
-        <!-- course overview-->
-        <div id="course-overview" class="pb-4">
-          <h3>Course Overview</h3>
-          <!-- 1 course-->
-          <div class="course">
-            <a href="#">
-              <h4>Lab 3 - Web based Application_ThanhPC</h4>
-            </a>
-            <p>You have assignment that need attention</p>
-          </div>
-          <!-- 1 course-->
-          <div class="course">
-            <a href="#">
-              <h4>DBI202 - Shared</h4>
-            </a>
-            <p>You have assignment that need attention</p>
-          </div>
-          <!-- 1 course-->
-          <div class="course">
-            <a href="#">
-              <h4>Introduction to Computing - CSI101 - Shared</h4>
-            </a>
-            <p>You have assignment that need attention</p>
-          </div>
+	<header th:replace="fragments/layouts :: header"></header>
 
-          <hr>
-          <h5 class="text-danger">You have not enrolled any course yet!</h5>
-        </div>
+	<main class="container my-3">
+		<div class="d-md-flex">
+			<!-- col content -->
+			<aside id="content-col" class="mobile-col-content pe-md-3">
+				<!-- course overview-->
+				<div id="course-overview" class="pb-4">
+					<h3>Course Overview</h3>
+					<div th:if="${enrollments != null and !enrollments.isEmpty()}">
+						<div th:each="enrollment : ${enrollments}">
+							<!-- 1 course-->
+							<div class="course">
+								<a th:href="@{'/course/?courseId=' + ${enrollment.course.id}}">
+									<h4 th:text="${enrollment.course.name}"></h4>
+								</a>
+								<p>You have assignment that need attention</p>
+							</div>
+						</div>
+						<hr>
+					</div>
+					<div th:unless="${enrollments != null and !enrollments.isEmpty()}">
+						<h5 class="text-danger">You have not enrolled any course yet!</h5>
+						<hr>
+					</div>				
+				</div>
 
-        <!-- Enrollment-->
-        <div id="enrollment-section">
-          <h3>Enrol to your courses</h3>
-          <form action="#" class="d-flex mt-2 mb-3 pe-md-5">
-            <input type="text" class="form-control" name="" id="">
-            <button type="submit" class="btn btn-outline-primary">Search</button>
-          </form>
-          <div id="list-courses">
-            <!-- 1 course-->
-            <div class="course">
-              <a href="#">
-                <h4>Lab 3 - Web based Application_ThanhPC</h4>
-              </a>
-              <p>You have assignment that need attention</p>
-            </div>
-            <!-- 1 course-->
-            <div class="course">
-              <a href="#">
-                <h4>DBI202 - Shared</h4>
-              </a>
-              <p>You have assignment that need attention</p>
-            </div>
-            <!-- 1 course-->
-            <div class="course">
-              <a href="#">
-                <h4>Introduction to Computing - CSI101 - Shared</h4>
-              </a>
-              <p>You have assignment that need attention</p>
-            </div>
-          </div>
-        </div>
-      </aside>
-      <!-- col trái-->
-      <aside id="left-col" class="mobile-col pe-md-3">
-        <div class="pb-3">
-          <h3>Navigation</h3>
-          <ul class="list-navigation">
-            <li><a href="index.html">Dashboard</a></li>
-            <li><a href="user-profile.html">Go to profile</a></li>
-            <li><a href="change-password.html">Change your password</a></li>
-            <li><a href="change-password.html">Courses</a></li>
-          </ul>
-        </div>
-        <div class="pb-3">
-          <h3>Notifications</h3>
-          <h5>Lorem</h5>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis in consectetur amet repudiandae maxime!</p>
-          <h5>Lorem</h5>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis in consectetur amet repudiandae maxime!</p>
-        </div>
-        <div class="pb-3">
-          <h3>Activities</h3>
-          <ul class="list-navigation">
-            <li><a href="index.html">Review quizzes</a></li>
-            <li><a href="user-profile.html"></a></li>
-            <li><a href="change-password.html">Change your password</a></li>
-          </ul>
-        </div>
-      </aside>
-      <!-- col phải-->
-      <aside id="right-col" class="mobile-col">
-        <!-- đây là cột bên phải -->
-        <h3>Calendar</h3>
-        <div class="text-center">
-          <table class="table table-bordered table-striped">
-            <thead>
-              <tr>
-                <th colspan="7">
-                  <div class="btn-group">
-                    <a class="btn"><i class="fa fa-chevron-left"></i></a>
-                    <a class="btn active">July 2021</a>
-                    <a class="btn"><i class="fa fa-chevron-right"></i></a>
-                  </div>
-                </th>
-              </tr>
-              <tr>
-                <th>Su</th>
-                <th>Mo</th>
-                <th>Tu</th>
-                <th>We</th>
-                <th>Th</th>
-                <th>Fr</th>
-                <th>Sa</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="text-muted">29</td>
-                <td class="text-muted">30</td>
-                <td class="text-muted">31</td>
-                <td>1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
-              </tr>
-              <tr>
-                <td>5</td>
-                <td>6</td>
-                <td>7</td>
-                <td>8</td>
-                <td>9</td>
-                <td>10</td>
-                <td>11</td>
-              </tr>
-              <tr>
-                <td>12</td>
-                <td>13</td>
-                <td>14</td>
-                <td>15</td>
-                <td>16</td>
-                <td>17</td>
-                <td>18</td>
-              </tr>
-              <tr>
-                <td>19</td>
-                <td class="bold">20</td>
-                <td>21</td>
-                <td>22</td>
-                <td>23</td>
-                <td>24</td>
-                <td>25</td>
-              </tr>
-              <tr>
-                <td>26</td>
-                <td>27</td>
-                <td>28</td>
-                <td>29</td>
-                <td class="text-muted">1</td>
-                <td class="text-muted">2</td>
-                <td class="text-muted">3</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </aside>
-    </div>
-  </main>
 
-  <footer th:replace="fragments/layouts :: footer"></footer>
-  <!-- popper-->
-  <!-- Jquery-->
-  
+				<!-- Enrollment-->
+				<div id="enrollment-section">
+					<h3>Enroll to your courses</h3>
+					<form th:action="@{/course}" class="d-flex mt-2 mb-3 pe-md-5">
+						<input type="text" class="form-control" name="searchCourse">
+						<button type="submit" class="btn btn-outline-primary">Search</button>
+					</form>
+					<div id="list-courses">
+						<!-- 1 course-->
+						<div class="course">
+							<a href="#">
+								<h4>Lab 3 - Web based Application_ThanhPC</h4>
+							</a>
+							<p>You have assignment that need attention</p>
+						</div>
+						<!-- 1 course-->
+						<div class="course">
+							<a href="#">
+								<h4>DBI202 - Shared</h4>
+							</a>
+							<p>You have assignment that need attention</p>
+						</div>
+						<!-- 1 course-->
+						<div class="course">
+							<a href="#">
+								<h4>Introduction to Computing - CSI101 - Shared</h4>
+							</a>
+							<p>You have assignment that need attention</p>
+						</div>
+					</div>
+				</div>
+			</aside>
+			<!-- col tr�i-->
+			<aside th:replace="fragments/layouts :: left-col" id="left-col"
+				class="mobile-col pe-md-3"></aside>
+			<!-- col phải-->
+			<aside id="right-col" class="mobile-col">
+				<!-- đây là cột bên phải -->
+				<h3>Calendar</h3>
+				<div class="text-center">
+					<table class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th colspan="7">
+									<div class="btn-group">
+										<a class="btn"><i class="fa fa-chevron-left"></i></a> <a
+											class="btn active">July 2021</a> <a class="btn"><i
+											class="fa fa-chevron-right"></i></a>
+									</div>
+								</th>
+							</tr>
+							<tr>
+								<th>Su</th>
+								<th>Mo</th>
+								<th>Tu</th>
+								<th>We</th>
+								<th>Th</th>
+								<th>Fr</th>
+								<th>Sa</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="text-muted">29</td>
+								<td class="text-muted">30</td>
+								<td class="text-muted">31</td>
+								<td>1</td>
+								<td>2</td>
+								<td>3</td>
+								<td>4</td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>6</td>
+								<td>7</td>
+								<td>8</td>
+								<td>9</td>
+								<td>10</td>
+								<td>11</td>
+							</tr>
+							<tr>
+								<td>12</td>
+								<td>13</td>
+								<td>14</td>
+								<td>15</td>
+								<td>16</td>
+								<td>17</td>
+								<td>18</td>
+							</tr>
+							<tr>
+								<td>19</td>
+								<td class="bold">20</td>
+								<td>21</td>
+								<td>22</td>
+								<td>23</td>
+								<td>24</td>
+								<td>25</td>
+							</tr>
+							<tr>
+								<td>26</td>
+								<td>27</td>
+								<td>28</td>
+								<td>29</td>
+								<td class="text-muted">1</td>
+								<td class="text-muted">2</td>
+								<td class="text-muted">3</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</aside>
+		</div>
+	</main>
+
+
+
+
+	<footer th:replace="fragments/layouts :: footer"></footer>
+	<!-- popper-->
+	<!-- Jquery-->
+
 </body>
 
 </html>
