@@ -70,10 +70,11 @@ public class InstructorController {
 	}
 	
 	@PostMapping("/searchCourse")
-	public String showListCourseBySearchCourseName(Model model, @RequestParam("courseName") String courseName) {
+	public String showListCourseBySearchCourseName(Model model, @RequestParam("courseName") String courseName,
+			Principal principal) {
 
 		// get course list
-		List<Course> courses = courseService.findCoursesByCourseName(courseName);
+		List<Course> courses = courseService.findCoursesByCourseName(courseName,principal.getName());
 		model.addAttribute("courses", courses);
 
 		return "instructor/index";
