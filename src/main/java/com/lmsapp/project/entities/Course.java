@@ -45,6 +45,9 @@ public class Course {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "course", cascade = {CascadeType.ALL})
 	private List<Module> modules;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "course", cascade = {CascadeType.ALL})
+	private List<Enrollment> enrollments;
+	
 	public Course(String name, boolean isActive, String description) {
 		this.name = name;
 		this.isActive = isActive;

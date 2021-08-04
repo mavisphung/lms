@@ -2,6 +2,7 @@ package com.lmsapp.project.entities;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -31,7 +32,7 @@ public class Enrollment {
 	@JoinColumn(name = "user_id")
 	private User user;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@MapsId("course_Id")
 	@JoinColumn(name = "course_id")
 	private Course course;
