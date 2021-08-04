@@ -9,8 +9,7 @@
 	<main class="container my-3">
 
 
-		<h3 class="pb-3">Add Answer To Question</h3>
-		<h3 class="pb-3" th:text="${question.title}"></h3>
+		<h3 class="pb-3" th:text="${'Add Answer To Question: '+ question.title}"></h3>
 
 
 		<div
@@ -37,7 +36,7 @@
 								<input hidden th:name="answerId" th:value="${answer.id}">
 								<input hidden th:name="questionId" th:value="${question.id}">
 								<button class="btn btn-warning">
-									<i class="fa fa-trash"></i> Update
+									<i class="fa fa-wrench"></i> Update
 								</button>
 							</form>
 
@@ -118,11 +117,11 @@
 					<!-- Save change button -->
 					<div class="mb-3 row">
 						<div class="offset-sm-2 col-sm-6">
-							<button type="submit" class="btn btn-success">Save
+							<button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save
 								changes</button>
 							<a
 								th:href="@{'/instructor/answer/?questionId=' + ${question.id}}"
-								class="btn btn-dark"><i class="fa fa-edit"></i> Cancel</a>
+								class="btn btn-dark"><i class="fa fa-window-close"></i> Cancel</a>
 						</div>
 					</div>
 
