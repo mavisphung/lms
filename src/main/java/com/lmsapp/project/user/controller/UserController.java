@@ -23,7 +23,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
-
 import com.lmsapp.project.entities.Course;
 import com.lmsapp.project.entities.Enrollment;
 import com.lmsapp.project.entities.Module;
@@ -55,18 +54,12 @@ public class UserController {
 	private final UserQuizService userQuizService;
 	private final UserAnswerService userAnswerService;
 	private final AnswerService answerService;
-	
+
 	@Autowired
 
-	public UserController(
-			UserService userService,
-			CourseService courseService,
-			EnrollmentService enrollService,
-			QuizService quizService,
-			QuestionService questionService,
-			UserQuizService userQuizService,
-			UserAnswerService userAnswerService,
-			AnswerService answerService) {
+	public UserController(UserService userService, CourseService courseService, EnrollmentService enrollService,
+			QuizService quizService, QuestionService questionService, UserQuizService userQuizService,
+			UserAnswerService userAnswerService, AnswerService answerService) {
 
 		this.userService = userService;
 		this.courseService = courseService;
@@ -83,11 +76,11 @@ public class UserController {
 		String username = principal.getName();
 		User user = userService.findByUsername(username);
 
-		
 		List<Enrollment> enrollments = enrollService.findByUserId(user.getId());
 //		model.addAttribute("courses", enrolledCourses);
 		for (Enrollment enrollment : enrollments) {
-			System.out.println("UserController >> user " + enrollment.getUser().getUsername() + " enrolled " + enrollment.getCourse().getName());
+			System.out.println("UserController >> user " + enrollment.getUser().getUsername() + " enrolled "
+					+ enrollment.getCourse().getName());
 		}
 		model.addAttribute("enrollments", enrollments);
 
@@ -259,14 +252,23 @@ public class UserController {
 			for (int questionId : questionIds) {
 				int answerIdCorrect = questionService.findAnswerIdCorrect(questionId);
 				String answerIdString = request.getParameter("answer_" + questionId);
-				int answerId = Integer.parseInt(answerIdString);
+				int answerId = 0;
+				if (answerIdString != null) {
+					answerId = Integer.parseInt(answerIdString);
+				}
 				if (answerIdCorrect == answerId) {
 					count++;
 				}
 				// ------------------------------------
-				UserAnswer userAnswer = new UserAnswer(userQuizz, questionService.findById(questionId),
-						answerService.findById(answerId));
-				userAnswerService.save(userAnswer);
+				if (answerId != 0) {
+					UserAnswer userAnswer = new UserAnswer(userQuizz, questionService.findById(questionId),
+							answerService.findById(answerId));
+					userAnswerService.save(userAnswer);
+				}else {
+					UserAnswer userAnswer = new UserAnswer(userQuizz, questionService.findById(questionId),
+							null);
+					userAnswerService.save(userAnswer);
+				}
 			}
 			float score = (float) (count * 10) / questionIds.size();
 			userQuizz.setScore(score);
@@ -290,8 +292,8 @@ public class UserController {
 		return "score-page";
 	}
 	// _______________________________________________END_QUIZ_________________________________________________
-	
-	//____________________________________________THAO_________________________________________________________
+
+	// ____________________________________________THAO_________________________________________________________
 	@GetMapping("/quizzes")
 	public String showAttemptedQuizzesPage(Principal principal, Model model) {
 		String rv = "user/attempted-quizzes";
@@ -303,7 +305,7 @@ public class UserController {
 			String courseName;
 			for (Map.Entry<Quiz, Float> quiz : listQuiz.entrySet()) {
 				courseName = quiz.getKey().getModule().getCourse().getName().trim();
-				if(listCourse.containsKey(courseName)) {
+				if (listCourse.containsKey(courseName)) {
 					listCourse.get(courseName).add(quiz.getKey());
 				} else {
 					List<Quiz> tempList = new ArrayList<Quiz>();
@@ -311,7 +313,7 @@ public class UserController {
 					listCourse.put(courseName, tempList);
 				}
 			}
-			
+
 		} catch (RuntimeException e) {
 			model.addAttribute("errorMessage", e.getMessage());
 			return rv;
@@ -323,7 +325,7 @@ public class UserController {
 		model.addAttribute("listQuiz", listQuiz);
 		return rv;
 	}
-	
+
 	@GetMapping("/reviewQuiz")
 	public String showReviewQuizPage(Principal principal, Model model, @Param("quiz") int quizId) {
 		String rv = "user/review-quiz";
@@ -334,7 +336,7 @@ public class UserController {
 		try {
 			listCorrectAnswer = answerService.findAllCorrectAnswer();
 			listUserAnswer = userAnswerService.findByUsernameQuiz(username, quizId);
-			questionScore = 10/(listUserAnswer.size());
+			questionScore = 10 / (listUserAnswer.size());
 		} catch (RuntimeException e) {
 			model.addAttribute("errorMessage", e.getMessage());
 			return rv;
