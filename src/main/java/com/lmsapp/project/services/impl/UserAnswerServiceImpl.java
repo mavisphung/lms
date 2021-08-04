@@ -39,4 +39,13 @@ public class UserAnswerServiceImpl implements UserAnswerService{
 	public void save(UserAnswer userAnwser) {
 		userAnswerRepository.save(userAnwser);
 	}
+	
+	@Override
+	public List<UserAnswer> findByUsernameQuiz(String username, int quizId) {
+		List<UserAnswer> result = userAnswerRepository.findtByUsernameQuizId(username, quizId);
+		if(result.isEmpty() || result.size() <= 0) {
+			throw new RuntimeException("Can't find this quiz");
+		}
+		return result;
+	}
 }

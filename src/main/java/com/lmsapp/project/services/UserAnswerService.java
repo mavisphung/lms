@@ -11,4 +11,6 @@ public interface UserAnswerService {
 	Map<Integer, Integer> getUserAnswerList(String username, int quizId, List<Question> listQuestion);
 	
 	public void save(UserAnswer userAnwser);
+	
+	public List<UserAnswer> findByUsernameQuiz(String username, int quizId);
 }

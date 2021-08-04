@@ -12,4 +12,6 @@ public interface AnswerService {
 	public void save(Answer theAnswer);
 
 	public void deleteById(int theId);
+	
+	public List<Integer> findAllCorrectAnswer();
 }

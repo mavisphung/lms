@@ -3,13 +3,16 @@ package com.lmsapp.project.user.controller;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -287,4 +290,61 @@ public class UserController {
 		return "score-page";
 	}
 	// _______________________________________________END_QUIZ_________________________________________________
+	
+	//____________________________________________THAO_________________________________________________________
+	@GetMapping("/quizzes")
+	public String showAttemptedQuizzesPage(Principal principal, Model model) {
+		String rv = "user/attempted-quizzes";
+		String username = principal.getName();
+		Map<Quiz, Float> listQuiz = new HashMap<Quiz, Float>();
+		Map<String, List<Quiz>> listCourse = new HashMap<String, List<Quiz>>();
+		try {
+			listQuiz = userQuizService.getAttemptedQuiz(username);
+			String courseName;
+			for (Map.Entry<Quiz, Float> quiz : listQuiz.entrySet()) {
+				courseName = quiz.getKey().getModule().getCourse().getName().trim();
+				if(listCourse.containsKey(courseName)) {
+					listCourse.get(courseName).add(quiz.getKey());
+				} else {
+					List<Quiz> tempList = new ArrayList<Quiz>();
+					tempList.add(quiz.getKey());
+					listCourse.put(courseName, tempList);
+				}
+			}
+			
+		} catch (RuntimeException e) {
+			model.addAttribute("errorMessage", e.getMessage());
+			return rv;
+		} catch (Exception e) {
+			model.addAttribute("errorMessage", e.getMessage());
+			return rv;
+		}
+		model.addAttribute("listCourse", listCourse);
+		model.addAttribute("listQuiz", listQuiz);
+		return rv;
+	}
+	
+	@GetMapping("/reviewQuiz")
+	public String showReviewQuizPage(Principal principal, Model model, @Param("quiz") int quizId) {
+		String rv = "user/review-quiz";
+		String username = principal.getName();
+		List<Integer> listCorrectAnswer = new ArrayList<Integer>();
+		List<UserAnswer> listUserAnswer = new ArrayList<UserAnswer>();
+		float questionScore;
+		try {
+			listCorrectAnswer = answerService.findAllCorrectAnswer();
+			listUserAnswer = userAnswerService.findByUsernameQuiz(username, quizId);
+			questionScore = 10/(listUserAnswer.size());
+		} catch (RuntimeException e) {
+			model.addAttribute("errorMessage", e.getMessage());
+			return rv;
+		} catch (Exception e) {
+			model.addAttribute("errorMessage", e.getMessage());
+			return rv;
+		}
+		model.addAttribute("questionScore", questionScore);
+		model.addAttribute("listUserAnswer", listUserAnswer);
+		model.addAttribute("listCorrectAnswer", listCorrectAnswer);
+		return rv;
+	}
 }

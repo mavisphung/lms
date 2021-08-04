@@ -36,7 +36,7 @@
 			<div class="mb-3 row">
 				<div class="offset-sm-2 col-sm-6">
 					<button type="submit" class="btn btn-success">Attempt</button>
-					<a th:href="@{/}" class="btn btn-dark">Cancel</a>
+					<a th:href="@{'/course?courseId=' + ${quiz.module.course.id}}" class="btn btn-dark">Cancel</a>
 				</div>
 			</div>
 		</form>
