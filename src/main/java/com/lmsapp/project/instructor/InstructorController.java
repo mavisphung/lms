@@ -63,7 +63,7 @@ public class InstructorController {
 
 	// _________________________________________________START_COURSE__________________________________________________
 
-	@GetMapping("course/showCourseFormForAdd")
+	@GetMapping("/course/showCourseFormForAdd")
 	public String showCreateCoursePage(Model model) {
 		model.addAttribute("course", new Course());
 		return "instructor/course-form-page";

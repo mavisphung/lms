@@ -3,9 +3,10 @@ package com.lmsapp.project.user.controller;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+
 import java.util.List;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.lmsapp.project.entities.Answer;
+
 import com.lmsapp.project.entities.Course;
+import com.lmsapp.project.entities.Enrollment;
 import com.lmsapp.project.entities.Module;
-import com.lmsapp.project.entities.Question;
 import com.lmsapp.project.entities.Quiz;
 import com.lmsapp.project.entities.UserAnswer;
 import com.lmsapp.project.entities.UserQuizz;
@@ -30,6 +31,7 @@ import com.lmsapp.project.exception.UserAlreadyExistException;
 import com.lmsapp.project.model.UserRegistration;
 import com.lmsapp.project.services.AnswerService;
 import com.lmsapp.project.services.CourseService;
+import com.lmsapp.project.services.EnrollmentService;
 import com.lmsapp.project.services.QuestionService;
 import com.lmsapp.project.services.QuizService;
 import com.lmsapp.project.services.UserAnswerService;
@@ -44,18 +46,28 @@ public class UserController {
 	// @Autowired
 	private final UserService userService;
 	private final CourseService courseService;
+	private final EnrollmentService enrollService;
 	private final QuizService quizService;
 	private final QuestionService questionService;
-	private final AnswerService answerService;
 	private final UserQuizService userQuizService;
 	private final UserAnswerService userAnswerService;
-
+	private final AnswerService answerService;
+	
 	@Autowired
-	public UserController(UserService userService, CourseService courseService, QuizService quizService,
-			QuestionService questionService, UserQuizService userQuizService, UserAnswerService userAnswerService,
+
+	public UserController(
+			UserService userService,
+			CourseService courseService,
+			EnrollmentService enrollService,
+			QuizService quizService,
+			QuestionService questionService,
+			UserQuizService userQuizService,
+			UserAnswerService userAnswerService,
 			AnswerService answerService) {
+
 		this.userService = userService;
 		this.courseService = courseService;
+		this.enrollService = enrollService;
 		this.quizService = quizService;
 		this.questionService = questionService;
 		this.userQuizService = userQuizService;
@@ -67,12 +79,14 @@ public class UserController {
 	public String showIndex(Principal principal, Model model) {
 		String username = principal.getName();
 		User user = userService.findByUsername(username);
-		System.out.println("UserController >> Loaded logged in user: " + user.toString());
-		System.out.println("UserController >> Load user roles: " + user.getRoles());
 
-		List<Course> courses = courseService.findAll();
-
-		model.addAttribute("courses", courses);
+		
+		List<Enrollment> enrollments = enrollService.findByUserId(user.getId());
+//		model.addAttribute("courses", enrolledCourses);
+		for (Enrollment enrollment : enrollments) {
+			System.out.println("UserController >> user " + enrollment.getUser().getUsername() + " enrolled " + enrollment.getCourse().getName());
+		}
+		model.addAttribute("enrollments", enrollments);
 
 		return "index";
 	}

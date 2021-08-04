@@ -15,31 +15,35 @@
 			<aside id="content-col" class="mobile-col-content pe-md-3">
 				<!-- course overview-->
 				<div id="course-overview" class="pb-4">
-					<h3>Course Overview</h3>
-					<div th:if="${enrollments != null and !enrollments.isEmpty()}">
-						<div th:each="enrollment : ${enrollments}">
+					<h3>Courses</h3>
+					<div th:if="${courses != null and !courses.isEmpty()}">
+						<div th:each="course : ${courses}">
 							<!-- 1 course-->
 							<div class="course">
-								<a th:href="@{'/course/?courseId=' + ${enrollment.course.id}}">
-									<h4 th:text="${enrollment.course.name}"></h4>
+								<a th:href="@{'/course/detail?course_id=' + ${course.id}}">
+									<h4 th:text="${course.name}"></h4>
 								</a>
-								<p>You have assignment that need attention</p>
+								<p th:text="${course.description}"></p>
+								<a
+									th:onclick="|Enroll('/course/api/enroll/${course.id}')|"
+									class="btn btn-secondary"> 
+									Enroll to course
+								</a>
 							</div>
 						</div>
 						<hr>
 					</div>
-					<div th:unless="${enrollments != null and !enrollments.isEmpty()}">
+					<div th:unless="${courses != null and !courses.isEmpty()}">
 						<h5 class="text-danger">You have not enrolled any course yet!</h5>
-						<hr>
-					</div>				
+					</div>
 				</div>
-
 
 				<!-- Enrollment-->
 				<div id="enrollment-section">
 					<h3>Enroll to your courses</h3>
-					<form th:action="@{/course}" class="d-flex mt-2 mb-3 pe-md-5">
-						<input type="text" class="form-control" name="searchCourse">
+					<form th:action="@{/course/api/search}"
+						class="d-flex mt-2 mb-3 pe-md-5" th:method="get">
+						<input type="text" class="form-control" name="searchValue">
 						<button type="submit" class="btn btn-outline-primary">Search</button>
 					</form>
 					<div id="list-courses">
@@ -67,7 +71,7 @@
 					</div>
 				</div>
 			</aside>
-			<!-- col tr�i-->
+			<!-- col trái-->
 			<aside th:replace="fragments/layouts :: left-col" id="left-col"
 				class="mobile-col pe-md-3"></aside>
 			<!-- col phải-->
@@ -148,9 +152,6 @@
 			</aside>
 		</div>
 	</main>
-
-
-
 
 	<footer th:replace="fragments/layouts :: footer"></footer>
 	<!-- popper-->

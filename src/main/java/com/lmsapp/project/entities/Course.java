@@ -1,6 +1,5 @@
 package com.lmsapp.project.entities;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +20,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "courses")
 @Data
 @NoArgsConstructor
-
 public class Course {
 
 	@Id

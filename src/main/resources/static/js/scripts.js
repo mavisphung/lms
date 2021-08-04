@@ -20,6 +20,32 @@
 // setInterval(elapse, 1000);
 
 
+function Enroll(url) {
+  swal({
+    title: "Are you sure you want to enroll this course?",
+    text: "Once you enroll, you can leave if you want.",
+    buttons: true,
+    dangerMode: true
+  }).then(willAccept => {
+    if (willAccept) {
+      $.ajax(
+        {
+          type: "POST",
+          url: url,
+          success: function(data) {
+            if (data) {
+              window.location.href = "/";
+            }
+          },
+          error: function() {
+            alert('You have already enrolled this course');
+          }
+        }
+      )
+    }
+  });
+}
+
 function Delete(url) {
     swal({
         title: "Are you sure you want to delete?",
