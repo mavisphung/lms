@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" 
-	xmlns:th="http://www.thymeleaf.org"
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head th:fragment="head">
 <meta charset="UTF-8">
@@ -10,12 +9,15 @@
 <!-- CSS -->
 <link rel="stylesheet" th:href="@{/css/font-awesome.css}">
 <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+<link th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
 <link rel="stylesheet" th:href="@{/css/styles.css}">
+
 <!-- bootstrap js -->
 
 <script th:src="@{/js/popper.min.js}" async defer></script>
 <script th:src="@{/js/jquery-3.6.0.min.js}" async defer></script>
 <script th:src="@{/js/bootstrap.bundle.js}" async defer></script>
+<script th:src="@{/js/daypilot/daypilot-all.min.js}" async defer></script>
 <script th:src="@{/js/scripts.js}" async defer></script>
 
 
@@ -34,19 +36,19 @@
 				</button>
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-						<li class="nav-item"><a class="nav-link active" th:href="@{/courses}">Courses</a>
-						</li>
+						<li class="nav-item"><a class="nav-link active"
+							th:href="@{/courses}">Courses</a></li>
 					</ul>
 					<div class="d-flex">
 						<div sec:authorize="!isAuthenticated()">
-							<a id="btnLogin" th:href="@{/login-page}" class="btn btn-primary me-1">Login</a>
-							<a id="btnRegister" th:href="@{/register}" class="btn btn-info">Register</a>
+							<a id="btnLogin" th:href="@{/login-page}"
+								class="btn btn-primary me-1">Login</a> <a id="btnRegister"
+								th:href="@{/register}" class="btn btn-info">Register</a>
 						</div>
 						<!-- logout button -->
-						</div>
-						<div sec:authorize="isAuthenticated()">
-							<div th:replace="fragments/logout :: btnLogout">
-						</div>
+					</div>
+					<div sec:authorize="isAuthenticated()">
+						<div th:replace="fragments/logout :: btnLogout"></div>
 					</div>
 				</div>
 			</div>
@@ -96,25 +98,38 @@
 		</div>
 		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	</footer>
-	
-	
+
+
 	<aside th:fragment="left-col" id="left-col" class="mobile-col pe-md-3">
-        <div class="pb-3">
-          <h3>Navigation</h3>
-          <ul class="list-navigation">
-            <li><a th:href="@{/}">Dashboard</a></li>
-            <li><a th:href="@{/profile}">Go to profile</a></li>
-            <li><a th:href="@{/courses}">Courses</a></li>
-          </ul>
-        </div>
-        <div class="pb-3">
-          <h3>Activities</h3>
-          <ul class="list-navigation">
-            <li><a href="index.html">Review quizzes</a></li>
-            <li><a href="user-profile.html"></a></li>
-            <li><a href="change-password.html">Change your password</a></li>
-          </ul>
-        </div>
-      </aside>
+		<div class="pb-3">
+			<h3>Navigation</h3>
+			<ul class="list-navigation">
+				<li><a th:href="@{/}">Dashboard</a></li>
+				<li><a th:href="@{/profile}">Go to profile</a></li>
+				<li><a th:href="@{/courses}">Courses</a></li>
+				<li><a th:href="@{/calendar}">Calendar</a></li>
+			</ul>
+		</div>
+		<div sec:authorize="hasRole('ROLE_INSTRUCTOR')">
+			<div class="pb-3">
+				<h3>Activities</h3>
+				<ul class="list-navigation">
+					<li><a th:href="@{/instructor/calendar}">Delete Activity</a></li>
+					<li><a th:href="@{/instructor/createActivities}">Create
+							activities</a></li>
+					<li><a th:href="@{/instructor/findActivities}">Update
+							activities</a></li>
+				</ul>
+			</div>
+		</div>
+
+	</aside>
+
+	<aside th:fragment="right-col" id="right-col" class="mobile-col">
+		<!-- Ä‘Ã¢y lÃ  cá»™t bÃªn pháº£i -->
+		<h3 class="offset-3">Calendar</h3>
+		<div th:include="fragments/activities :: calendar">content here</div>
+
+	</aside>
 </body>
 </html>

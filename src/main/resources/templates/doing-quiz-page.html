@@ -35,12 +35,9 @@
 									<ol type="a">
 										<div th:each="answer, state : ${question.answers}">
 
-											<li>
-												<input type="radio" th:value="${answer.id}"
-												th:name="'answer_' + ${question.id}">
-
-												<label th:text="${answer.content}"></label>
-											</li>
+											<li><input type="radio" th:value="${answer.id}"
+												th:name="'answer_' + ${question.id}"> <label
+												th:text="${answer.content}"></label></li>
 
 										</div>
 									</ol>
@@ -67,8 +64,7 @@
 
 </body>
 <script>
-/*          var minutes = "[[${quiz.timeAllow}]]";  */
-var minutes = 0.15
+          var minutes = "[[${quiz.timeAllow}]]";  
 function elapse() {
     minutes -= 1 / 60;
     document.getElementById('time').innerText = minuteConvert(minutes)

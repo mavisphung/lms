@@ -10,20 +10,26 @@
 	<header th:replace="fragments/layouts :: header"> </header>
 	<!-- main-->
 	<main class="container my-3">
-		<h4>Upload contents for <span th:text="${contentVM.module.name}"></span></h4>
-		<form class="row" th:action="@{/instructor/content/add}" 
-				method="post" enctype="multipart/form-data"
-				th:object="${contentVM}">
-			<input hidden th:field="${contentVM.module.id}" th:value="${contentVM.module.id}">
-			<input hidden th:field="${contentVM.module.name}" th:value="${contentVM.module.name}">
+		<h4>
+			Upload contents for <span th:text="${contentVM.module.name}"></span>
+		</h4>
+		<form class="row" th:action="@{/instructor/content/add}" method="post"
+			enctype="multipart/form-data" th:object="${contentVM}">
+			<input hidden th:field="${contentVM.module.id}"
+				th:value="${contentVM.module.id}"> <input hidden
+				th:field="${contentVM.module.name}"
+				th:value="${contentVM.module.name}">
 			<div class="col-12 col-sm-8 my-3">
-				<input class="form-control" type="file" name="files" multiple required th:field=*{files}>
+				<input class="form-control" type="file" name="files" multiple
+					required th:field=*{files}>
 			</div>
 			<div class="col-12 col-sm-4 my-3">
 				<button type="submit" class="btn btn-success w-sm-100">Upload</button>
+				<a th:href="@{'/instructor/moduleDetails/?moduleId=' + ${contentVM.module.id}}"
+					class="btn btn-warning"><i class="fa fa-undo"></i> Back</a>
 			</div>
 		</form>
-		
+
 		<table class="table table-striped">
 			<thead>
 				<tr>
@@ -38,24 +44,19 @@
 					<td th:text="${content.id}"></td>
 					<td th:text="${content.name}"></td>
 					<td th:text="${content.extension}"></td>
-					<td>
-						<a th:onclick="|Delete('/instructor/content/api/delete/${content.id}')|"
-							class="btn btn-danger">
-							<i class="fa fa-trash"></i>	
-						</a>
-						<!-- <a th:onclick="|Download('/course/api/download/${content.id}')|"
+					<td><a
+						th:onclick="|Delete('/instructor/content/api/delete/${content.id}')|"
+						class="btn btn-danger"> <i class="fa fa-trash"></i>
+					</a> <!-- <a th:onclick="|Download('/course/api/download/${content.id}')|"
 							class="btn btn-secondary">
 							<i class="fa fa-cloud-download"></i>
-						</a> -->
-						<a th:href="@{'/course/api/download/' + ${content.id}}"
-							class="btn btn-secondary">
-							<i class="fa fa-cloud-download"></i>
-						</a>
-					</td>
+						</a> --> <a th:href="@{'/course/api/download/' + ${content.id}}"
+						class="btn btn-secondary"> <i class="fa fa-cloud-download"></i>
+					</a></td>
 				</tr>
 			</tbody>
 		</table>
-		
+
 	</main>
 
 	<!-- footer-->

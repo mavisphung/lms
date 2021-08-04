@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/layouts :: head">
+<title>add activities - Spring LMS</title>
+</head>
+<title>Insert title here</title>
+</head>
+<body>
+	<header th:replace="fragments/layouts :: header"> </header>
+
+
+
+	<main class="container my-3">
+		<h1 class="text-centert">check student activities</h1>
+		<form th:action="@{/instructor/findActivities}" th:method="POST">
+			<label>Choose student name:</label> <br> <select
+				th:name="username">
+
+				<div th:each="name : ${listName}">
+					<option th:text="${name.username}"></option>
+				</div>
+			</select> <input type="submit" class="btn btn-success" value="FIND"/>
+		</form>
+
+		<footer th:replace="fragments/layouts :: footer"
+			class="container-fluid bg-light"> </footer>
+	</main>
+</body>
+</html>
