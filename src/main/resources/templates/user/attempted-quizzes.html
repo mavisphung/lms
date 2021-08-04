@@ -23,13 +23,13 @@
 					</tr>
 				</thead>
 				<tbody th:each="course : ${listCourse.keySet()}">
-					<tr th:each="quiz,state : ${listCourse.get(course)}">
-						<td th:text="${course}" th:if="${state.index == 0}"></td>
+					<tr th:each="userQuiz,state : ${listCourse.get(course)}">
+						<td th:if="${state.index == 0}" th:text="${course}"></td>
 						<td th:if="${state.index > 0}"></td>
-						<td th:text="${quiz.name}"></td>
-						<td th:text="${listQuiz.get(quiz)}"></td>
+						<td th:text=${userQuiz.quiz.name}></td>
+						<td th:text=${userQuiz.score}></td>
 						<td>
-							<a th:href="@{/reviewQuiz(quizId=${quiz.id},quizName=${quiz.name},score=${listQuiz.get(quiz)})}">Review</a>
+							<a th:href="@{/reviewQuiz(userQuizId=${userQuiz.id},quizName=${userQuiz.quiz.name},score=${userQuiz.score},date=${userQuiz.doingDate})}">Review</a>
 						</td>
 					</tr>
 				</tbody>
