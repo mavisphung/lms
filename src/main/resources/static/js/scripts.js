@@ -36,8 +36,8 @@ function Enroll(url) {
                         window.location.href = "/";
                     }
                 },
-                error: function(message) {
-                    alert(message);
+                error: function() {
+                    alert('You have already enrolled this course');
                 }
             })
         }
@@ -67,6 +67,19 @@ function Delete(url) {
             })
         } else {
             console.log("No operation!");
+        }
+    });
+}
+
+function Download(url) {
+    $.ajax({
+        type: "GET",
+        url: url,
+        success: function(data) {
+            alert("downloaded")
+        },
+        error: function() {
+            alert("Can not download resource");
         }
     });
 }
