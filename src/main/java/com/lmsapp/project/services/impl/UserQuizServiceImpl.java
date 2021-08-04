@@ -57,4 +57,13 @@ public class UserQuizServiceImpl implements UserQuizService {
 		}
 		return userQuiz;
 	}
+	
+	@Override
+	public List<UserQuizz> findByUsername(String username) {
+		List<UserQuizz> listUserQuiz = userQuizRepository.findByUsername(username);
+		if(listUserQuiz.isEmpty() || listUserQuiz.size() <= 0) {
+			throw new RuntimeException("You have not attempted any quiz");
+		}
+		return listUserQuiz;
+	}
 }

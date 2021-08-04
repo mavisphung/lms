@@ -79,6 +79,11 @@ public class ContentServiceImpl implements ContentService {
 //		return true;
 		return null;
 	}
+
+	@Override
+	public Content findById(Integer id) {
+		return repo.getById(id);
+	}
 	
 	
 }

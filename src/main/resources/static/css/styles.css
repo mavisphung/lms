@@ -10,6 +10,20 @@ p {
   box-sizing: border-box;
 }
 
+.answer {
+	padding: 1px;
+	margin: 10px;
+	border-radius: 10px;
+}
+
+.correctAnswer {
+	background-color: #29cf8a;
+}
+
+.incorrectAnswer {
+	background-color: #f57a7e;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -56,7 +70,7 @@ p {
   color: #0d6efd;
 }
 
-/* dÆ°á»›i mÃ n hÃ¬nh Ä‘iá»‡n thoáº¡i */
+/* dÆ°á»›i mÃ n hÃ¬nh Ä‘iá»‡n thoáº¡i */
 @media screen and (max-width: 768px) {
   .mobile-col-content {
     width: 100%;
@@ -66,7 +80,7 @@ p {
   }
 }
 
-/* trÃªn mÃ n hÃ¬nh ipad, ipad pro, desktop */
+/* trÃªn mÃ n hÃ¬nh ipad, ipad pro, desktop */
 @media screen and (min-width: 768px) {
   .mobile-col-content {
     width: 50%;

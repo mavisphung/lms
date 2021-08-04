@@ -39,6 +39,9 @@ public class Quiz {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "quiz", cascade = {CascadeType.ALL})
 	private List<Question> questions;
 	
+	@OneToMany(mappedBy = "quiz", cascade = {CascadeType.ALL})
+	private List<UserQuizz> userQuizzs;
+	
 	public Quiz() {
 	}
 
