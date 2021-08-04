@@ -16,9 +16,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.lmsapp.project.entities.Enrollment;
+import com.lmsapp.project.entities.Module;
+import com.lmsapp.project.entities.UserQuizz;
 import com.lmsapp.project.role.Role;
 
 import lombok.Data;
@@ -56,6 +60,9 @@ public class User implements Serializable {
 	@Column(name = "last_name")
 	private String lastName;
 	
+//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = {CascadeType.ALL})
+//	private List<UserQuizz> userQuizzs;
+	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = { @JoinColumn(name = "user_id") },
@@ -64,6 +71,9 @@ public class User implements Serializable {
 
 	@Transient
 	private List<String> strRoles = new ArrayList<String>();
+	
+	@Column(name = "verification_code")
+	private String verificationCode;
 	
 	public User(String username,
 				String password,

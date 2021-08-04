@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/layouts :: head">
+<meta charset="UTF-8">
+<title>User page</title>
+</head>
+<body>
+	<header th:replace="fragments/layouts :: header"></header>
+	<main class="container my-3">
+		<div class="m-3">
+			<h3 class="text-primary" th:text="${param.quizName}"></h3>
+			<label class="text-success" th:text="${'Your Score: ' + param.score + '/10.0'}"></label>
+			<br/>
+			<label class="text-success" th:text="${'Attempt Date: ' + param.date}"></label>
+		</div>
+
+		<table class="table table-hover table-bordered">
+			<tbody>
+				<tr th:each="userAnswer,state : ${listUserAnswer}">
+					<td class="p-3">
+						<div>
+							<h5
+								th:text="${'Question ' + state.count + '/' + listUserAnswer.size()}"></h5>
+							<label class="pt-2"
+								th:if="${listCorrectAnswer.contains(userAnswer.answer.id)}"
+								th:text="${'Mark ' + questionScore + ' out of ' + questionScore}"></label>
+							<label class="pt-2"
+								th:if="${!listCorrectAnswer.contains(userAnswer.answer.id)}"
+								th:text="${'Mark 0.0 out of ' + questionScore}"></label>
+							<hr />
+						</div>
+						<div>
+							<h6 class="text-break" th:text=${userAnswer.question.title}></h6>
+							<ul>
+								<li th:each="answer : ${userAnswer.question.answers}">
+									<div th:if="${answer.equals(userAnswer.answer)}">
+										<div class="answer correctAnswer" th:if="${answer.isCorrect}">
+											<input type="radio" th:value="${answer.id}"
+												th:name="${'question_' + userAnswer.question.id}" disabled
+												checked /> <label th:text="${answer.content}"></label>
+										</div>
+										<div class="answer incorrectAnswer"
+											th:if="${!answer.isCorrect}">
+											<input type="radio" th:value="${answer.id}"
+												th:name="${'question_' + userAnswer.question.id}" disabled
+												checked /> <label th:text="${answer.content}"></label>
+										</div>
+									</div>
+									<div class="answer"
+										th:if="${!answer.equals(userAnswer.answer)}">
+										<input type="radio" th:value="${answer.id}"
+											th:name="${'question_' + userAnswer.question.id}" disabled />
+										<label th:text="${answer.content}"></label>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<table class="table table-hover table-bordered">
+			<tbody>
+				<tr th:each="question,state : ${listQuestion}">
+					<td>
+						<h5
+							th:text="${'Question ' + state.count + '/' + listQuestion.size()}"></h5>
+						<hr /> <script th:inline="javascript">
+							var questionTitle = "${question.title}";
+						</script>
+						<h6 th:text="${questionTitle}"></h6> <br />
+						<ul>
+							<li class="p-1" th:each="answer : ${question.answers}"><input
+								type="radio" th:value="${answer.id}" th:id="${answer.id}"
+								th:name="${'question_' + question}" disabled="disabled"
+								onload="checkUserAnswer()" /> <label
+								th:text="${answer.content}"></label></li>
+						</ul>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</main>
+	<footer th:replace="fragments/layouts :: footer"></footer>
+</body>
+</html>

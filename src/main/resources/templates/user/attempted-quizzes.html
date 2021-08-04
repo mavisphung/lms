@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/layouts :: head">
+<meta charset="UTF-8">
+<title>User page</title>
+</head>
+<body>
+	<header th:replace="fragments/layouts :: header"></header>
+	<main class="container my-3">
+
+		<h3 class="pb-3">Your Attempted Quizzes</h3>
+		<hr />
+		<br />
+
+		<div th:if="${listCourse != null}">
+			<table class="table text-center	">
+				<thead>
+					<tr>
+						<th scope="col">Courses</th>
+						<th scope="col">Quizzes</th>
+						<th scope="col">Grade / 10.0</th>
+						<th scope="col">Review</th>
+					</tr>
+				</thead>
+				<tbody th:each="course : ${listCourse.keySet()}">
+					<tr th:each="userQuiz,state : ${listCourse.get(course)}">
+						<td th:if="${state.index == 0}" th:text="${course}"></td>
+						<td th:if="${state.index > 0}"></td>
+						<td th:text=${userQuiz.quiz.name}></td>
+						<td th:text=${userQuiz.score}></td>
+						<td>
+							<a th:href="@{/reviewQuiz(userQuizId=${userQuiz.id},quizName=${userQuiz.quiz.name},score=${userQuiz.score},date=${userQuiz.doingDate})}">Review</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div>
+			<h4 class="align-center text-danger" th:text="${errorMessage}"></h4>
+		</div>
+
+	</main>
+	<footer th:replace="fragments/layouts :: footer"></footer>
+</body>
+</html>
