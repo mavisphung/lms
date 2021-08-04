@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="fragments/layouts :: head">
+
+<title>Home page</title>
+</head>
+
+<body>
+	<header th:replace="fragments/layouts :: header"></header>
+
+	<main class="container my-3">
+		<div class="d-md-flex">
+			<!-- col content -->
+			<aside id="content-col" class="mobile-col-content pe-md-3">
+				<h3>Announcements</h3>
+				<h5 th:text="${message}"></h5>
+			</aside>
+			<!-- col trái-->
+			<aside th:replace="fragments/layouts :: left-col" id="left-col"
+				class="mobile-col pe-md-3"></aside>
+		</div>
+	</main>
+
+
+
+
+	<footer th:replace="fragments/layouts :: footer"></footer>
+	<!-- popper-->
+	<!-- Jquery-->
+
+</body>
+
+</html>
