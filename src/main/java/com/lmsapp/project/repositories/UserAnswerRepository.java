@@ -9,7 +9,7 @@ import com.lmsapp.project.entities.UserAnswer;
 
 public interface UserAnswerRepository extends JpaRepository<UserAnswer, Integer>{
 	
-	@Query("SELECT ua FROM UserAnswer ua WHERE ua.userQuiz.user.username = ?1 AND ua.userQuiz.quiz.id = ?2") 
-	public List<UserAnswer> findtByUsernameQuizId(String username, int quizId);
+	@Query("SELECT ua FROM UserAnswer ua WHERE ua.userQuiz.id = ?1") 
+	public List<UserAnswer> findtByUserQuizId(int userQuizId);
 	
 }

@@ -20,8 +20,8 @@ public class UserAnswerServiceImpl implements UserAnswerService{
 	}
 
 	@Override
-	public List<UserAnswer> findByUsernameQuiz(String username, int quizId) {
-		List<UserAnswer> result = userAnswerRepository.findtByUsernameQuizId(username, quizId);
+	public List<UserAnswer> findByUserQuizId(int userQuizId) {
+		List<UserAnswer> result = userAnswerRepository.findtByUserQuizId(userQuizId);
 		if(result.isEmpty() || result.size() <= 0) {
 			throw new RuntimeException("Can't find this quiz");
 		}

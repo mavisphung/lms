@@ -9,7 +9,6 @@ import com.lmsapp.project.entities.UserQuizz;
 
 public interface UserQuizRepository extends JpaRepository<UserQuizz, Integer> {
 	
-	@Query("SELECT uq FROM UserQuizz uq WHERE uq.user.username = ?1")
-	List<UserQuizz> getAttemptedQuiz(String username);
-	
+	@Query("SELECT uq FROM UserQuizz uq WHERE uq.user.username = ?1 ")
+	public List<UserQuizz> findByUsername(String username);
 }

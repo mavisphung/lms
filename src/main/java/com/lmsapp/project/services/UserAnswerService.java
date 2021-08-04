@@ -6,6 +6,6 @@ import com.lmsapp.project.entities.UserAnswer;
 
 public interface UserAnswerService {
 	
-	public List<UserAnswer> findByUsernameQuiz(String username, int quizId);
+	public List<UserAnswer> findByUserQuizId(int userQuizId);
 	
 }

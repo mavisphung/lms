@@ -24,6 +24,7 @@ import com.lmsapp.project.entities.Answer;
 import com.lmsapp.project.entities.Question;
 import com.lmsapp.project.entities.Quiz;
 import com.lmsapp.project.entities.UserAnswer;
+import com.lmsapp.project.entities.UserQuizz;
 import com.lmsapp.project.exception.UserAlreadyExistException;
 import com.lmsapp.project.model.UserRegistration;
 import com.lmsapp.project.services.AnswerService;
@@ -156,36 +157,39 @@ public class UserController {
 	public String showAttemptedQuizzesPage(Principal principal, Model model) {
 		String rv = "user/attempted-quizzes";
 		String username = principal.getName();
-		Map<Quiz, Float> listQuiz = new HashMap<Quiz, Float>();
-		Map<String, List<Quiz>> listCourse = new HashMap<String, List<Quiz>>();
+		//List Userquiz by username
+		List<UserQuizz> listUserQuiz = new ArrayList<UserQuizz>();
+		//list quizId and Score
+		Map<String, List<UserQuizz>> listCourse = new HashMap<String, List<UserQuizz>>();
 		try {
-			listQuiz = userQuizService.getAttemptedQuiz(username);
+			listUserQuiz = userQuizService.findByUsername(username);
 			String courseName;
-			for (Map.Entry<Quiz, Float> quiz : listQuiz.entrySet()) {
-				courseName = quiz.getKey().getModule().getCourse().getName().trim();
+			for (UserQuizz userQuiz : listUserQuiz) {
+				courseName = userQuiz.getQuiz().getModule().getCourse().getName();
 				if(listCourse.containsKey(courseName)) {
-					listCourse.get(courseName).add(quiz.getKey());
+					listCourse.get(courseName).add(userQuiz);
 				} else {
-					List<Quiz> tempList = new ArrayList<Quiz>();
-					tempList.add(quiz.getKey());
+					List<UserQuizz> tempList = new ArrayList<UserQuizz>();
+					tempList.add(userQuiz);
 					listCourse.put(courseName, tempList);
 				}
-			}
-			
+			}			
 		} catch (RuntimeException e) {
 			model.addAttribute("errorMessage", e.getMessage());
 			return rv;
 		} catch (Exception e) {
 			model.addAttribute("errorMessage", e.getMessage());
 			return rv;
+		} finally {
+			System.out.println("List User Quiz: " + listUserQuiz);
+			System.out.println("List Course: " + listCourse);
 		}
 		model.addAttribute("listCourse", listCourse);
-		model.addAttribute("listQuiz", listQuiz);
 		return rv;
 	}
 	
 	@GetMapping("/reviewQuiz")
-	public String showReviewQuizPage(Principal principal, Model model, @Param("quiz") int quizId) {
+	public String showReviewQuizPage(Principal principal, Model model, @Param("userQuizId") int userQuizId) {
 		String rv = "user/review-quiz";
 		String username = principal.getName();
 		List<Integer> listCorrectAnswer = new ArrayList<Integer>();
@@ -193,7 +197,7 @@ public class UserController {
 		float questionScore;
 		try {
 			listCorrectAnswer = answerService.findAllCorrectAnswer();
-			listUserAnswer = userAnswerService.findByUsernameQuiz(username, quizId);
+			listUserAnswer = userAnswerService.findByUserQuizId(userQuizId);
 			questionScore = 10/(listUserAnswer.size());
 		} catch (RuntimeException e) {
 			model.addAttribute("errorMessage", e.getMessage());

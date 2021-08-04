@@ -1,5 +1,7 @@
 package com.lmsapp.project.entities;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,5 +40,8 @@ public class UserQuizz{
 	
 	@Column(name = "score")
 	private float score;
+	
+	@Column(name = "doing_date")
+	private Date doingDate;
 	
 }
