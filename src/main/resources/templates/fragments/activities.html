@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="fragments/layouts :: head">
+<meta charset="utf-8" />
+<title>Using JavaScript/HTML5 Event Calendar in Spring Boot
+	(Java)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+<link href="css/main.css" rel="stylesheet" type="text/css">
+<link href="icons/style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+	<div style="margin: auto;;">
+
+		<div class="main">
+			<div>
+				<div id="nav" style="margin: auto;"></div>
+			</div>
+			<div style="">
+				<div id="dp" hidden="" class="h-0"></div>
+			</div>
+		</div>
+
+		<!-- DayPilot library -->
+		<script src="js/daypilot/daypilot-all.min.js"></script>
+
+		<script>
+
+            const nav = new DayPilot.Navigator("nav");
+            nav.showMonths = 1;
+            nav.skipMonths = 1;
+            nav.selectMode = "week";
+            nav.onTimeRangeSelected = (args) => {
+                dp.startDate = args.day;
+                dp.update();
+                dp.events.load("/api/events");
+            };
+            nav.init();
+
+
+            const dp = new DayPilot.Month("dp");
+            dp.viewType = "Week";
+            dp.onTimeRangeSelected = function (args) {
+                DayPilot.Modal.prompt("Create a new event:", "Event").then(function (modal) {
+                    var dp = args.control;
+                    dp.clearSelection();
+                    if (!modal.result) {
+                        return;
+                    }
+                    var params = {
+                        start: args.start.toString(),
+                        end: args.end.toString(),
+                        text: modal.result
+                    };
+                    DayPilot.Http.ajax({
+                        url: '/api/events/create',
+                        data: params,
+                        success: function (ajax) {
+                            var data = ajax.data;
+                            dp.events.add(new DayPilot.Event(data));
+                            dp.message("Event created");
+                        }
+                    });
+                });
+            };
+
+
+            dp.onBeforeEventRender = function (args) {
+                args.data.barColor = args.data.color;
+                args.data.areas = [
+                    { top: 2, right: 2, icon: "icon-triangle-down", visibility: "Visible", action: "ContextMenu", style: "font-size: 12px; background-color: #f9f9f9; border: 1px solid #ccc; padding: 2px 2px 0px 2px; cursor:pointer;" }
+                ];
+            };
+            dp.contextMenu = new DayPilot.Menu({
+                items: [
+                    {
+                        text: "Delete",
+                        color: "#cc0000",
+                        onClick: function (args) {
+                            var e = args.source;
+                            var params = {
+                                id: e.id()
+                            };
+                            DayPilot.Http.ajax({
+                                url: '/api/events/delete',
+                                data: params,
+                                success: function (ajax) {
+                                    dp.events.remove(e);
+                                    dp.message("Deleted");
+                                },
+                            });
+                        }
+                    }
+
+                ]
+            });
+            dp.init();
+
+            dp.events.load("/api/events");
+
+
+
+
+
+        </script>
+	</div>
+
+</body>
+
+</html>

@@ -1,18 +1,10 @@
 package com.lmsapp.project.user.service;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-
-import org.hibernate.loader.plan.build.internal.returns.AbstractCompositeReference;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,9 +30,6 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private PasswordEncoder encoder;
 	
-	@Autowired
-	private JavaMailSender mailSender;
-	
 	@Override
 	public User registerNewUser(UserRegistration registration) throws UserAlreadyExistException {
 		User clientUser = registration.getUser();
@@ -62,9 +51,7 @@ public class UserServiceImpl implements UserService {
 		
 		String encodedPassword = encoder.encode(clientUser.getPassword());
 		clientUser.setPassword(encodedPassword);
-		clientUser.setEnabled(false);
-//		String code = UUID.randomUUID().toString();
-		clientUser.setVerificationCode(UUID.randomUUID().toString());
+		clientUser.setEnabled(true);
 		Role userRole = roleRepo.findByName(convertToERole(registration.getRole()));
 		clientUser.getRoles().add(userRole);
 		return repo.save(clientUser);
@@ -162,43 +149,5 @@ public class UserServiceImpl implements UserService {
 		return repo.save(userFromDb);
 	}
 	
-	/*
-	 * This function is process sending email
-	 */
-	@Override
-	public void sendVerification(User user, String siteUrl) 
-			throws UnsupportedEncodingException, MessagingException {
-		String subject = "Please verify your registration";
-		String senderName = "DoSpringAtHome Team";
-		StringBuilder content = new StringBuilder();
-		String verifyUrl = siteUrl + "/verify?code=" + user.getVerificationCode();
-		content.append("<p>Dear, " + user.getFirstName() + " " + user.getLastName() + "</p>")
-			   .append("<p>Please click the below link to verify to your registration</p>")
-			   .append("<h3><a href=\"" + verifyUrl + "\">VERIFY</a></h3>")
-			   .append("<p>Thank you, DoSpringAtHome Team</p>");
-		
-		
-		MimeMessage message = mailSender.createMimeMessage();
-		MimeMessageHelper helper = new MimeMessageHelper(message);
-		
-		helper.setFrom("huypc2410@gmail.com", senderName);
-		helper.setTo(user.getEmail());
-		helper.setSubject(subject);
-		helper.setText(content.toString(), true);
-		
-		mailSender.send(message);
-		
-	}
 	
-	public boolean verify(String code) {
-		User user = repo.findByVerificationCode(code);
-		System.out.println("UserServiceImp: verify(code: String) >> " + user.getUsername());
-		
-		if (user == null || user.isEnabled()) {
-			return false;
-		} else {
-			repo.enable(user.getId());
-			return true;
-		}
-	}
 }

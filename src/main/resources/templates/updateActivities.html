@@ -25,12 +25,12 @@
 				<p class="text-primary" th:text="${list.username}"></p>
 				<label>start date (YYYY-MM-DD):</label> <input type="text"
 					class="form-control" th:name="start"
-					th:attr="placeholder=${list.start}" /> <br> <label>end
+					th:attr="placeholder=${list.start}" required="required"/> <br> <label>end
 					date (YYYY-MM-DD):</label> <input type="text" class="form-control"
-					th:name="end" th:attr="placeholder=${list.end}" />
+					th:name="end" th:attr="placeholder=${list.end}" required="required" />
 				<br> <label>description:</label> <input type="text"
 					class="form-control" th:name="text"
-					th:attr="placeholder=${list.text}" /> <input type="submit"
+					th:attr="placeholder=${list.text}"  required="required"/> <input type="submit"
 					class="btn btn-success" value="update"/>
 			</form>
 		</div>

@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8"/>
-    <title>Using JavaScript/HTML5 Event Calendar in Spring Boot (Java) </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-    <link href="css/main.css" rel="stylesheet" type="text/css">
-    <link href="icons/style.css" rel="stylesheet" type="text/css">
+<head th:include="fragments/layouts :: head">
+<meta charset="utf-8" />
+<title>Using JavaScript/HTML5 Event Calendar in Spring Boot
+	(Java)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+<link href="css/main.css" rel="stylesheet" type="text/css">
+<link href="icons/style.css" rel="stylesheet" type="text/css">
 </head>
-<body>
-<div class="header">
 
-</div>
+<body>
+<header th:replace="fragments/layouts :: header"></header>
 
 <div class="main" style="display: flex;">
     <div style="margin-right: 10px;">
@@ -143,6 +148,7 @@
     
 
 </script>
-
+<footer th:replace="fragments/layouts :: footer"></footer>
 </body>
+
 </html>

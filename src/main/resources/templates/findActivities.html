@@ -12,7 +12,9 @@
 
 
 	<main class="container my-3">
+		
 		<h1 class="text-centert">check student activities</h1>
+		<h1 th:text="${error}" class="text-danger"></h1>
 		<form th:action="@{/findActivities}" th:method="POST">
 			<label>Choose student name:</label> <br> <select
 				th:name="username">

@@ -1,10 +1,7 @@
 package com.lmsapp.project.user.service;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Set;
-
-import javax.mail.MessagingException;
 
 import com.lmsapp.project.model.UserRegistration;
 import com.lmsapp.project.role.Role;
@@ -29,9 +26,4 @@ public interface UserService {
 	List<String> convertToStringList(Set<Role> roles);
 	
 	User updateProfile(UserRegistration registration);
-	
-	void sendVerification(User user, String siteUrl) 
-			throws UnsupportedEncodingException, MessagingException;
-	
-	boolean verify(String code);
 }

@@ -78,6 +78,7 @@ public class ActivitiesController {
 	
 	@GetMapping("/findActivities")
 	public ModelAndView findActivitiesByUsername() {
+		
 		ModelAndView mv=new ModelAndView("findActivities");	
 		mv.addObject("listName", userRepository.findAll());
 		
@@ -87,6 +88,13 @@ public class ActivitiesController {
 	public ModelAndView findActivitiesByUsernamePost(@RequestParam(value = "username")String name) {
 		ModelAndView mv=new ModelAndView("updateActivities");	
 		mv.addObject("listActivities", userActivitiesRepository.findActivitiesByname(name));
+		
+		if(userActivitiesRepository.findActivitiesByname(name).isEmpty()) {
+			ModelAndView modelview=new ModelAndView("findActivities");	
+			modelview.addObject("error", "this account dont have any activities");
+			modelview.addObject("listName", userRepository.findAll());
+			return modelview;
+		}
 		
 		return mv;
 	}
