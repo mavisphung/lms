@@ -16,9 +16,11 @@ public interface ContentService {
 	
 	public void remove(int id);
 	
-	Content save(MultipartFile file);
+//	Content save(MultipartFile file);
 
 	Content save(MultipartFile file, Module module);
 	
 	//boolean save(ContentVM vm);
+	
+	Content findById(Integer id);
 }

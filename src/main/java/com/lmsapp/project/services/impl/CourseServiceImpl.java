@@ -68,9 +68,7 @@ public class CourseServiceImpl implements CourseService {
 
 	@Override
 	public List<Course> findCoursesByCourseName(String courseName) {
-		System.out.println("CourseServiceImpl: findByCourseNameLike() >> " + courseName);
-		List<Course> courses = courseRepository.findByCoursenameLike(courseName);
-		System.out.println("CourseServiceImpl: findByCourseNameLike() >> " + courses.toString());
+		List<Course> courses = courseRepository.findByNameLike(courseName);
 		return courses;
 	}
 

@@ -53,3 +53,18 @@ function Delete(url) {
     }
   });
 }
+
+function Download(url) {
+  $.ajax(
+    {
+      type: "GET",
+      url: url,
+      success: function (data) {
+        alert("Downloaded resources!");
+      },
+      error: function() {
+        alert("Download operation failure");
+      }
+    }
+  )
+}

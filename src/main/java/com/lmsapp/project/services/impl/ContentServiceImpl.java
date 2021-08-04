@@ -57,26 +57,11 @@ public class ContentServiceImpl implements ContentService {
 	}
 
 	@Override
-	public Content save(MultipartFile file) {
-//		Module module = vm.getModule();
-//		MultipartFile[] files = vm.getFiles();
-//		try {
-//			for (MultipartFile file : files) {
-//				Content content = new Content(
-//						file.getOriginalFilename(),
-//						file.getContentType(),
-//						file.getBytes()
-//					);
-//				content.setModule(module);
-//				repo.save(content);
-//			}
-//		} catch (Exception e) {
-//			System.out.println("ContentServiceImpl: Error while saving >> \n" + e.getMessage());
-//			return false;
-//		}
-//		return true;
-		return null;
+	public Content findById(Integer id) {
+		return repo.getById(id);
 	}
+
+	
 	
 	
 }

@@ -43,6 +43,14 @@
 							class="btn btn-danger">
 							<i class="fa fa-trash"></i>	
 						</a>
+						<a th:onclick="|Download('/content/download/${content.id}')|"
+							class="btn btn-secondary">
+							<i class="fa fa-cloud-download"></i>	
+						</a>
+						<a th:href="@{'/content/donwload/'+ ${content.id}}"
+							class="btn btn-secondary">
+							<i class="fa fa-cloud-download"></i> 2
+						</a>
 					</td>
 				</tr>
 			</tbody>

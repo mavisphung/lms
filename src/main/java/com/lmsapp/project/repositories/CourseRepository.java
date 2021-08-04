@@ -10,5 +10,5 @@ import com.lmsapp.project.entities.Course;
 public interface CourseRepository extends JpaRepository<Course, Integer> {
 
 	@Query("SELECT c FROM Course c WHERE c.name LIKE %?1%")
-	List<Course> findByCoursenameLike(String courseName);
+	List<Course> findByNameLike(String courseName);
 }

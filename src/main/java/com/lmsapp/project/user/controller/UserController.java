@@ -1,25 +1,30 @@
 package com.lmsapp.project.user.controller;
 
 import java.security.Principal;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.lmsapp.project.entities.Course;
+import com.lmsapp.project.entities.Content;
 import com.lmsapp.project.entities.Enrollment;
 import com.lmsapp.project.exception.UserAlreadyExistException;
 import com.lmsapp.project.model.UserRegistration;
+import com.lmsapp.project.services.ContentService;
 import com.lmsapp.project.services.CourseService;
 import com.lmsapp.project.services.EnrollmentService;
 import com.lmsapp.project.user.User;
@@ -33,15 +38,18 @@ public class UserController {
 	private final UserService userService;
 	private final CourseService courseService;
 	private final EnrollmentService enrollService;
+	private final ContentService contentService;
 	
 	@Autowired
 	public UserController(
 			UserService userService,
 			CourseService courseService,
-			EnrollmentService enrollService) {
+			EnrollmentService enrollService,
+			ContentService contentService) {
 		this.userService = userService;
 		this.courseService = courseService;
 		this.enrollService = enrollService;
+		this.contentService = contentService;
 	}
 
 	@GetMapping("/")
@@ -148,5 +156,14 @@ public class UserController {
 		rv.addStaticAttribute("registration", registration);
 		rv.addStaticAttribute("message", "Your profile has been updated!");
 		return rv;
+	}
+	
+	@GetMapping("/content/download/{contentId}")
+	public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable Integer contentId) {
+		Content content = contentService.findById(contentId);
+		return ResponseEntity.ok()
+				.contentType(MediaType.parseMediaType(content.getExtension()))
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment:filename=\"" + content.getName() + "\"")
+				.body(new ByteArrayResource(content.getData()));
 	}
 }
