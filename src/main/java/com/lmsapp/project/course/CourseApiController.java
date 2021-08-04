@@ -46,7 +46,8 @@ public class CourseApiController {
 		Enrollment enrollment = enrollService.findByUsernameAndCourseId(principal.getName(), courseId);
 		if (enrollment != null) {
 			String message = "You have already enrolled this course";
-			throw new ResponseException(HttpStatus.METHOD_NOT_ALLOWED.toString(), message);
+			//throw new ResponseException(HttpStatus.METHOD_NOT_ALLOWED.toString(), message);
+			return new ResponseEntity<Object>(message,HttpStatus.METHOD_NOT_ALLOWED);
 		}
 		
 		Course courseFromDb = courseService.findById(courseId);

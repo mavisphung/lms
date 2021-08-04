@@ -11,11 +11,11 @@ import com.lmsapp.project.exception.ResponseException;
 public class CourseApiAdvice {
 	
 	@ExceptionHandler(ResponseException.class)
-	public ResponseEntity<ResponseException> handleResponseException() {
+	public ResponseEntity<ResponseException> handleResponseException(String message) {
 		
 		ResponseException exception = new ResponseException();
 		exception.setCode(HttpStatus.METHOD_NOT_ALLOWED.toString());
-		exception.setMessage("You have already enrolled this course.");
+		exception.setMessage(message);
 		return new ResponseEntity<ResponseException>(exception, HttpStatus.METHOD_NOT_ALLOWED);
 		
 	}
