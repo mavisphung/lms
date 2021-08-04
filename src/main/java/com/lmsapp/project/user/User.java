@@ -60,10 +60,14 @@ public class User implements Serializable {
 	@Column(name = "last_name")
 	private String lastName;
 	
-//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = {CascadeType.ALL})
-//	private List<UserQuizz> userQuizzs;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = {CascadeType.ALL})
+	private List<Enrollment> enrollments;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = {CascadeType.ALL})
+	private List<UserQuizz> userQuizzs;
+	
+	@ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
+			CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = { @JoinColumn(name = "user_id") },
             inverseJoinColumns = { @JoinColumn(name = "role_id") })

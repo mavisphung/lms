@@ -43,7 +43,8 @@ public class UserQuizz {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
+			CascadeType.REFRESH })
 	@JoinColumn(name = "quizz_id")
 	private Quiz quiz;
 
